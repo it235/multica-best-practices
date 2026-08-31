@@ -1,6 +1,6 @@
 # CI/CD and Test Pipeline (methodology)
 
-> This document describes the methodology behind **G2.5 (CI/CD deploy)** and **Tester three-phase (T1 / T2 / T3)** in the Squad pipeline. No concrete platform URL, Job name, or credential appears here — they live inside the `multica-platform-*` and `multica-artifact-*-sync` placeholder shells; each team fills in its own internal network.
+> This document describes **G2.5 (CI/CD verification)** and the Tester three-phase flow. CI/CD results live in the project repository with no remote platform, URL, or credential dependency.
 
 ## 1. Stage overview
 
@@ -55,7 +55,7 @@ T1 / T2 only write cases and assess; **T3 is the only execution phase** and bind
 1. **Deploy and test decoupled**: DevOps only produces the env, Tester only consumes it — avoids "self-test, self-deploy, self-claim success".
 2. **T1/T2 shift left**: cases prepared during design / coding, ready at implementation completion, not thought up after code is done.
 3. **G2.5 hard-links T3**: testing must be on the real deploy env, avoids "tested on the dev machine then claim acceptance".
-4. **Platform swappable**: all internal details live in the `multica-platform-*` layer; this methodology and the public role prompts carry zero internal binding.
+4. **Locally reproducible**: build, test, packaging commands, and results must be reviewable from the project repository.
 
 ## 7. Relationship to the three-layer skill model
 
@@ -64,7 +64,7 @@ Role prompt (content) ── "use multica-artifact-cicd-sync to trigger CI/CD"
         │
 Orchestration multica-artifact-cicd-sync ── calls ──┐
         │                                           │
-Platform multica-platform-jenkins ─────────────────┘ (only place with CI URL / Job name / credentials)
+Project-repository build configuration ─────────────┘
 ```
 
 A team onboarding its own internal network only fills the platform shell's `config.yaml` and `scripts/`; the upstream layers stay untouched.

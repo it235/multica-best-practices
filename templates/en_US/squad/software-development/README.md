@@ -98,7 +98,7 @@ Add `DevOps` when scope includes CI/CD; `ProductManager` when the Issue doesn't 
 
 ### Step 2 — Create the Skills
 
-Create 16 Skills in Multica:
+Create 13 Skills in Multica:
 
 | Skill | Source | Mount to |
 | --- | --- | --- |
@@ -115,11 +115,7 @@ Create 16 Skills in Multica:
 | `multica-artifact-test-sync` | [`../../skills/multica-artifact-test-sync/SKILL.md`](../../skills/multica-artifact-test-sync/SKILL.md) | Tester |
 | `multica-artifact-cicd-sync` | [`../../skills/multica-artifact-cicd-sync/SKILL.md`](../../skills/multica-artifact-cicd-sync/SKILL.md) | DevOps |
 | `multica-test-automation` | [`../../skills/multica-test-automation/SKILL.md`](../../skills/multica-test-automation/SKILL.md) | Tester (T3) |
-| `multica-platform-jenkins` | [`../../skills/multica-platform-jenkins/SKILL.md`](../../skills/multica-platform-jenkins/SKILL.md) | platform shell (CI/CD) |
-| `multica-platform-jira` | [`../../skills/multica-platform-jira/SKILL.md`](../../skills/multica-platform-jira/SKILL.md) | platform shell (Issue) |
-| `multica-platform-confluence` | [`../../skills/multica-platform-confluence/SKILL.md`](../../skills/multica-platform-confluence/SKILL.md) | platform shell (Wiki) |
-
-> All 16 Skills are shared under [`../../skills/`](../../skills/) with the unified `multica-` prefix namespace, in three classes: gatekeeping/design, artifact-orchestration (`multica-artifact-*-sync`), and platform-layer shells (only place holding internal URLs/credentials; public repo ships placeholder shells). Skills mount **by name** — whoever needs one writes "use the xxx skill" in their Instructions, independent of repo paths.
+> All six `multica-artifact-*-sync` skills use fixed repo-relative paths under `artifacts/<issue-id>/`, with no platform shell, credential, or network dependency.
 
 ### Step 3 — Create the Squad
 

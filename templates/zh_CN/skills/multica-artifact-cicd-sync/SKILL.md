@@ -1,78 +1,37 @@
 ---
 name: multica-artifact-cicd-sync
-description: CI/CD 产物编排：G2 PASS 且代码已 push 后调用 multica-platform-jenkins 触发 dev/sit 构建，回写 JIRA 并回传部署 URL。Python 实现，Windows / Linux 通用。
+description: Local-first：把CI/CD 结果保存为项目仓库内文件并只回传相对路径；无外部平台、凭据或网络依赖。
 metadata:
-  orchestrates:
-    - multica-platform-jenkins
-    - multica-platform-jira
-  runtime:
-    python: ">=3.10"
+  mode: local-only
+  output: artifacts/<issue-id>/cicd-result.md
 ---
 
-# Artifact · CI/CD Sync（编排）
+# Artifact · CI/CD 结果 Sync
 
 ## Purpose
 
-G2 PASS + push 后，调用 `multica-platform-jenkins` 触发 dev/sit Job。**参数由 Jenkins API 自动发现**，编排层不硬编码参数名。
+把CI/CD 结果落地为项目仓库中的稳定、可评审产物。本 skill **只支持本地路径**：不访问外部平台，不读取凭据，不发网络请求，也不返回 URL。
 
-## Agent 流程
+## 固定契约
 
-```text
-1. discover-only（推荐先跑，检查 missing）：
-   python scripts/trigger_cicd.py --issue <ISSUE_KEY> --env sit --branch release/<ISSUE_KEY>-slug --discover-only --json
-2. 触发（**只用 Issue deploy branch，不用 feature 分支**）：
-   python scripts/trigger_cicd.py --issue <ISSUE_KEY> --env sit --branch release/<ISSUE_KEY>-slug --json
-3. missing 参数：追加 --param name=value（trigger_cicd 需扩展传参时走 trigger_env --param）
-```
+- 输入：已完成的 Markdown 产物。
+- 输出：`artifacts/<issue-id>/cicd-result.md`。
+- 回传：仅回传上述仓库相对路径；禁止绝对路径、`..` 和外部链接。
+- 更新：同一 Issue 覆盖同一路径；内容变化后，下游门禁失效并重跑。
 
-## 参数解析策略
+## Workflow
 
-默认（`use_last_success=true`）：
+1. 生成 Markdown，至少包含：提交/分支、命令、检查、产物位置、环境与失败诊断。
+2. 在仓库根目录创建 `artifacts/<issue-id>/`，写入 `cicd-result.md`。
+3. 确认文件完整且已纳入版本控制。
+4. 向 Leader 回传 `artifacts/<issue-id>/cicd-result.md`；下游按路径读取，不靠搜索。
 
-1. 读取 `lastSuccessfulBuild` 的全部构建参数
-2. **仅**将分支类参数（branchName / branch / gitBranch …）替换为 `--branch`
-3. `--param` 可覆盖任意项；`--no-last-success` 关闭此行为
+## 常见失败
 
----
-
-## Workflow A：dev 部署
-
-```bash
-python scripts/trigger_cicd.py \
-  --issue <ISSUE_KEY> \
-  --env dev \
-  --service <service> \
-  --branch release/<ISSUE_KEY>-slug \
-  --json
-```
-
-## Workflow B：sit 部署（G2.5 → Tester T3）
-
-```bash
-python scripts/trigger_cicd.py \
-  --issue <ISSUE_KEY> \
-  --env sit \
-  --branch release/<ISSUE_KEY>-slug \
-  --json
-```
-
-`<ISSUE_PREFIX_A>` / `<ISSUE_PREFIX_B>` / `<ISSUE_PREFIX_C>` / `<ISSUE_PREFIX_D>` 等前缀已在 `config.yaml` → `issue_service_map` 配置，可省略 `--service`。
-
-## Workflow C：多服务
-
-```bash
-python scripts/trigger_cicd.py --env sit --service <service1>,<service2> --branch release/<ISSUE_KEY>-xxx --json
-```
-
-## 用法（角色侧）
-
-```text
-G2 PASS 且代码已 push 后，用 multica-artifact-cicd-sync 触发 Jenkins 并回传部署链接。
-```
+- 返回本机绝对路径：转换为仓库相对路径。
+- 只在聊天中粘贴：写入固定文件形成版本化产物。
+- 返回外部 URL：改为固定本地路径。
 
 ## 为什么有效
 
-编排层只依赖 Python；Issue 前缀自动映射到 `jobs-catalog.yaml` 中的 logical service。
-
-
-
+固定路径提供可发现性、版本审查和可复现性；移除平台适配器后，starter 无凭据、无网络即可 Copy · Paste · Run。

@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - 阶段门禁消除歧义：API 契约 + 功能用例汇合点改为 G1.5，前端 + 后端 + 接口用例汇合点保留 G2；接口用例明确只在实现阶段并行派发一次 / Split the ambiguous duplicate G2 into G1.5 development readiness and G2 implementation join, and dispatch API cases exactly once in parallel with implementation.
 - Squad 团队清单补齐 `@DevOps`，README（中英）同步工作流、门禁表与执行契约 / Added the missing `@DevOps` role and synchronized both starter READMEs.
 - `multica-artifact-req-sync` 改为 local-first：默认写入 `artifacts/<issue-id>/prd.md` 并回传仓库相对路径，无凭据、无网络、无外部任务；Confluence / JIRA 等改为显式启用的可选适配器。同步 ProductManager、产物规范与根 README（中英）/ Made requirement sync local-first with optional external adapters and synchronized the bilingual role/methodology/root docs.
+- 六个 `multica-artifact-*-sync` 全部收敛为 local-only 固定路径，删除外部平台壳及其凭据、配置、网络发布/触发代码；software-development starter、产物规范和 CI/CD 方法论已中英文同步 / Converted all six artifact sync skills to local-only fixed paths and removed platform shells plus credential/config/network integration code; synchronized bilingual starter and methodology docs.
 
 ### Fixed / 修复
 

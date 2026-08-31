@@ -1,34 +1,37 @@
 ---
 name: multica-artifact-api-sync
-description: 把 API 接口文档产物对接到接口协作平台（默认 Apifox）。用于 @BackendDev 上传 API 契约，供前端 / 测试下游消费。平台可替换。
+description: Local-first：把API 契约保存为项目仓库内文件并只回传相对路径；无外部平台、凭据或网络依赖。
+metadata:
+  mode: local-only
+  output: artifacts/<issue-id>/api-contract.md
 ---
 
-# Artifact · API Contract Sync
+# Artifact · API 契约 Sync
 
 ## Purpose
 
-把 API 接口文档落地到团队统一的接口协作平台，并让下游（前端 / 测试）用稳定方式取回。
+把API 契约落地为项目仓库中的稳定、可评审产物。本 skill **只支持本地路径**：不访问外部平台，不读取凭据，不发网络请求，也不返回 URL。
 
-> 本 skill 把「平台对接」与「角色提示词」解耦：角色提示词只说"产出 API 契约"，不关心平台。换公司（用 Swagger / Postman / YApi / 内部网关）只改本 skill，不动 @BackendDev 提示词。
+## 固定契约
 
-## 默认平台：Apifox
+- 输入：已完成的 Markdown 产物。
+- 输出：`artifacts/<issue-id>/api-contract.md`。
+- 回传：仅回传上述仓库相对路径；禁止绝对路径、`..` 和外部链接。
+- 更新：同一 Issue 覆盖同一路径；内容变化后，下游门禁失效并重跑。
 
-- 产出：API 契约（端点、入参 / 出参、错误码、鉴权、状态机边界）。
-- 上传：在 Apifox 维护接口定义，导出 / 同步后把**项目 / 接口分组链接**作为产物引用。
-- 取回：下游 @FrontendDev / @Tester 通过链接读取，链接即稳定引用。
+## Workflow
 
-## 产物内容规范（与角色解耦的部分）
+1. 生成 Markdown，至少包含：端点、schema、错误码、鉴权与业务规则映射。
+2. 在仓库根目录创建 `artifacts/<issue-id>/`，写入 `api-contract.md`。
+3. 确认文件完整且已纳入版本控制。
+4. 向 Leader 回传 `artifacts/<issue-id>/api-contract.md`；下游按路径读取，不靠搜索。
 
-依据阶段约定，API 契约至少包含：端点清单、请求 / 响应 schema、错误码表、鉴权方式、与 BR- 业务规则的对应关系。
+## 常见失败
 
-## 用法（角色侧只写这一句）
-
-> @BackendDev：「产出 API 契约，用 `multica-artifact-api-sync` skill 落地到团队接口平台，并回传链接。」
-
-## 替换平台（不改角色提示词）
-
-把本 skill 的「默认平台」段替换为你们的工具（Swagger / YApi / Postman / 内部网关），保持「上传 + 回传稳定链接」接口不变即可。
+- 返回本机绝对路径：转换为仓库相对路径。
+- 只在聊天中粘贴：写入固定文件形成版本化产物。
+- 返回外部 URL：改为固定本地路径。
 
 ## 为什么有效
 
-接口平台各团队不同，把平台名写进角色提示词会固化它；下沉到 skill 后，角色保持「产出什么内容」的稳定描述，平台随 skill 替换。
+固定路径提供可发现性、版本审查和可复现性；移除平台适配器后，starter 无凭据、无网络即可 Copy · Paste · Run。

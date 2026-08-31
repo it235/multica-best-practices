@@ -1,34 +1,37 @@
 ---
 name: multica-artifact-api-sync
-description: Land API contract artifacts to the API collaboration platform (default Apifox). Used by @BackendDev to upload API contract for downstream frontend / test consumption. Swappable platform.
+description: Local-first: save the API Contract in the project repository and return only its repo-relative path; no external platform, credential, or network dependency.
+metadata:
+  mode: local-only
+  output: artifacts/<issue-id>/api-contract.md
 ---
 
 # Artifact · API Contract Sync
 
 ## Purpose
 
-Land API contract artifacts to the team's unified API platform and let downstream (frontend / test) retrieve them via a stable reference.
+Land the API Contract as a stable, reviewable repository artifact. This skill is **local-only**: it does not access external platforms, read credentials, make network requests, or return URLs.
 
-> This skill decouples "platform integration" from "role prompt": the role prompt only says "produce API contract", not which platform. Changing companies (Swagger / Postman / YApi / internal gateway) means editing only this skill, not the @BackendDev prompt.
+## Fixed contract
 
-## Default platform: Apifox
+- Input: a completed Markdown artifact.
+- Output: `artifacts/<issue-id>/api-contract.md`.
+- Return: only that repo-relative path; absolute paths, `..`, and external links are forbidden.
+- Update: overwrite the same Issue path; downstream gates become stale and must rerun after changes.
 
-- Output: API contract (endpoints, in/out params, error codes, auth, state-machine boundaries).
-- Upload: maintain interface definitions in Apifox, export / sync, then use the **project / interface-group link** as the artifact reference.
-- Retrieve: downstream @FrontendDev / @Tester read via the link — the link is the stable reference.
+## Workflow
 
-## Content spec (platform-independent part)
+1. Generate Markdown containing at least: endpoints, schemas, errors, auth, and business-rule mappings.
+2. From the repository root, create `artifacts/<issue-id>/` and write `api-contract.md`.
+3. Verify the file is complete and tracked by version control.
+4. Return `artifacts/<issue-id>/api-contract.md` to the Leader; downstream reads that exact path.
 
-Per the stage convention, the API contract at least contains: endpoint list, request/response schema, error-code table, auth method, mapping to BR- business rules.
+## Common failures
 
-## Usage (role side writes only this line)
-
-> @BackendDev: "Produce API contract, land it via `multica-artifact-api-sync` skill to the team API platform, and return the link."
-
-## Swap platform (no role-prompt change)
-
-Replace this skill's "default platform" section with your tool (Swagger / YApi / Postman / internal gateway), keeping the "upload + return stable link" interface unchanged.
+- Returning a machine-local absolute path: convert it to a repo-relative path.
+- Pasting only into chat: write the versioned artifact at the fixed path.
+- Returning an external URL: use the fixed local path.
 
 ## Why it works
 
-API platforms differ by team; hard-coding the platform name into the role prompt freezes it. Sinking it into the skill keeps the role's "what to produce" description stable while the platform swaps with the skill.
+Fixed paths provide discoverability, version review, and reproducibility. With platform adapters removed, the starter remains Copy · Paste · Run without credentials or network access.

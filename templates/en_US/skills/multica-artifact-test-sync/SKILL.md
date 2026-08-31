@@ -1,34 +1,37 @@
 ---
 name: multica-artifact-test-sync
-description: Land test case / report artifacts to the case-management platform (default local XMind → Jira). Used by @Tester to upload cases and return a link for downstream acceptance consumption. Swappable platform.
+description: Local-first: save the Test Cases / Report in the project repository and return only its repo-relative path; no external platform, credential, or network dependency.
+metadata:
+  mode: local-only
+  output: artifacts/<issue-id>/test-cases.md
 ---
 
-# Artifact · Test Case Sync
+# Artifact · Test Cases / Report Sync
 
 ## Purpose
 
-Land test case / report artifacts to the team's unified case-management platform and let downstream (acceptance / Reviewer) retrieve them via a stable reference.
+Land the Test Cases / Report as a stable, reviewable repository artifact. This skill is **local-only**: it does not access external platforms, read credentials, make network requests, or return URLs.
 
-> This skill decouples "platform integration" from "role prompt": the role prompt only says "produce test cases", not which platform. Changing companies (TestRail / Zephyr / ZenTao / internal case lib) means editing only this skill, not the @Tester prompt.
+## Fixed contract
 
-## Default platform: local XMind → Jira
+- Input: a completed Markdown artifact.
+- Output: `artifacts/<issue-id>/test-cases.md`.
+- Return: only that repo-relative path; absolute paths, `..`, and external links are forbidden.
+- Update: overwrite the same Issue path; downstream gates become stale and must rerun after changes.
 
-- Output: feature cases / API cases / test report (per `multica-test-design` skill).
-- Upload: author cases locally in XMind, import to Jira via conversion script / tool (cases / defects linked to the Issue). Return the Jira **case-set link** and Issue association id.
-- Retrieve: downstream @ProductManager / @Reviewer read via the Jira link — the link is the stable reference.
+## Workflow
 
-## Content spec (platform-independent part)
+1. Generate Markdown containing at least: happy paths, boundaries, failures, empty/no-permission states, and AC mappings.
+2. From the repository root, create `artifacts/<issue-id>/` and write `test-cases.md`.
+3. Verify the file is complete and tracked by version control.
+4. Return `artifacts/<issue-id>/test-cases.md` to the Leader; downstream reads that exact path.
 
-Cases must cover: happy path, boundaries, error state, empty state, no-permission state; mapped one-to-one to PRD's AC- acceptance criteria.
+## Common failures
 
-## Usage (role side writes only this line)
-
-> @Tester: "Produce cases / report, land it via `multica-artifact-test-sync` skill to the team case platform, and return the link."
-
-## Swap platform (no role-prompt change)
-
-Replace this skill's "default platform" section with your tool (TestRail / Zephyr / ZenTao / internal case lib), keeping the "upload + return stable link" interface unchanged.
+- Returning a machine-local absolute path: convert it to a repo-relative path.
+- Pasting only into chat: write the versioned artifact at the fixed path.
+- Returning an external URL: use the fixed local path.
 
 ## Why it works
 
-Case platforms differ by team; hard-coding the platform name into the role prompt freezes it. Sinking it into the skill keeps the role's "what to produce" description stable while the platform swaps with the skill.
+Fixed paths provide discoverability, version review, and reproducibility. With platform adapters removed, the starter remains Copy · Paste · Run without credentials or network access.

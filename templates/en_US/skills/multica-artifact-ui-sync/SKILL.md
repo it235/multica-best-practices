@@ -1,38 +1,37 @@
 ---
 name: multica-artifact-ui-sync
-description: Land UI / interaction design artifacts to the design collaboration platform (default Figma). Used by @Designer to upload visuals and return a stable link for downstream frontend consumption. Swappable platform.
+description: Local-first: save the UI / Interaction Design in the project repository and return only its repo-relative path; no external platform, credential, or network dependency.
+metadata:
+  mode: local-only
+  output: artifacts/<issue-id>/ui-design.md
 ---
 
-# Artifact · UI Design Sync
+# Artifact · UI / Interaction Design Sync
 
 ## Purpose
 
-Land UI design artifacts to the team's unified design platform and let downstream (frontend) retrieve them via a stable reference.
+Land the UI / Interaction Design as a stable, reviewable repository artifact. This skill is **local-only**: it does not access external platforms, read credentials, make network requests, or return URLs.
 
-> This skill decouples "platform integration" from "role prompt": the role prompt only says "produce UI design", not which platform. Changing companies (Zeplin / 蓝湖 / MasterGo) means editing only this skill, not the @Designer prompt.
+## Fixed contract
 
-## Default platform: Figma
+- Input: a completed Markdown artifact.
+- Output: `artifacts/<issue-id>/ui-design.md`.
+- Return: only that repo-relative path; absolute paths, `..`, and external links are forbidden.
+- Update: overwrite the same Issue path; downstream gates become stale and must rerun after changes.
 
-- Output: Figma file link + annotations (color / spacing / font / components) + exports.
-- Upload: complete the design in Figma, then use the **file link** and **key Frame links** as the artifact reference.
-- Retrieve: downstream @FrontendDev reads via the link — the link is the stable reference, no local file dependency.
+## Workflow
 
-## Content spec (platform-independent part)
+1. Generate Markdown containing at least: page structure, states, interactions, dimensions, and design tokens.
+2. From the repository root, create `artifacts/<issue-id>/` and write `ui-design.md`.
+3. Verify the file is complete and tracked by version control.
+4. Return `artifacts/<issue-id>/ui-design.md` to the Leader; downstream reads that exact path.
 
-Regardless of platform, the UI artifact at least contains:
-- Page / module structure (aligned to PRD information architecture)
-- States: empty, loading, error, no-permission
-- Interaction: entry, navigation, validation feedback
-- Annotations: size, spacing, color values, font, component boundaries
+## Common failures
 
-## Usage (role side writes only this line)
-
-> @Designer: "Produce UI design, land it via `multica-artifact-ui-sync` skill to the team design platform, and return the link to the Leader."
-
-## Swap platform (no role-prompt change)
-
-Replace this skill's "default platform" section with your tool (蓝湖 / Zeplin / MasterGo / internal design library), keeping the "upload + return stable link" interface unchanged.
+- Returning a machine-local absolute path: convert it to a repo-relative path.
+- Pasting only into chat: write the versioned artifact at the fixed path.
+- Returning an external URL: use the fixed local path.
 
 ## Why it works
 
-Platforms differ greatly across teams; hard-coding the platform name into the role prompt freezes it. Sinking it into the skill keeps the role's "what to produce" description stable while the platform swaps with the skill.
+Fixed paths provide discoverability, version review, and reproducibility. With platform adapters removed, the starter remains Copy · Paste · Run without credentials or network access.

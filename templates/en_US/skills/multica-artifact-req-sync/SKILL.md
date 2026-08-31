@@ -1,51 +1,37 @@
 ---
 name: multica-artifact-req-sync
-description: Land PRD artifacts as repository-local Markdown by default and return a stable reference; opt into an external platform adapter only when the team explicitly needs one.
+description: Local-first: save the PRD in the project repository and return only its repo-relative path; no external platform, credential, or network dependency.
+metadata:
+  mode: local-only
+  output: artifacts/<issue-id>/prd.md
 ---
 
-# Artifact · Requirement Sync
+# Artifact · PRD Sync
 
 ## Purpose
 
-Turn a PRD into a stable reference that downstream can retrieve. This skill does not generate PRD content. Its zero-dependency default is repository-local Markdown; platform skills are optional adapters.
+Land the PRD as a stable, reviewable repository artifact. This skill is **local-only**: it does not access external platforms, read credentials, make network requests, or return URLs.
 
-> This skill decouples "platform integration" from "role prompt": the role prompt only says "produce PRD", not which platform. Changing companies (Wiki / Yuque / Feishu / internal KB) means editing only this skill, not the @ProductManager prompt.
+## Fixed contract
 
-## Modes
+- Input: a completed Markdown artifact.
+- Output: `artifacts/<issue-id>/prd.md`.
+- Return: only that repo-relative path; absolute paths, `..`, and external links are forbidden.
+- Update: overwrite the same Issue path; downstream gates become stale and must rerun after changes.
 
-| Mode | Use when | Stable reference |
-| --- | --- | --- |
-| `local` (default) | No external requirement/task platform is needed | Repo-relative `artifacts/<issue-id>/prd.md` |
-| `external` (explicit opt-in) | The team intentionally synchronizes to a requirement/task platform | Platform page or task URL |
+## Workflow
 
-## Local workflow (default)
+1. Generate Markdown containing at least: requirements and acceptance criteria.
+2. From the repository root, create `artifacts/<issue-id>/` and write `prd.md`.
+3. Verify the file is complete and tracked by version control.
+4. Return `artifacts/<issue-id>/prd.md` to the Leader; downstream reads that exact path.
 
-```bash
-bash scripts/publish-local.sh \
-  --issue-id <ISSUE-ID> \
-  --input <PRD.md> \
-  --root artifacts
-```
+## Common failures
 
-Return the printed repo-relative path, such as `artifacts/GOO-3/prd.md`. This mode reads no credentials, makes no network request, and creates no external task. Updating a requirement keeps the same path and updates the PRD revision log; downstream gates become stale according to the Squad rules.
-
-## External workflow (optional)
-
-Only when the Issue or team configuration explicitly requires it, call the relevant `multica-platform-*` adapter and return its URL. If external publishing fails, never claim success: fall back to `local` only when external landing was optional and state the reason; otherwise report BLOCKED.
-
-## Content spec (platform-independent part)
-
-PRD at least contains (see @ProductManager role instruction): one-line definition, background, goals G- + KPI-, users & permissions, scope, FR-/BR-/AC-, field definitions, empty/error/no-permission states, RISK-/OP-, revision log.
-
-## Usage (role side writes only this line)
-
-> @ProductManager: "Produce PRD, land it via `multica-artifact-req-sync`, and return the stable reference. Use local mode unless the Issue explicitly requires an external platform."
-
-## Configuration
-
-- Local mode needs no configuration. `--root` defaults to `artifacts`; use a repository-relative path only, never an absolute path or `..`.
-- External mode keeps configuration and credentials inside its `multica-platform-*` skill.
+- Returning a machine-local absolute path: convert it to a repo-relative path.
+- Pasting only into chat: write the versioned artifact at the fixed path.
+- Returning an external URL: use the fixed local path.
 
 ## Why it works
 
-A stable reference does not have to be an external URL. The repository path keeps the starter copy-paste-ready without credentials, while optional adapters preserve platform integration without changing the role prompt or PRD schema.
+Fixed paths provide discoverability, version review, and reproducibility. With platform adapters removed, the starter remains Copy · Paste · Run without credentials or network access.

@@ -5,12 +5,9 @@
 ```markdown
 # Feature
 
-## Issue source (required, pick one)
-<!-- Decides how much to fill in. With "External link", only fill the link + summary + affected ends below; skip the other sections and reference the KEY in Notes. Full requirements live in Jira/Tapd etc., the Squad pulls them by KEY -->
-- [ ] External link (lightweight): only fill "link / one-line summary / affected ends"; other sections omitted
-      - Link: https://jira.example.com/browse/<ISSUE-KEY>
-      - Summary: <!-- one line on what to do -->
-- [ ] Fully self-contained (default): this Issue is the requirement; fill in all sections below
+## Issue source (required)
+<!-- This Issue must contain executable requirements; external references may supplement but never replace its body. -->
+- [ ] Fully self-contained: fill in all sections below
 
 ## Background
 <!-- Why are we doing this? -->
@@ -47,7 +44,7 @@
 
 - **The "affected ends" in the scope is the routing input**: the Leader's G0 uses it to decide which roles to dispatch. Missing or vague scope → G0 FAIL, instead of the Leader guessing.
 - **Goal / Scope / Non-goals separated**: prevents agents from freewheeling and expanding the scope.
-- **"Source: pick one" lightens link-type Issues**: when the source is Jira/Tapd, full requirements live externally; this Issue only needs "link + affected ends + one-line summary" to drive G0 routing and gating. With "fully self-contained", prioritize Background / Goal / Scope / Non-goals / Acceptance criteria, and add References / Notes as needed. Both forms share the same `<ISSUE-KEY>`; the gate system is unchanged.
+- **The Issue body must be self-contained**: external references cannot replace background, goals, scope, non-goals, or acceptance criteria.
 - **An Issue is a requirement contract, not an implementation blueprint**: the person filing it is usually a PM (one Issue = one requirement). The template keeps only requirement elements (why / what / affected ends / non-goals / testable AC); technical context, constraints, traceability matrix, verification, and Git branch are produced by the Squad during the run, not front-loaded onto the PM.
 
 ## Common failure

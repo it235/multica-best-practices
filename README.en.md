@@ -133,7 +133,7 @@ flowchart TB
     subgraph P25["Phase 2.5: coverage, CI/CD & deploy"]
         direction TB
         T2["@Tester T2 (optional)<br/>multica-test-design<br/>coverage vs AC-"]
-        DEVOPS["@DevOps (optional)<br/>multica-artifact-cicd-sync<br/>(calls multica-platform-* shell)"]
+        DEVOPS["@DevOps (optional)<br/>multica-artifact-cicd-sync<br/>writes a repo-local result"]
         DISCOVER["discover-only<br/>copy last good params, change branch"]
         READY{"discover ready?"}
         CICD["trigger CI/CD build & deploy<br/>(platform by shell)"]
@@ -200,7 +200,7 @@ flowchart TB
     class FIX1,FIX2,PUSH,DISCOVER,CICD,FIX25,FAIL3,BLOCK3,REJECT action;
 ```
 
-> Key constraints: ① every gate is independently rerun by the Leader via `multica-verification` (never trust member self-reports); ② T3 **must** dispatch only after G2.5 PASS; ③ external tools (Confluence / JIRA / Jenkins / Figma / test-case platforms) are plugged in replaceably through `multica-artifact-*-sync` and `multica-platform-*` shells — the public repo ships placeholders only; ④ once any artifact changes, its downstream gates go stale and must be re-run.
+> Key constraints: ① every gate is independently rerun by the Leader via `multica-verification`; ② T3 dispatches only after G2.5 PASS; ③ all six artifact classes live under `artifacts/<issue-id>/` and return repo-relative paths with no external-platform dependency; ④ artifact changes invalidate downstream gates.
 
 ## 5-minute quick start
 
@@ -217,7 +217,7 @@ You get:
 
 - 1 Squad Leader (orchestration + gatekeeping)
 - 9 Agents: Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps
-- 16 Skills (`multica-verification` is the mandatory gatekeeping Skill)
+- 13 Skills (`multica-verification` is the mandatory gatekeeping Skill)
 - 1 Issue template (with the "affected ends" scope declaration; source supports "linked / fully self-contained" — pick one)
 - 1 software-development workflow (conditional routing where any role can be missing, incl. G2.5 CI/CD)
 
@@ -241,7 +241,7 @@ In Multica, create 9 Agents (naming follows [`docs/en_US/naming-conventions.md`]
 
 ### Step 2 — Create Skills
 
-In Multica, create 16 Skills, copying the code block from the matching `SKILL.md`:
+In Multica, create 13 Skills, copying the code block from the matching `SKILL.md`:
 
 | Skill | Source | Mount to |
 | --- | --- | --- |
@@ -258,11 +258,8 @@ In Multica, create 16 Skills, copying the code block from the matching `SKILL.md
 | `multica-artifact-test-sync` | [`templates/en_US/skills/multica-artifact-test-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-test-sync/SKILL.md) | Tester (lands artifacts to the case platform) |
 | `multica-artifact-cicd-sync` | [`templates/en_US/skills/multica-artifact-cicd-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-cicd-sync/SKILL.md) | DevOps (triggers CI/CD deploy) |
 | `multica-test-automation` | [`templates/en_US/skills/multica-test-automation/SKILL.md`](./templates/en_US/skills/multica-test-automation/SKILL.md) | Tester (T3 automation) |
-| `multica-platform-jenkins` | [`templates/en_US/skills/multica-platform-jenkins/SKILL.md`](./templates/en_US/skills/multica-platform-jenkins/SKILL.md) | platform-layer shell (CI/CD system) |
-| `multica-platform-jira` | [`templates/en_US/skills/multica-platform-jira/SKILL.md`](./templates/en_US/skills/multica-platform-jira/SKILL.md) | platform-layer shell (Issue system) |
-| `multica-platform-confluence` | [`templates/en_US/skills/multica-platform-confluence/SKILL.md`](./templates/en_US/skills/multica-platform-confluence/SKILL.md) | platform-layer shell (knowledge base / Wiki) |
 
-> All 16 Skills are shared under `templates/en_US/skills/` with the unified `multica-` prefix namespace, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-test-design / multica-requirement-analysis / multica-technical-design / multica-implementation); **artifact-orchestration** (the five `multica-artifact-*-sync` + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three + multica-test-automation, the only place allowed to hold company-internal URLs/credentials — the public repo ships placeholder shells only). Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See artifact-conventions for the three-layer model. Skills mount **by name** — whoever needs one writes "use the xxx skill" in their Instructions, independent of repo paths.
+> All 13 Skills are shared under `templates/en_US/skills/`; the six artifact sync skills use fixed repo-relative paths with no platform shell, credential, or network dependency.
 
 ### Step 3 — Create the Squad
 
@@ -270,7 +267,7 @@ Create a Squad and copy `templates/en_US/squad/software-development/squad.md` in
 
 ### Step 4 — Create the Issue
 
-Copy `templates/en_US/squad/software-development/issue.md` into a new Issue: if requirements already live in Jira/Tapd, pick "External link" and fill only the link + affected ends; otherwise pick "Fully self-contained" and fill everything.
+Copy `templates/en_US/squad/software-development/issue.md` into a new Issue and include self-contained requirements, scope, and acceptance criteria.
 
 ### Step 5 — Assign
 

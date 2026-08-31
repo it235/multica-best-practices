@@ -1,38 +1,37 @@
 ---
 name: multica-artifact-ui-sync
-description: 把 UI / 交互设计产物对接到设计协作平台（默认 Figma）。用于 @Designer 上传视觉稿、取回链接与标注，供前端下游消费。平台可替换。
+description: Local-first：把UI / 交互设计保存为项目仓库内文件并只回传相对路径；无外部平台、凭据或网络依赖。
+metadata:
+  mode: local-only
+  output: artifacts/<issue-id>/ui-design.md
 ---
 
-# Artifact · UI Design Sync
+# Artifact · UI / 交互设计 Sync
 
 ## Purpose
 
-把 UI 设计产物落地到团队统一的设计协作平台，并让下游（前端）用稳定方式取回。
+把UI / 交互设计落地为项目仓库中的稳定、可评审产物。本 skill **只支持本地路径**：不访问外部平台，不读取凭据，不发网络请求，也不返回 URL。
 
-> 本 skill 把「平台对接」与「角色提示词」解耦：角色提示词只说"产出 UI 设计"，不关心平台。换公司（用 Zeplin / 蓝湖 / MasterGo 等）只改本 skill，不动 @Designer 提示词。
+## 固定契约
 
-## 默认平台：Figma
+- 输入：已完成的 Markdown 产物。
+- 输出：`artifacts/<issue-id>/ui-design.md`。
+- 回传：仅回传上述仓库相对路径；禁止绝对路径、`..` 和外部链接。
+- 更新：同一 Issue 覆盖同一路径；内容变化后，下游门禁失效并重跑。
 
-- 产出：Figma 文件链接 + 标注（颜色 / 间距 / 字号 / 组件）+ 切图 / 导出。
-- 上传：在 Figma 内完成设计后，把**文件链接**与**关键 Frame 链接**作为产物引用。
-- 取回：下游 @FrontendDev 通过链接读取，链接即稳定引用，不依赖本地文件。
+## Workflow
 
-## 产物内容规范（与角色解耦的部分）
+1. 生成 Markdown，至少包含：页面结构、状态、交互、尺寸与设计 token。
+2. 在仓库根目录创建 `artifacts/<issue-id>/`，写入 `ui-design.md`。
+3. 确认文件完整且已纳入版本控制。
+4. 向 Leader 回传 `artifacts/<issue-id>/ui-design.md`；下游按路径读取，不靠搜索。
 
-无论平台是什么，UI 产物至少包含：
-- 页面 / 模块结构（与 PRD 信息架构对齐）
-- 状态：空态、加载态、异常态、无权限态
-- 交互：入口、跳转、校验反馈
-- 标注：尺寸、间距、色值、字体、组件边界
+## 常见失败
 
-## 用法（角色侧只写这一句）
-
-> @Designer：「产出 UI 设计，用 `multica-artifact-ui-sync` skill 落地到团队设计平台，并把链接回传给 Leader。」
-
-## 替换平台（不改角色提示词）
-
-把本 skill 的「默认平台」段替换为你们的工具（蓝湖 / Zeplin / MasterGo / 内部设计库），保持「上传 + 回传稳定链接」接口不变即可。
+- 返回本机绝对路径：转换为仓库相对路径。
+- 只在聊天中粘贴：写入固定文件形成版本化产物。
+- 返回外部 URL：改为固定本地路径。
 
 ## 为什么有效
 
-平台在团队间差异极大，把平台名写进角色提示词会固化它；下沉到 skill 后，角色保持「产出什么内容」的稳定描述，平台随 skill 替换。
+固定路径提供可发现性、版本审查和可复现性；移除平台适配器后，starter 无凭据、无网络即可 Copy · Paste · Run。

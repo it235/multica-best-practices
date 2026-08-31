@@ -133,7 +133,7 @@ flowchart TB
     subgraph P25["阶段 2.5：覆盖率评估、CI/CD 与部署"]
         direction TB
         T2["@Tester T2（可选）<br/>multica-test-design<br/>Output: 用例补充 + AC- 覆盖率评估"]
-        DEVOPS["@DevOps（可选）<br/>multica-artifact-cicd-sync<br/>（内部调用 multica-platform-* 壳）"]
+        DEVOPS["@DevOps（可选）<br/>multica-artifact-cicd-sync<br/>写入仓库内 CI/CD 结果"]
         DISCOVER["discover-only<br/>复制上次成功参数，仅改 deploy branch"]
         READY{"discover ready？"}
         CICD["触发 CI/CD 构建、打包、部署<br/>（平台由 platform 壳决定）"]
@@ -200,7 +200,7 @@ flowchart TB
     class FIX1,FIX2,PUSH,DISCOVER,CICD,FIX25,FAIL3,BLOCK3,REJECT action;
 ```
 
-> 关键约束：① 所有门禁由 Leader 用 `multica-verification` 独立复跑，不采信成员自述；② T3 **必须**等 G2.5 PASS 后才派发；③ 外部工具（Confluence / JIRA / Jenkins / Figma / 用例平台）经 `multica-artifact-*-sync` 与 `multica-platform-*` 壳层可替换接入，公开仓库只保留占位壳；④ 任一产物被修改后，其下游门禁立即失效、必须重新门禁。
+> 关键约束：① 所有门禁由 Leader 用 `multica-verification` 独立复跑；② T3 **必须**等 G2.5 PASS 后才派发；③ 六类产物统一写入 `artifacts/<issue-id>/` 并只回传仓库相对路径，不依赖外部平台；④ 产物变化后下游门禁立即失效。
 
 ## 5 分钟快速开始
 
@@ -217,7 +217,7 @@ flowchart TB
 
 - 1 个 Squad Leader（编排 + 门禁）
 - 9 个 Agent：Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps
-- 16 个 Skill（其中 multica-verification 是必备门禁 Skill）
+- 13 个 Skill（其中 multica-verification 是必备门禁 Skill）
 - 1 个 Issue 模板（含「涉及端」范围声明；来源支持「链接型 / 全量自包含」二选一）
 - 1 个软件开发工作流（任意角色可缺失的条件路由，含 G2.5 CI/CD）
 
@@ -241,7 +241,7 @@ flowchart TB
 
 ### Step 2 — 创建 Skills
 
-在 Multica 创建 16 个 Skill，把 `SKILL.md` 的代码块复制到对应 Skill（清单见下表的 16 行）：
+在 Multica 创建 13 个 Skill，把 `SKILL.md` 的代码块复制到对应 Skill：
 
 | Skill | 来源 | 挂给谁 |
 | --- | --- | --- |
@@ -252,17 +252,13 @@ flowchart TB
 | `multica-technical-design` | [`templates/zh_CN/skills/multica-technical-design/SKILL.md`](./templates/zh_CN/skills/multica-technical-design/SKILL.md) | Architect |
 | `multica-implementation` | [`templates/zh_CN/skills/multica-implementation/SKILL.md`](./templates/zh_CN/skills/multica-implementation/SKILL.md) | FrontendDev / BackendDev |
 | `multica-artifact-req-sync` | [`templates/zh_CN/skills/multica-artifact-req-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-req-sync/SKILL.md) | ProductManager（默认仓库内 Markdown；外部需求平台可选） |
-| `multica-artifact-ui-sync` | [`templates/zh_CN/skills/multica-artifact-ui-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-ui-sync/SKILL.md) | Designer（产物落地到设计平台） |
-| `multica-artifact-design-sync` | [`templates/zh_CN/skills/multica-artifact-design-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-design-sync/SKILL.md) | Architect（产物落地到 Git/知识平台） |
-| `multica-artifact-api-sync` | [`templates/zh_CN/skills/multica-artifact-api-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-api-sync/SKILL.md) | BackendDev（产物落地到接口平台） |
-| `multica-artifact-test-sync` | [`templates/zh_CN/skills/multica-artifact-test-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-test-sync/SKILL.md) | Tester（产物落地到用例平台） |
-| `multica-artifact-cicd-sync` | [`templates/zh_CN/skills/multica-artifact-cicd-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-cicd-sync/SKILL.md) | DevOps（触发 CI/CD 部署） |
+| `multica-artifact-ui-sync` | [`templates/zh_CN/skills/multica-artifact-ui-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-ui-sync/SKILL.md) | Designer（`ui-design.md`） |
+| `multica-artifact-design-sync` | [`templates/zh_CN/skills/multica-artifact-design-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-design-sync/SKILL.md) | Architect（`technical-design.md`） |
+| `multica-artifact-api-sync` | [`templates/zh_CN/skills/multica-artifact-api-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-api-sync/SKILL.md) | BackendDev（`api-contract.md`） |
+| `multica-artifact-test-sync` | [`templates/zh_CN/skills/multica-artifact-test-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-test-sync/SKILL.md) | Tester（`test-cases.md`） |
+| `multica-artifact-cicd-sync` | [`templates/zh_CN/skills/multica-artifact-cicd-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-cicd-sync/SKILL.md) | DevOps（`cicd-result.md`） |
 | `multica-test-automation` | [`templates/zh_CN/skills/multica-test-automation/SKILL.md`](./templates/zh_CN/skills/multica-test-automation/SKILL.md) | Tester（T3 自动化执行） |
-| `multica-platform-jenkins` | [`templates/zh_CN/skills/multica-platform-jenkins/SKILL.md`](./templates/zh_CN/skills/multica-platform-jenkins/SKILL.md) | 平台层占位壳（CI/CD 系统） |
-| `multica-platform-jira` | [`templates/zh_CN/skills/multica-platform-jira/SKILL.md`](./templates/zh_CN/skills/multica-platform-jira/SKILL.md) | 平台层占位壳（Issue 系统） |
-| `multica-platform-confluence` | [`templates/zh_CN/skills/multica-platform-confluence/SKILL.md`](./templates/zh_CN/skills/multica-platform-confluence/SKILL.md) | 平台层占位壳（知识库/Wiki） |
-
-> 16 个 Skill 全部共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间。三类：**门禁/设计类**（multica-verification / multica-gate-setup / multica-test-design / multica-requirement-analysis / multica-technical-design / multica-implementation）；**产物编排类**（`multica-artifact-*-sync` 五个 + cicd-sync，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 三个 + multica-test-automation，唯一允许出现公司内网地址/凭据的地方，公开仓库只给占位壳）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。详见 artifact-conventions 的三层架构。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
+> 13 个 Skill 全部共享放在 `templates/zh_CN/skills/`。六个 `multica-artifact-*-sync` 采用 local-only 固定路径契约；不需要平台壳、凭据或网络。详见 artifact-conventions。
 
 ### Step 3 — 创建 Squad
 
@@ -270,7 +266,7 @@ flowchart TB
 
 ### Step 4 — 创建 Issue
 
-把 `templates/zh_CN/squad/software-development/issue.md` 复制到新 Issue：若需求已在 Jira/Tapd，选「外部系统链接」只填链接 + 涉及端即可；否则选「全量自包含」完整填写。
+把 `templates/zh_CN/squad/software-development/issue.md` 复制到新 Issue，并完整填写自包含的需求、范围和验收标准。
 
 ### Step 5 — 分配
 

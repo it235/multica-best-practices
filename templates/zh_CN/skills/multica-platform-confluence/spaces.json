@@ -1,8 +1,0 @@
-{
-  "_description": "Confluence 空间注册表 — 所有可用空间列表（未来新增空间请追加到此文件）。已脱敏为占位骨架，请按你的 Confluence 实例填写。",
-  "spaces": [
-    {"key": "<SPACE_KEY_1>", "name": "<SPACE_NAME_1>", "description": "<SPACE_DESC_1>"},
-    {"key": "<SPACE_KEY_2>", "name": "<SPACE_NAME_2>", "description": "<SPACE_DESC_2>"},
-    {"key": "<SPACE_KEY_3>", "name": "<SPACE_NAME_3>", "description": "<SPACE_DESC_3>"}
-  ]
-}
