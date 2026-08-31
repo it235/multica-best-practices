@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - `software-development/squad.md`（中英）新增单任务执行契约与运行状态：每次派活明确任务、版本化输入、输出、验证/PASS 条件和修改边界；成员按固定证据结构回执，Leader 统一维护主阶段与并行分支状态 / Added a single-task execution contract and explicit run-state ownership to the bilingual Squad instructions.
 - 阶段门禁消除歧义：API 契约 + 功能用例汇合点改为 G1.5，前端 + 后端 + 接口用例汇合点保留 G2；接口用例明确只在实现阶段并行派发一次 / Split the ambiguous duplicate G2 into G1.5 development readiness and G2 implementation join, and dispatch API cases exactly once in parallel with implementation.
 - Squad 团队清单补齐 `@DevOps`，README（中英）同步工作流、门禁表与执行契约 / Added the missing `@DevOps` role and synchronized both starter READMEs.
+- `multica-artifact-req-sync` 改为 local-first：默认写入 `artifacts/<issue-id>/prd.md` 并回传仓库相对路径，无凭据、无网络、无外部任务；Confluence / JIRA 等改为显式启用的可选适配器。同步 ProductManager、产物规范与根 README（中英）/ Made requirement sync local-first with optional external adapters and synchronized the bilingual role/methodology/root docs.
 
 ### Fixed / 修复
 

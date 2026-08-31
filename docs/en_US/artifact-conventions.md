@@ -2,10 +2,10 @@
 
 > Purpose: in multi-agent collaboration, downstream agents must be able to **find upstream artifacts via a stable reference**. This doc defines the "content spec" and the "sync skill" for each artifact — **where the artifact lands and how it is uploaded/retrieved is the skill's job, never written into the agent prompt**. So when a company changes platforms, only the skill changes; no agent is touched.
 
-## 1. Core principle: content belongs to the role, platform belongs to the skill
+## 1. Core principle: content belongs to the role, landing method belongs to the skill
 
 - **Agent prompts only describe "what content to produce"** (e.g. which sections a PRD has, which fields an API contract has). **No specific platform name appears** (Figma / Confluence / Apifox / Jira, etc.).
-- **Upload / retrieval is handled by the `multica-artifact-*-sync` skill family.** Each role writes only one line in its prompt: "use `multica-artifact-xxx-sync` to land it". The concrete platform is implemented inside that skill and is swappable.
+- **Landing / upload / retrieval is handled by the `multica-artifact-*-sync` skill family.** Each role writes only one line in its prompt: "use `multica-artifact-xxx-sync` to land it". The skill may write directly to the repository or call a swappable platform adapter.
 - **Stable reference = link or path**: downstream locates upstream artifacts via the link/path returned by the skill, not via "you should know what upstream produced".
 
 ## 1.1 Three-layer architecture: content / orchestration / platform
@@ -15,20 +15,20 @@ To make "switch company, switch only the skill" actually hold, artifact landing 
 | Layer | Who | What it writes | Contains internal details? |
 | --- | --- | --- | --- |
 | **Content** | Role prompts (agents/*.md) | What content to produce (sections, fields, numbering) | No — never a platform name |
-| **Orchestration** | `multica-artifact-*-sync` skills | Land content as an artifact class (PRD / design / API / cases), return stable reference | No — only declares "which platform skill to call", no URL |
+| **Orchestration** | `multica-artifact-*-sync` skills | Land content as an artifact class (PRD / design / API / cases), return stable reference | No — selects a repo path or platform skill, no URL |
 | **Platform** | `multica-platform-*` skills | Actually connect the system: Wiki / Issue / CI / test tool read/write | **Yes — URLs, spaces, Job names, credentials live here** |
 
 **Key constraints**:
 
 1. The content layer (roles) never names a platform; it only says "use `multica-artifact-xxx-sync` to land it".
-2. The orchestration layer (`multica-artifact-*-sync`) only calls platform-layer skills; it never hardcodes a URL / pageId / Job name.
+2. The orchestration layer (`multica-artifact-*-sync`) may write to a safe repo-relative path or call a platform-layer skill; it never hardcodes a URL / pageId / Job name.
 3. The platform layer (`multica-platform-*`) is the **only** place allowed to hold internal URLs, space IDs, and credential variables; and credentials only go through runtime env, never into any prompt.
 
 So: the public repo ships only content + orchestration + **platform-layer placeholder shells**; a team onboarding its own internal network only fills the shell's `config.yaml` and `scripts/`, with zero changes upstream.
 
 ### Standard usage (PM / Architect dual-skill phrasing)
 
-- **@ProductManager**: first structure the Issue into a numbered PRD with `multica-requirement-analysis`, then land it via `multica-artifact-req-sync` (which calls the platform layer internally).
+- **@ProductManager**: first structure the Issue into a numbered PRD with `multica-requirement-analysis`, then land it via `multica-artifact-req-sync` (repository-local Markdown by default; call the platform layer only when explicitly enabled).
 - **@Architect**: first write the local design doc with `multica-technical-design`, then publish via `multica-artifact-design-sync`.
 - **@Tester**: first produce cases with `multica-test-design`, then land via `multica-artifact-test-sync`; T3 automation uses `multica-test-automation`.
 
@@ -39,7 +39,7 @@ The "analysis / design" skills own **content**; the "artifact-sync" skills own *
 | Artifact | Owner | Content spec (role side) | Sync skill (platform side, swappable) |
 | --- | --- | --- | --- |
 | UI design | @Designer | page structure, states, interaction, annotations (aligned to PRD IA) | `multica-artifact-ui-sync` (default Figma) |
-| Product requirement PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- numbered requirements | `multica-artifact-req-sync` (default Wiki platform) |
+| Product requirement PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- numbered requirements | `multica-artifact-req-sync` (default `artifacts/<issue-id>/prd.md`; external platform optional) |
 | Technical design doc | @Architect | current arch, minimal change, affected components, steps, risks | `multica-artifact-design-sync` (default Git repo / Wiki platform) |
 | API contract | @BackendDev | endpoints, in/out params, error codes, auth, BR- mapping | `multica-artifact-api-sync` (default API tool) |
 | Test cases / report | @Tester | feature/api cases, AC- coverage, test report | `multica-artifact-test-sync` (default case platform) |
@@ -72,7 +72,7 @@ No platform name, no local path, no "upload to XXX".
 
 ## 6. Platform swap (no agent change)
 
-When a team changes platforms, only edit the "default platform" section of the corresponding `multica-artifact-*-sync` skill, swapping Figma / Confluence / Apifox / Jira for your tools (MasterGo / Yuque / Swagger / TestRail, etc.), keeping the "upload + return stable reference" interface. All role prompts and squad instructions **need no change**.
+A stable reference may be a repo-relative path or an external URL. Requirement artifacts default to `artifacts/<issue-id>/prd.md`, requiring no credentials or external system; enable a `multica-platform-*` adapter only when the team explicitly needs synchronization. For other artifacts, swap the adapter inside the corresponding `multica-artifact-*-sync` skill while preserving the “land + return stable reference” interface. Role prompts and squad instructions **need no change**.
 
 ## 7. Common mistakes
 

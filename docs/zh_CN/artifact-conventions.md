@@ -2,10 +2,10 @@
 
 > 目的：多 Agent 协作时，下游必须能**稳定地找到上游产物**。本文规定每类产物的「内容规范」与「对接 skill」——**产物落在哪个平台、怎么传 / 取，全部交给 skill，不写进角色提示词**。这样换公司（平台不同）只换 skill，不动任何 agent。
 
-## 1. 核心原则：内容归角色，平台归 skill
+## 1. 核心原则：内容归角色，落地方式归 skill
 
 - **角色提示词只描述"产出什么内容"**（如 PRD 含哪些段落、API 契约含哪些字段），**不出现任何具体平台名**（Figma / Confluence / Apifox / Jira 等）。
-- **落盘 / 上传 / 取回由 `multica-artifact-*-sync` 系列 skill 负责**。每个角色在提示词里只写一句"用 `multica-artifact-xxx-sync` skill 落地"，具体平台在该 skill 内实现，可替换。
+- **落盘 / 上传 / 取回由 `multica-artifact-*-sync` 系列 skill 负责**。每个角色在提示词里只写一句"用 `multica-artifact-xxx-sync` skill 落地"；skill 可直接落仓库，也可调用可替换的平台适配器。
 - **稳定引用 = 链接或路径**：下游通过 skill 回传的链接 / 路径定位上游产物，而不是靠"你应该知道上游产了啥"。
 
 ## 1.1 三层架构：内容 / 编排 / 平台
@@ -15,20 +15,20 @@
 | 层 | 是谁 | 写什么 | 是否含内网细节 |
 | --- | --- | --- | --- |
 | **内容层** | 角色提示词（agents/*.md） | 产出什么内容（段落、字段、编号） | 否——永远不含平台名 |
-| **编排层** | `multica-artifact-*-sync` skill | 把内容落地到某类产物（PRD / 设计 / API / 用例），并回传稳定引用 | 否——只声明"调哪个平台 skill"，不写地址 |
+| **编排层** | `multica-artifact-*-sync` skill | 把内容落地到某类产物（PRD / 设计 / API / 用例），并回传稳定引用 | 否——选择仓库路径或平台 skill，不写地址 |
 | **平台层** | `multica-platform-*` skill | 真正连系统：Wiki / Issue / CI / 测试工具 的读写 | **是——地址、空间、Job 名、凭据都在这里** |
 
 **关键约束**：
 
 1. 内容层（角色）绝不出现平台名；它只说"用 `multica-artifact-xxx-sync` skill 落地"。
-2. 编排层（`multica-artifact-*-sync`）只调用平台层 skill，不写死任何 URL / pageId / Job 名。
+2. 编排层（`multica-artifact-*-sync`）可直接写入安全的仓库相对路径，或调用平台层 skill；不得写死 URL / pageId / Job 名。
 3. 平台层（`multica-platform-*`）是**唯一允许**出现内网地址、空间 ID、凭据变量的地方；且凭据只走运行时 env，不写进任何提示词。
 
 这样：公开仓库只放内容层 + 编排层 + 平台层**占位壳**；团队接入自己内网时，只填平台层壳子里的 `config.yaml` 与 `scripts/`，上层零改动。
 
 ### 标准用法（PM / Architect 双 skill 句式）
 
-- **@ProductManager**：先用 `multica-requirement-analysis` 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-artifact-req-sync` 编排落地（内部调用平台层）。
+- **@ProductManager**：先用 `multica-requirement-analysis` 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-artifact-req-sync` 编排落地（默认仓库内 Markdown；显式启用时才调用平台层）。
 - **@Architect**：先用 `multica-technical-design` 写本地设计文档，再用 `multica-artifact-design-sync` 发布（内部调用平台层）。
 - **@Tester**：先用 `multica-test-design` 产出用例内容，再用 `multica-artifact-test-sync` 落地；T3 自动化用 `multica-test-automation`。
 
@@ -39,7 +39,7 @@
 | 产物 | 责任人 | 内容规范（角色侧） | 对接 skill（平台侧，可替换） |
 | --- | --- | --- | --- |
 | UI 设计 | @Designer | 页面结构、状态、交互、标注（对齐 PRD 信息架构） | `multica-artifact-ui-sync`（默认 Figma） |
-| 产品需求 PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- 编号化需求 | `multica-artifact-req-sync`（默认 Wiki 平台） |
+| 产品需求 PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- 编号化需求 | `multica-artifact-req-sync`（默认 `artifacts/<issue-id>/prd.md`，外部平台可选） |
 | 开发设计文档 | @Architect | 当前架构、最小改动、受影响组件、实现步骤、风险 | `multica-artifact-design-sync`（默认 Git 仓库 / Wiki 平台） |
 | API 接口文档 | @BackendDev | 端点、入参 / 出参、错误码、鉴权、BR- 对应 | `multica-artifact-api-sync`（默认 API 工具） |
 | 测试用例 / 报告 | @Tester | 功能 / 接口用例、覆盖 AC-、测试报告 | `multica-artifact-test-sync`（默认 用例平台） |
@@ -72,7 +72,7 @@
 
 ## 6. 平台替换（不改角色提示词）
 
-团队换平台时，只改对应的 `multica-artifact-*-sync` skill 的「默认平台」段，把 Figma / Confluence / Apifox / Jira 换成你们的工具（蓝湖 / 语雀 / Swagger / TestRail 等），保持「上传 + 回传稳定引用」接口不变。全部角色提示词与 squad 指令**无需改动**。
+稳定引用可以是仓库相对路径，也可以是外部 URL。需求产物默认使用 `artifacts/<issue-id>/prd.md`，不需要凭据或外部系统；团队明确需要平台同步时，再启用对应 `multica-platform-*` 适配器。其他产物换平台时，只改对应 `multica-artifact-*-sync` skill，保持「落地 + 回传稳定引用」接口不变；角色提示词与 squad 指令**无需改动**。
 
 ## 7. 常见错误
 

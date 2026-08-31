@@ -1,21 +1,37 @@
 ---
 name: multica-artifact-req-sync
-description: Land product requirement / PRD artifacts to the requirement knowledge platform (default Confluence). Used by @ProductManager to upload PRD and return a link for downstream design / dev / test consumption. Swappable platform.
+description: Land PRD artifacts as repository-local Markdown by default and return a stable reference; opt into an external platform adapter only when the team explicitly needs one.
 ---
 
 # Artifact · Requirement Sync
 
 ## Purpose
 
-Land product requirement artifacts to the team's unified requirement platform and let downstream retrieve them via a stable reference.
+Turn a PRD into a stable reference that downstream can retrieve. This skill does not generate PRD content. Its zero-dependency default is repository-local Markdown; platform skills are optional adapters.
 
 > This skill decouples "platform integration" from "role prompt": the role prompt only says "produce PRD", not which platform. Changing companies (Wiki / Yuque / Feishu / internal KB) means editing only this skill, not the @ProductManager prompt.
 
-## Default platform: Confluence
+## Modes
 
-- Output: PRD (or MRD / dashboard spec / cross-system spec / acceptance checklist, by type).
-- Upload: create / update a page in Confluence, keeping G-/FR-/BR-/AC-/KPI-/OP-/RISK- ids and stable headings (see `docs/en_US/gates-and-evidence.md` AI-readable discipline).
-- Retrieve: downstream @Architect / @Designer / @FrontendDev / @BackendDev / @Tester read via the **page link** — the link is the stable reference.
+| Mode | Use when | Stable reference |
+| --- | --- | --- |
+| `local` (default) | No external requirement/task platform is needed | Repo-relative `artifacts/<issue-id>/prd.md` |
+| `external` (explicit opt-in) | The team intentionally synchronizes to a requirement/task platform | Platform page or task URL |
+
+## Local workflow (default)
+
+```bash
+bash scripts/publish-local.sh \
+  --issue-id <ISSUE-ID> \
+  --input <PRD.md> \
+  --root artifacts
+```
+
+Return the printed repo-relative path, such as `artifacts/GOO-3/prd.md`. This mode reads no credentials, makes no network request, and creates no external task. Updating a requirement keeps the same path and updates the PRD revision log; downstream gates become stale according to the Squad rules.
+
+## External workflow (optional)
+
+Only when the Issue or team configuration explicitly requires it, call the relevant `multica-platform-*` adapter and return its URL. If external publishing fails, never claim success: fall back to `local` only when external landing was optional and state the reason; otherwise report BLOCKED.
 
 ## Content spec (platform-independent part)
 
@@ -23,12 +39,13 @@ PRD at least contains (see @ProductManager role instruction): one-line definitio
 
 ## Usage (role side writes only this line)
 
-> @ProductManager: "Produce PRD, land it via `multica-artifact-req-sync` skill to the team requirement platform, and return the page link."
+> @ProductManager: "Produce PRD, land it via `multica-artifact-req-sync`, and return the stable reference. Use local mode unless the Issue explicitly requires an external platform."
 
-## Swap platform (no role-prompt change)
+## Configuration
 
-Replace this skill's "default platform" section with your tool (Yuque / Feishu / Notion / internal Wiki), keeping the "upload + return stable link" interface unchanged.
+- Local mode needs no configuration. `--root` defaults to `artifacts`; use a repository-relative path only, never an absolute path or `..`.
+- External mode keeps configuration and credentials inside its `multica-platform-*` skill.
 
 ## Why it works
 
-Platforms differ greatly across teams; hard-coding the platform name into the role prompt freezes it. Sinking it into the skill keeps the role's "what to produce" description stable while the platform swaps with the skill.
+A stable reference does not have to be an external URL. The repository path keeps the starter copy-paste-ready without credentials, while optional adapters preserve platform integration without changing the role prompt or PRD schema.

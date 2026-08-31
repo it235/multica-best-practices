@@ -1,58 +1,54 @@
 ---
 name: multica-artifact-req-sync
-description: PRD 产物编排：调用 multica-platform-confluence + multica-platform-jira 落地需求。用于 @ProductManager 上传 PRD、回传链接。
+description: PRD 产物编排：默认把 PRD 保存为仓库内 Markdown 并回传稳定引用；团队需要时可显式切换到外部平台适配器。
 metadata:
+  default_mode: local
   orchestrates:
-    - multica-platform-confluence
-    - multica-platform-jira
-  credentials:
-    priority:
-      - ATLASSIAN_USER / ATLASSIAN_PASS
-      - ATLASSIAN_USER / ATLASSIAN_PASS
+    local: []
+    external:
+      - multica-platform-confluence
+      - multica-platform-jira
 ---
 
 # Artifact · Requirement Sync（编排）
 
 ## Purpose
 
-**PRD 专用编排 skill**——不重复实现 Confluence / JIRA 脚本，而是调用两个独立 platform skill：
+**PRD 专用编排 skill**——负责把 PRD 变成下游可读取的稳定引用，不负责生成 PRD 内容。默认使用零依赖的仓库内 Markdown；只有团队明确要求外部平台时，才调用 platform skill。
 
-| Platform skill | 职责 |
+| 模式 | 适用场景 | 稳定引用 |
 | --- | --- |
-| `multica-platform-confluence` | PRD HTML 页面、Markdown 设计发布、页面拉取 |
-| `multica-platform-jira` | Story 创建、流转、排期、描述、钉钉、Issue 读取 |
+| `local`（默认） | 不需要 Confluence / JIRA / 钉钉等外部平台 | 仓库相对路径 `artifacts/<issue-id>/prd.md` |
+| `external`（显式启用） | 团队已有需求/任务平台并希望同步 | 平台页面或任务链接 |
 
 > 内容结构由 `multica-requirement-analysis` 负责；本 skill 只编排落地。
 
-## @ProductManager 标准流程
+## @ProductManager 标准流程（默认 local）
 
 ```text
 1. multica-requirement-analysis  — 结构化 PRD
-2. multica-artifact-req-sync     — 本 skill：Confluence + JIRA + 可选钉钉
-   └─ 内部调用 multica-platform-confluence + multica-platform-jira
+2. multica-artifact-req-sync     — 本 skill：保存 Markdown，返回稳定相对路径
 ```
 
-## Workflow A：完整 PRD（推荐）
+## Workflow A：仓库内 Markdown（默认、推荐）
 
-1. 结构化 PRD 后，创建 Confluence 页面（或直接调用 platform skill）：
+1. 把结构化 PRD 写入临时 Markdown 文件。
+2. 运行本地发布脚本：
 
 ```bash
-bash scripts/confluence.sh create-page \
-  "<title>" "<parent_id>" "<html>" "<space>"
-# ↑ 脚本位于 multica-platform-confluence；路径由 MULTICA_SKILLS_ROOT 解析
+bash scripts/publish-local.sh \
+  --issue-id <ISSUE-ID> \
+  --input <PRD.md> \
+  --root artifacts
 ```
 
-2. 创建 JIRA Story（描述含 Confluence 链接）：
+3. 回传脚本输出的仓库相对路径，例如 `artifacts/GOO-3/prd.md`。下游必须使用该引用，不靠搜索定位。
 
-```bash
-bash scripts/jira.sh create-story \
-  --project <KEY> --summary "<title>" --description "..." ...
-# ↑ 脚本位于 multica-platform-jira
-```
+本模式不读取凭据、不发网络请求、不创建外部任务。更新同一需求时覆盖同一路径，并在 PRD 修订记录中写明版本；PRD 内容变化后，下游门禁按 Squad 规则失效并重判。
 
-3. 可选钉钉：`multica-platform-jira` → `notify-story`
+## Workflow B：外部平台（可选）
 
-或使用本目录编排脚本（需 platform skills 可解析）：
+只有 Issue 或团队配置明确要求外部同步时，才调用 `multica-platform-confluence` / `multica-platform-jira`：
 
 ```bash
 export MULTICA_SKILLS_ROOT="/path/to/templates/skills"   # Multica 按名挂载时建议设置
@@ -60,24 +56,21 @@ bash scripts/publish-prd.sh --project AAI --summary "..." --html-file prd.html \
   -- --need-user <user> --background "..." ...
 ```
 
-## Workflow B–E
-
-状态流转、排期、Confluence 阻塞降级（Workflow E：PRD 全文写入 JIRA）等——**直接使用 `multica-platform-jira` / `multica-platform-confluence` 的 SKILL.md**，本 skill 不再重复维护。
+外部平台失败时不得静默假装成功：若 Issue 未强制外部落地，可降级到 local 并明确回传相对路径和降级原因；若强制要求外部平台，则标记 BLOCKED。
 
 ## 配置
 
-- PRD 父页面 / space：`multica-platform-confluence/config.yaml`
-- JIRA 字段 / 项目：`multica-platform-jira/config.yaml`
-- 本目录 `config.yaml` 保留团队 PRD 默认值与钉钉映射（向后兼容；新团队以 platform config 为准）
+- 默认无需配置。
+- 本地根目录可用 `--root` 指定，默认 `artifacts`；必须使用仓库相对路径，禁止绝对路径和 `..`。
+- 外部模式配置仍由 `multica-platform-confluence/config.yaml` / `multica-platform-jira/config.yaml` 管理；本目录 `config.yaml` 仅为旧团队兼容。
 
 ## 用法（角色侧）
 
 ```text
 先用 multica-requirement-analysis 结构化 PRD，
-再用 multica-artifact-req-sync 落地并回传链接。
+再用 multica-artifact-req-sync 落地并回传稳定引用；未明确要求外部平台时使用 local 模式。
 ```
 
 ## 为什么有效
 
-JIRA 与 Confluence 拆成独立 platform skill 后，Architect 的设计发布与 PM 的 PRD 落地共用同一套能力；编排脚本通过 skill 名称 + `MULTICA_SKILLS_ROOT` 定位，不依赖固定相对路径。
-
+“稳定引用”不等于“外部平台链接”。默认仓库路径让小队零凭据即可运行；外部平台仍作为可插拔适配器，角色提示词和 PRD 内容规范无需随落地方式变化。
