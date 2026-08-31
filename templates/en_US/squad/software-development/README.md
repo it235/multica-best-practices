@@ -31,12 +31,13 @@ Issue
 [In parallel]
   ├─ [Backend] BackendDev: API contract → Leader gate
   └─ [Testing] Tester: feature cases → Leader gate
-  ↓
-[Implementation] (in parallel, don't wait for each other)
+  ↓ G1.5: every in-scope branch passes
+[Implementation and API cases] (parallel once the API contract is ready)
   ├─ [Frontend] FrontendDev (works with the UI design) → G2: Leader reruns the verification commands
-  └─ [Backend] BackendDev → G2: Leader reruns the verification commands
-  ↓
-[Testing] Tester: API test cases → execute → test report
+  ├─ [Backend] BackendDev → G2: Leader reruns the verification commands
+  └─ [Testing] Tester: API test cases → Leader gate
+  ↓ G2: every in-scope branch passes
+[Testing] Tester: execute → test report
   ↓ G3: Leader reviews item-by-item coverage of the acceptance criteria ── FAIL → back to the responsible implementer
   ↓ PASS
 Human (G4 human acceptance)
@@ -54,11 +55,16 @@ Done
 | Design | Architect | G1 (Leader with the multica-verification skill + Reviewer business review) |
 | API contract | BackendDev | Leader gate (parallel input for frontend / testing) |
 | Feature cases | Tester | Leader gate |
+| Development readiness | Leader | G1.5 (all in-scope API-contract / feature-case branches pass) |
 | Frontend implementation | FrontendDev | G2 (Leader reruns the verification commands) |
 | Backend implementation | BackendDev | G2 (Leader reruns the verification commands) |
 | API test cases | Tester | Leader gate |
 | Test report | Tester | G3 (Leader reviews item by item) |
 | Acceptance | Human | G4 (delivery decision) |
+
+## Single-task execution contract
+
+Every Leader dispatch contains exactly one independently verifiable artifact and states five things: task, versioned inputs, output format, verification and PASS conditions, and change boundaries. Members respond with “Verdict / Artifact or Changes / AC Mapping / Verification Evidence / Risks and Open Questions”; a bare “done” is not a delivery. The Leader owns both the main-flow state and parallel-branch states, and never advances through a join gate until it passes.
 
 ## When to use
 

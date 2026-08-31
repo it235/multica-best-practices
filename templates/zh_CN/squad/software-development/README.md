@@ -31,12 +31,13 @@ Issue
 [并行]
   ├─ [后端] BackendDev：API 契约 → Leader 判门
   └─ [测试] Tester：功能用例 → Leader 判门
-  ↓
-[实现]（并行互不等待）
+  ↓ G1.5：范围内分支全部通过
+[实现与接口用例]（API 契约就绪后并行）
   ├─ [前端] FrontendDev（对接 UI 设计）→ G2：Leader 复跑验证命令
-  └─ [后端] BackendDev → G2：Leader 复跑验证命令
-  ↓
-[测试] Tester：接口测试用例 → 执行 → 测试报告
+  ├─ [后端] BackendDev → G2：Leader 复跑验证命令
+  └─ [测试] Tester：接口测试用例 → Leader 判门
+  ↓ G2：范围内分支全部通过
+[测试] Tester：执行 → 测试报告
   ↓ G3：Leader 复核是否逐条覆盖验收标准 ── FAIL → 回对应实现者
   ↓ PASS
 Human（G4 人类验收）
@@ -54,11 +55,16 @@ Done
 | 设计 | Architect | G1（Leader 用 multica-verification skill + Reviewer 业务评审） |
 | API 契约 | BackendDev | Leader 判门（前端 / 测试的并行输入） |
 | 功能用例 | Tester | Leader 判门 |
+| 开发就绪 | Leader | G1.5（范围内 API 契约 / 功能用例均通过） |
 | 前端实现 | FrontendDev | G2（Leader 复跑验证命令） |
 | 后端实现 | BackendDev | G2（Leader 复跑验证命令） |
 | 接口测试用例 | Tester | Leader 判门 |
 | 测试报告 | Tester | G3（Leader 复核逐条对照） |
 | 验收 | Human | G4（交付决策） |
+
+## 单任务执行契约
+
+Leader 每次派活只派一个可独立验收的产物，并明确五项：任务、带版本的输入、输出格式、验证与 PASS 条件、修改边界。成员必须按「结论 / 产物或变更 / AC 对照 / 验证证据 / 风险与待确认项」回执；只报“完成”不算交付。主流程状态与并行分支状态由 Leader 统一维护，汇合门禁未通过不得推进。
 
 ## 何时使用
 

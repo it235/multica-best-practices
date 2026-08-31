@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.11 - 2026-08-31 · Software-development 执行契约与流程收敛 / Execution contract and pipeline clarification
+
+### Changed / 变更
+
+- `software-development/squad.md`（中英）新增单任务执行契约与运行状态：每次派活明确任务、版本化输入、输出、验证/PASS 条件和修改边界；成员按固定证据结构回执，Leader 统一维护主阶段与并行分支状态 / Added a single-task execution contract and explicit run-state ownership to the bilingual Squad instructions.
+- 阶段门禁消除歧义：API 契约 + 功能用例汇合点改为 G1.5，前端 + 后端 + 接口用例汇合点保留 G2；接口用例明确只在实现阶段并行派发一次 / Split the ambiguous duplicate G2 into G1.5 development readiness and G2 implementation join, and dispatch API cases exactly once in parallel with implementation.
+- Squad 团队清单补齐 `@DevOps`，README（中英）同步工作流、门禁表与执行契约 / Added the missing `@DevOps` role and synchronized both starter READMEs.
+
+### Fixed / 修复
+
+- 移除英文流水线中重复的接口测试用例步骤，并修正中英文步骤编号与汇合门禁定义不一致 / Removed the duplicated API-test-case step in the English pipeline and aligned bilingual numbering and join-gate definitions.
+
 ## v0.0.10 - 2026-08-22 · 全量 Review 修复：一致性/双语文档同步 / Full-review fixes: consistency & bilingual sync
 
 ### Changed / 变更
