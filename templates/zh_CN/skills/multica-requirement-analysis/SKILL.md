@@ -24,7 +24,7 @@ description: 把 Issue / 诉求结构化为带编号的 PRD 内容。用于 @Pro
 
 ## Requirement Structure
 
-把输入结构化为 PRD 章节（章节基线见 `multica-platform-confluence` 的 `scripts/templates/prd-template.md`），并叠加 Multica 编号：
+把输入结构化为 PRD 章节，并叠加 Multica 编号：
 
 | 章节 | 编号 |
 | --- | --- |

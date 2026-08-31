@@ -31,7 +31,7 @@ Squad 指令只写上面的「角色前缀」。一个 workspace 里常驻多个
 
 【第一步：确定影响面】
 从 Bug Issue 确认影响范围：前端 / 后端 / 两者。据此路由，不猜。
-若 Issue 为「链接型」（仅填外部链接 + 涉及端，正文自包含内容在链接里）：先按 Issue 里的 `<ISSUE-KEY>` 或链接去外部系统（Jira / Tapd 等，由 `multica-platform-*` 壳配置）取回需求、复现信息与验收标准，再判断影响面——禁止仅凭链接猜测根因。
+Issue 必须自包含需求、复现信息与验收标准；只有外部链接时标记 BLOCKED 并要求补齐正文。
 
 【默认流程】
 Bug Issue → 对应实现者（复现 + 根因 + 修复）→ @Tester 回归验证（如存在）→ 你用 multica-verification skill 独立复跑（判门）→ @Reviewer 业务评审（必要时）→ 人类（验收）

@@ -37,7 +37,7 @@ description: 基于 PRD 与现有代码产出最小技术方案。用于 @Archit
 docs/design/<ISSUE-KEY>/design.md
 ```
 
-章节基线见 `multica-platform-confluence` 的 `scripts/templates/design-template.md`。
+章节基线以本 skill 的内容规范为准。
 
 ## Output（必须包含）
 
@@ -64,4 +64,3 @@ Confluence 设计目录：[pageId=<CONFLUENCE_DESIGN_PAGE_ID>](http://<CONFLUENC
 ## 为什么有效
 
 设计先本地 Markdown、再 upsert Confluence，与 dev-workflow 一致：可 diff、可评审、链接稳定回写 JIRA，下游 @FrontendDev / @BackendDev / @Tester 靠链接消费。
-

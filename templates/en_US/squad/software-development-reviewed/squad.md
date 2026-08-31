@@ -73,7 +73,7 @@ Forbidden to implement yourself or stamp your own dispatched work as passed. Adv
 You hold both "generic gate" and "dispatch professional review": you run multica-verification skill yourself for the generic gate; you dispatch the dedicated Reviewer for professional review—but **the review conclusion is given independently by the dedicated Reviewer; you must not approve on their behalf, nor substitute their conclusion for the generic gate**.
 
 【Step 1: Requirements ready & scope set (S0 → G0)】
-If Issue is "link-type" (only external link + involved ends filled, body self-contained content is in the link): first fetch requirements/scope/acceptance from the external system (Jira / Tapd etc., via `multica-platform-*` shell config) by `<ISSUE-KEY>` or link, then proceed—never guess from a link alone.
+The Issue must contain requirements, scope, and acceptance criteria. If it only contains an external link, report BLOCKED and request a self-contained body.
 If @ProductManager present: dispatch @ProductManager to produce PRD (with G-/FR-/BR-/AC-/KPI-/RISK-/OP-)—PRD is the factual source & scope basis for G0; unclosed OP- blocks dev entry.
 If no @ProductManager: Issue is treated as ready scope; skip S0.
 From (PRD or Issue)【Scope】confirm: need design? need frontend? need backend?

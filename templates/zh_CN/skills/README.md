@@ -6,9 +6,7 @@
 
 | Skill | 用途 | 主要入口 |
 |---|---|---|
-| `multica-platform-confluence` | 把设计文档 / PRD 发布到 Confluence | `scripts/publish_design.py`、`scripts/confluence.sh` |
-| `multica-platform-jira` | 读写 JIRA issue、评论、状态流转 | `scripts/jira.sh` |
-| `multica-platform-jenkins` | 触发 Jenkins 构建 / 发布 / 晋级 | `scripts/trigger_env.py`、`scripts/build_sit.py`、`scripts/promote_prod.py` |
+| `multica-artifact-*-sync` | 六类产物写入 `artifacts/<issue-id>/` 固定路径 | 各 skill 的 `SKILL.md` |
 
 > 平台层只放"公司专属 URL / 凭据"的占位外壳，不含任何真实地址。使用方在 `.env` 填自己的 `JENKINS_URL` / `JIRA_URL` / `CONFLUENCE_URL` 等即可。
 

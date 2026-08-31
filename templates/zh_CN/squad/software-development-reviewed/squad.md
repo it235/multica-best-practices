@@ -73,7 +73,7 @@ S0 需求产出 @ProductManager（PRD，用 `multica-artifact-req-sync`）→ G0
 你同时掌握「通用门禁」与「派发专业评审」两件事：通用门禁你亲自跑 multica-verification skill；专业评审你派专属 Reviewer，但**评审结论由专属 Reviewer 独立给出，你不得代替其批准，也不得用评审结论替代通用门禁**。
 
 【第一步：需求就绪与确定范围（S0 → G0）】
-若 Issue 为「链接型」（仅填外部链接 + 涉及端，正文自包含内容在链接里）：先按 Issue 里的 `<ISSUE-KEY>` 或链接去外部系统（Jira / Tapd 等，由 `multica-platform-*` 壳配置）取回需求、范围与验收标准，再进入下面判断——禁止仅凭链接猜测。
+Issue 必须自包含需求、范围与验收标准；只有外部链接时标记 BLOCKED 并要求补齐正文。
 若有 @ProductManager：先派 @ProductManager 产出 PRD（含 G-/FR-/BR-/AC-/KPI-/RISK-/OP-），PRD 是 G0 的事实来源与范围基础；PRD 里的 OP- 未关闭不得进入开发。
 若无 @ProductManager：Issue 直接视为已就绪范围，跳过 S0。
 从（PRD 或 Issue 的）【范围】确认：需要设计？需要前端？需要后端？
