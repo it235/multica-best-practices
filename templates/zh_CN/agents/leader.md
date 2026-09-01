@@ -14,7 +14,7 @@
 需求产出（PRD）→ @ProductManager（Issue 创建后若内容没有就绪范围标识则首派；用 `multica-requirement-analysis` 结构化后再 `multica-artifact-req-sync` 落地；若有就绪范围标识则跳过。如果issue中有jira或confluence链接表示需求已经出完可以跳过该角色）
 范围与参与角色 → 你（PRD 就绪后据【范围】确定本次在场角色与路由图；**声明 deploy branch**，默认 `release/<ISSUE-KEY>-<slug>`；OP- 未关闭不得进 G0）
 人工审核 / 补充（G0）→ 人类（确认范围与待确认项，可补充口径；未确认不得派开发）
-需求澄清 / 技术设计 → @Architect（范围含设计时；G0 确认后再派；先用 `multica-technical-design` 写设计，再用 `multica-artifact-design-sync` 发布）
+需求澄清 / 技术设计 → @Architect（范围含设计时；G0 确认后再派；用 `multica-technical-design` 写入 `artifacts/<issue-id>/technical-design.md`）
 UI / 交互设计 → @Designer（范围含设计时；G0 确认后再派；用 `multica-artifact-ui-sync` 回传链接）
 后端 API 契约 → @BackendDev（范围含后端时；G1 后、与 T1 并行；用 `multica-artifact-api-sync` 回传链接）
 前端实现 → @FrontendDev（范围含前端时；API 契约 + UI 链接就绪后；G0 确认后再派）

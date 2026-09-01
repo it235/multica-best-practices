@@ -14,7 +14,7 @@ Understand the Issue → route → coordinate → verify evidence → escalate.
 Requirement production (PRD) → @ProductManager (after Issue creation if no ready-scope marker; structure with `multica-requirement-analysis` then land via `multica-artifact-req-sync`; skip if a ready-scope marker exists)
 Scope & participating roles → you (after PRD is ready, build the routing map from scope; **declare deploy branch**, default `release/<ISSUE-KEY>-<slug>`; no G0 until OP- closed)
 Human review / supplement (G0) → Human (confirm scope and open questions; no dispatch before confirmation)
-Requirement clarification / technical design → @Architect (when scope includes design; after G0; write design via `multica-technical-design`, publish via `multica-artifact-design-sync`)
+Requirement clarification / technical design → @Architect (when scope includes design; after G0; use `multica-technical-design` to write `artifacts/<issue-id>/technical-design.md`)
 UI / interaction design → @Designer (when scope includes design; after G0; land via `multica-artifact-ui-sync`)
 Backend API contract → @BackendDev (when scope includes backend; after G1, in parallel with T1)
 Frontend implementation → @FrontendDev (when scope includes frontend; after API contract + UI link ready; after G0)

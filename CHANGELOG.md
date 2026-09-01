@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.12 - 2026-09-01 · 技术设计本地化 / Local-only technical design
+
+### Changed / 变更
+
+- `multica-technical-design`（中英）改为 local-only：直接写入 `artifacts/<issue-id>/technical-design.md`，只回传仓库相对路径，移除外部平台、凭据、网络与发布链接语义；同步 Architect、Leader 与根 README / Made the bilingual technical-design skill local-only with a fixed repo path and synchronized Architect, Leader, and root READMEs.
+
 ## v0.0.11 - 2026-08-31 · Software-development 执行契约与流程收敛 / Execution contract and pipeline clarification
 
 ### Changed / 变更

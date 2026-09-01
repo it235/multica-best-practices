@@ -91,7 +91,7 @@ flowchart TB
 
     subgraph P1["阶段 1：设计、测试左移与 G1"]
         direction TB
-        ARCH["@Architect（可选）<br/>multica-technical-design<br/>+ multica-artifact-design-sync<br/>Output: 技术设计稳定引用"]
+        ARCH["@Architect（可选）<br/>multica-technical-design<br/>Output: artifacts/&lt;issue-id&gt;/technical-design.md"]
         DESIGNER["@Designer（可选）<br/>multica-artifact-ui-sync<br/>Output: UI、全状态、Token、标注"]
         T1["@Tester T1（可选）<br/>multica-test-design<br/>+ multica-artifact-test-sync<br/>Output: 功能用例 + AC- 追溯"]
         R1["@Reviewer（可选）<br/>G1 业务设计评审"]

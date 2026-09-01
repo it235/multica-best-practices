@@ -91,7 +91,7 @@ flowchart TB
 
     subgraph P1["Phase 1: design, test shift-left & G1"]
         direction TB
-        ARCH["@Architect (optional)<br/>multica-technical-design<br/>+ multica-artifact-design-sync"]
+        ARCH["@Architect (optional)<br/>multica-technical-design<br/>Output: artifacts/&lt;issue-id&gt;/technical-design.md"]
         DESIGNER["@Designer (optional)<br/>multica-artifact-ui-sync"]
         T1["@Tester T1 (optional)<br/>multica-test-design<br/>+ multica-artifact-test-sync"]
         R1["@Reviewer (optional)<br/>G1 business design review"]
