@@ -1,19 +1,33 @@
 ---
 name: multica-platform-jira
-description: JIRA 读写：Issue 查询、Confluence 链接解析、Story 创建、流转、排期、描述回写、钉钉。平台 skill，与 Confluence 解耦。
+description: JIRA 读写：Issue 查询、Confluence 链接解析、Story 创建、流转、排期、描述回写、钉钉。平台 skill，与 Confluence 解耦。跨平台优先 jira_cli.py。
 metadata:
   credentials:
     priority:
-      - ATLASSIAN_USER / ATLASSIAN_PASS
-      - ATLASSIAN_USER / ATLASSIAN_PASS
+      - JIRA_USERNAME / JIRA_PASSWORD
+      - JIRA_USERNAME / JIRA_PASSWORD
       - JIRA_USER / JIRA_PASS
 ---
 
 # Platform · JIRA
 
+## Platform 协作
+
+本 skill 为 **platform 层**；供 artifact / Tester T1 等按名调用。读：`get_issue.py`、`get-confluence-url`；写：Story / append / transition。
+
 ## Purpose
 
-JIRA **读 + 写**能力：查询 Issue、从描述解析 Confluence 链接；写入 Story、状态流转、排期、**描述追加**（回写 Confluence 链接）、钉钉通知。与 `multica-platform-confluence` 解耦。
+JIRA **读 + 写**能力：查询 Issue、从描述解析 **Confluence 需求页**（Issue Hub）；写入 Story、流转、排期、描述追加、钉钉。
+
+> **跨平台**：优先 `python scripts/jira_cli.py`（Windows / macOS / Linux）；`jira.sh` 为 Unix 全功能封装，非 artifact 流程必需。
+
+## Issue Hub
+
+JIRA Issue 描述（及 remote link）中的 **第一个 Confluence pageId** = 本需求的 PRD/需求正文页。
+
+- 下游文档产物（技术设计等）以该页为 **Confluence 父页面**（由 `multica-platform-confluence` `publish_design.py` 自动解析）。
+- Leader / 下游读 PRD：本 skill 解析链接 → Confluence `fetch_page.py`。
+- **关联 Issue**：`get_issue.py` 输出 `linked_issues`；开工前必读规则见 [`references/upstream-read.md`](references/upstream-read.md) 与 `docs/multi-repo-and-issue-links.md` §2。
 
 ## Files
 
@@ -23,68 +37,66 @@ multica-platform-jira/
 ├── config.yaml
 ├── .env.example
 └── scripts/
-    ├── credentials.sh
-    ├── jira.sh
-    └── validate.sh
+    ├── jira_cli.py          # 跨平台 CLI（推荐）
+    ├── get_issue.py         # Issue JSON（Tester fetch_all）
+    ├── jira.sh              # Unix 全功能封装（可选）
+    ├── lib/jira_client.py
+    └── requirements.txt
 ```
 
-## Read（拉取 Issue / 定位上游 Confluence）
+## Read（跨平台 CLI）
 
 ```bash
-# Issue 详情（summary、description、fields）
-bash scripts/jira.sh get-issue <ISSUE-KEY>
+pip install -r scripts/requirements.txt
 
-# 从 Issue 描述 / 远程链接解析 Confluence URL 或 pageId
-bash scripts/jira.sh get-confluence-url <ISSUE-KEY> [text|json]
+# 完整 Issue JSON（含 Confluence/Figma 链接、附件、linked_issues）— Tester fetch_all 使用
+python scripts/jira_cli.py get-issue --url "https://jira.../browse/PROJ-123" --output data/jira.json
+# 或直接
+python scripts/get_issue.py --url "https://jira.../browse/PROJ-123" --output data/jira.json
 
-# JQL 搜索
-bash scripts/jira.sh search "<JQL>" [max_results]
+# 含关联 Issue 一层描述与链接（迭代/依赖需求）
+python scripts/get_issue.py --url "https://jira.../browse/PROJ-123" --with-linked -o data/jira-full.json
+
+# Issue 中的 Confluence 链接 / pageId
+python scripts/jira_cli.py get-confluence-url <ISSUE-KEY> --json
+
+# 作为文档产物父页面的 pageId（第一个 Confluence 链接）
+python scripts/jira_cli.py resolve-parent-page-id <ISSUE-KEY>
 ```
 
-**典型链路**：`get-issue` 读验收标准 → `get-confluence-url` 取 PRD pageId → `multica-platform-confluence` `fetch-page` 拉正文。
+Unix 可选：`bash scripts/jira.sh get-issue <ISSUE-KEY>`、`bash scripts/jira.sh search ...`
 
-## Write（产物 / 工作流写入）
+## Write · 产物链接回写
 
 ```bash
-# 创建 Story（PRD 编排由 multica-artifact-req-sync 调用）
-bash scripts/jira.sh create-story --project AAI --summary "..." ...
+# 通用 Wiki 块追加
+python scripts/jira_cli.py append-description <ISSUE-KEY> "h3. 标题\n* [链接|url]\n"
 
-# 状态流转
-bash scripts/jira.sh get-transitions <JIRA_ISSUE_KEY>
-bash scripts/jira.sh transition <JIRA_ISSUE_KEY> 已评审
-
-# 排期
-bash scripts/jira.sh schedule <JIRA_ISSUE_KEY> <test_owner> 2026-05-28 2026-06-05
-
-# 追加设计文档链接到描述（design-sync 编排调用）
-bash scripts/jira.sh append-description <ISSUE_KEY> $'h3. 设计文档 (Design Document)\n* [分片上传设计 [AI]|http://confluence.../pages/viewpage.action?pageId=...]\n'
-
-# 钉钉通知
-bash scripts/jira.sh notify-story <JIRA_ISSUE_KEY> <confluence_page_id> aai
+# 结构化产物链接（设计 / API 等）
+python scripts/jira_cli.py append-artifact-link <ISSUE-KEY> \
+  --section "设计文档 (Design Document)" \
+  --title "xxx [AI]" \
+  --url "http://confluence.../pageId=..." \
+  --source design.md
 ```
 
-## JIRA Wiki 描述格式
+`publish_design.py --append-jira` 会在发布成功后自动调用等价逻辑。
 
-追加块使用 Jira Wiki（非 Markdown）：`h3.` 标题、`*` 列表、`[text|url]` 链接。大括号需转义 `\{\}`。
+## 与产物 / 阶段 skill 的关系
 
-## Workflow E：Confluence 阻塞降级（PRD）
-
-Confluence 创建失败时，`multica-artifact-req-sync` 可将 PRD 全文写入 JIRA Story 描述（本 skill `create-story` / `append-description`），并标注「Confluence 降级」；恢复后再补建 Confluence 页面并更新描述链接。
-
-## 与产物 skill 的关系
-
-| 编排 skill | 调用本 skill |
+| 调用方 | 实际调用 |
 | --- | --- |
-| `multica-artifact-req-sync` | create-story / transition / schedule / notify / get-issue |
-| `multica-artifact-design-sync` | append-description（回写设计 Confluence 链接） |
+| `multica-artifact-req-sync` | create-story / transition / … |
+| `multica-artifact-design-sync` | get-confluence-url、append-artifact-link（发布由 confluence skill） |
+| `multica-artifact-api-sync` / `-frontend` | append-artifact-link |
+| `multica-test-t1-design` | `get_issue.py` / `get-issue`；`import_to_tracker.py` 仍在本 skill | 读已迁入 platform |
+
+完整矩阵见 [`docs/platform-collaboration.md`](../../../../docs/platform-collaboration.md)。
 
 ## Adapting To A New Team
 
-改 `config.yaml` 中 `jira.url`、`projects.*.fields`、field_options、`defaults`、`dingtalk.project_webhook_map`。
+改 `config.yaml`：`jira.url`、`projects.*.fields`、钉钉映射等。
 
 ## 为什么有效
 
-JIRA 自定义字段各团队差异大，独立 platform skill 后 Confluence / 设计发布变更不影响 JIRA 脚本；读写分离后 Leader / Architect 可稳定从 Issue 定位上游 Confluence 产物。
-
-
-
+Issue 自带 JIRA 编号与 Confluence 需求链接，父页面无需写死在角色提示词；Python CLI 避免 Windows 上依赖 bash。

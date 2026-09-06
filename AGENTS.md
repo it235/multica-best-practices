@@ -9,16 +9,24 @@ README.md            Project entry: quick start / principles / structure (biling
 AGENTS.md            Agent entry: project conventions and change rules (always English)
 templates/           Everything copy-paste-ready (split by language)
 ├── zh_CN/           Chinese templates (default)
-│   ├── agents/      Shared Agent Instructions (9 role definitions)
-│   ├── skills/      Shared Skills (unified multica- prefix; see three-layer model)
+│   ├── MULTICA.md   Repo-context template: copy to the root of each product repo
+│   │                (layout, test-automation paths, build/verify commands, branch conventions)
+│   ├── agents/      Shared Agent Instructions (9 core + 6 optional *-reviewer for the reviewed Starter)
+│   ├── skills/      Shared Skills (unified multica- prefix; see four-layer model)
 │   │   ├── multica-gate-setup/  CI hard-gate templates ship inside this Skill
-│   │   ├── multica-artifact-*-sync/  Orchestration skills landing content to team platforms (5; platform decoupled from roles)
-│   │   └── multica-platform-*/  Platform-layer shells (Confluence/JIRA/Jenkins) — only place holding company-specific URLs/credentials
+│   │   ├── multica-artifact-*-sync/  Orchestration skills landing content to team platforms (platform decoupled from roles)
+│   │   └── multica-platform-*/  Platform-layer shells (Confluence/JIRA/Jenkins/Apifox/Figma) — only place holding company-specific URLs/credentials
 │   └── squad/       Squad starters (copy the whole subdirectory and run)
 │       ├── software-development/  Regular development (recommended)
+│       ├── software-development-reviewed/  Same pipeline + dedicated Reviewers (two-layer gates)
 │       └── bug-fix/               Minimal fix combination
 └── en_US/           English templates (same structure as zh_CN/)
 docs/                Methodology (split by language: zh_CN/ + en_US/)
+├── FLOW.md                        Deliverable-driven flow, gate trimming, work-package table
+├── role-skills-architecture.md    Why skills are layered and which layer a capability belongs to
+├── platform-collaboration.md      Platform capability is written exactly once
+├── test-automation-in-repo.md     Automation assets land in the product repo; paths come from MULTICA.md
+└── multi-repo-and-issue-links.md  Multi-repo matrix routing + mandatory upstream reads
 SECURITY.md          Security check before sharing templates
 ```
 
@@ -27,8 +35,9 @@ SECURITY.md          Security check before sharing templates
 - **Skill naming**: `multica-` prefix + lowercase hyphenated; the `name` field in `SKILL.md` matches the directory name.
 - **Skills mount by name**: documents reference `multica-xxx` (in backticks), never a repo path.
 - **Agent naming**: `role + project + member-id` (e.g. `BackendDev-user-service-u1024`).
-- **Directory semantics**: inside each language tree, `agents/` = roles, `skills/` = practices, `squad/` = squad combinations, and `docs/` = methodology. CI hard-gate templates live in the `multica-gate-setup` skill; artifact landing to team platforms lives in the five `multica-artifact-*-sync` skills (see `artifact-conventions.md` — platforms are decoupled from role prompts, swappable per company); there is no standalone `gates/` directory.
-- **Three-layer skill model**: content lives in role prompts (no platform names), orchestration lives in `multica-artifact-*-sync` skills (which call a platform skill), and company-specific URLs/credentials live **only** in `multica-platform-*` shells. Public repo ships content + orchestration + platform shells; a team fills the shells' `config.yaml` / `scripts/` without touching roles.
+- **Directory semantics**: inside each language tree, `agents/` = roles, `skills/` = practices, `squad/` = squad combinations, and `docs/` = methodology. CI hard-gate templates live in the `multica-gate-setup` skill; artifact landing to team platforms lives in the six `multica-artifact-*-sync` skills (see `artifact-conventions.md` — platforms are decoupled from role prompts, swappable per company); there is no standalone `gates/` directory.
+- **Four-layer skill model**: **content** (`multica-requirement-analysis`, `multica-technical-design`, `multica-backend-impl`, `multica-frontend-impl`, `multica-test-t1-design` / `-t2-coverage` / `-t3-*`) defines what "good" means; **orchestration** (`multica-artifact-*-sync`, `multica-test-orchestration`) lands artifacts and returns stable links; **platform** (`multica-platform-*`) is the only layer touching external systems; **review** (`multica-review-*`, plus `multica-verification` for gatekeeping) is executed by non-producers. Company-specific URLs/credentials live **only** in `multica-platform-*` shells. Public repo ships content + orchestration + platform shells; a team fills the shells' `config.yaml` / `scripts/` without touching roles. See `docs/zh_CN/role-skills-architecture.md`.
+- **`MULTICA.md` per product repo**: automation paths differ per project, so the product repo (one copy per repo when frontend/backend are split) carries a root `MULTICA.md` declaring layout, test paths, build/verify commands, and branch conventions. Tester/FrontendDev/BackendDev read it instead of guessing; a missing file is BLOCKED. See `docs/zh_CN/test-automation-in-repo.md`.
 
 ## i18n convention (how Chinese and English coexist)
 

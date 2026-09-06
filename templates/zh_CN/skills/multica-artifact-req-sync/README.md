@@ -20,7 +20,7 @@ cp ../multica-platform-jira/.env.example ../multica-platform-jira/.env
 
 ```bash
 export MULTICA_SKILLS_ROOT="/path/to/templates/skills"
-bash scripts/publish-prd.sh --project <PROJECT_A> --summary "标题" --html-file prd.html \
+bash scripts/publish-prd.sh --project PROJ --summary "标题" --html-file prd.html \
   -- --need-user user --background "..."
 ```
 

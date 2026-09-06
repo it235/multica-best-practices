@@ -15,13 +15,22 @@ metadata:
 
 G2 PASS + push 后，调用 `multica-platform-jenkins` 触发 dev/sit Job。**参数由 Jenkins API 自动发现**，编排层不硬编码参数名。
 
+## Platform 协作
+
+| Platform skill | 本 skill 用途 |
+| --- | --- |
+| `multica-platform-jenkins` | `trigger_env.py` / `trigger_cicd.py` 触发与轮询 |
+| `multica-platform-jira` | 可选读 Issue；回写部署链接 |
+
+凭据：`JIRA_USERNAME / JIRA_PASSWORD`（与 JIRA 共用域账户）。CLI 细节见 platform-jenkins SKILL。
+
 ## Agent 流程
 
 ```text
 1. discover-only（推荐先跑，检查 missing）：
-   python scripts/trigger_cicd.py --issue <ISSUE_KEY> --env sit --branch release/<ISSUE_KEY>-slug --discover-only --json
+   python scripts/trigger_cicd.py --issue PROJ-1853 --env sit --branch release/PROJ-1853-聚合页 --discover-only --json
 2. 触发（**只用 Issue deploy branch，不用 feature 分支**）：
-   python scripts/trigger_cicd.py --issue <ISSUE_KEY> --env sit --branch release/<ISSUE_KEY>-slug --json
+   python scripts/trigger_cicd.py --issue PROJ-1853 --env sit --branch release/PROJ-1853-聚合页 --json
 3. missing 参数：追加 --param name=value（trigger_cicd 需扩展传参时走 trigger_env --param）
 ```
 
@@ -39,10 +48,10 @@ G2 PASS + push 后，调用 `multica-platform-jenkins` 触发 dev/sit Job。**�
 
 ```bash
 python scripts/trigger_cicd.py \
-  --issue <ISSUE_KEY> \
+  --issue PROJ-1853 \
   --env dev \
-  --service <service> \
-  --branch release/<ISSUE_KEY>-slug \
+  --service acme \
+  --branch release/PROJ-1853-聚合页 \
   --json
 ```
 
@@ -50,18 +59,18 @@ python scripts/trigger_cicd.py \
 
 ```bash
 python scripts/trigger_cicd.py \
-  --issue <ISSUE_KEY> \
+  --issue PROJ-1853 \
   --env sit \
-  --branch release/<ISSUE_KEY>-slug \
+  --branch release/PROJ-1853-聚合页 \
   --json
 ```
 
-`<ISSUE_PREFIX_A>` / `<ISSUE_PREFIX_B>` / `<ISSUE_PREFIX_C>` / `<ISSUE_PREFIX_D>` 等前缀已在 `config.yaml` → `issue_service_map` 配置，可省略 `--service`。
+`acme` / `MSD` / `ERP` / `IAM` 等前缀已在 `config.yaml` → `issue_service_map` 配置，可省略 `--service`。
 
 ## Workflow C：多服务
 
 ```bash
-python scripts/trigger_cicd.py --env sit --service <service1>,<service2> --branch release/<ISSUE_KEY>-xxx --json
+python scripts/trigger_cicd.py --env sit --service mes2,mes-ui-v2 --branch release/MSD-26092-xxx --json
 ```
 
 ## 用法（角色侧）
@@ -73,6 +82,3 @@ G2 PASS 且代码已 push 后，用 multica-artifact-cicd-sync 触发 Jenkins �
 ## 为什么有效
 
 编排层只依赖 Python；Issue 前缀自动映射到 `jobs-catalog.yaml` 中的 logical service。
-
-
-

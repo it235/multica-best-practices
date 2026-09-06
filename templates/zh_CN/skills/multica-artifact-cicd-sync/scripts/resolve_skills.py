@@ -1,22 +1,11 @@
 """Resolve platform skill directories for orchestrator scripts."""
 from __future__ import annotations
 
-import os
+import sys
 from pathlib import Path
 
+_LIB = Path(__file__).resolve().parents[3] / "_lib"
+sys.path.insert(0, str(_LIB))
+from 按 skill 名 import resolve_skill_dir  # noqa: E402
 
-def resolve_skill_dir(skill_name: str, caller_skill_dir: Path | None = None) -> Path:
-    root = os.environ.get("MULTICA_SKILLS_ROOT")
-    if root:
-        candidate = Path(root) / skill_name
-        if candidate.is_dir():
-            return candidate
-
-    if caller_skill_dir is not None:
-        sibling = caller_skill_dir.parent / skill_name
-        if sibling.is_dir():
-            return sibling
-
-    raise FileNotFoundError(
-        f"Cannot locate skill '{skill_name}'. Set MULTICA_SKILLS_ROOT or co-locate under templates/skills/."
-    )
+__all__ = ["resolve_skill_dir"]

@@ -30,7 +30,7 @@ So: the public repo ships only content + orchestration + **platform-layer placeh
 
 - **@ProductManager**: first structure the Issue into a numbered PRD with `multica-requirement-analysis`, then land it via `multica-artifact-req-sync` (which calls the platform layer internally).
 - **@Architect**: first write the local design doc with `multica-technical-design`, then publish via `multica-artifact-design-sync`.
-- **@Tester**: first produce cases with `multica-test-design`, then land via `multica-artifact-test-sync`; T3 automation uses `multica-test-automation`.
+- **@Tester**: first produce cases with `multica-test-t1-design`, then land via `multica-test-orchestration`; T3 automation uses `multica-test-t3-ui-automation`.
 
 The "analysis / design" skills own **content**; the "artifact-sync" skills own **landing & reference return** — separation makes content reusable and platform swappable.
 
@@ -42,7 +42,7 @@ The "analysis / design" skills own **content**; the "artifact-sync" skills own *
 | Product requirement PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- numbered requirements | `multica-artifact-req-sync` (default Wiki platform) |
 | Technical design doc | @Architect | current arch, minimal change, affected components, steps, risks | `multica-artifact-design-sync` (default Git repo / Wiki platform) |
 | API contract | @BackendDev | endpoints, in/out params, error codes, auth, BR- mapping | `multica-artifact-api-sync` (default API tool) |
-| Test cases / report | @Tester | feature/api cases, AC- coverage, test report | `multica-artifact-test-sync` (default case platform) |
+| Test cases / report | @Tester | feature/api cases, AC- coverage, test report | `multica-test-orchestration` (default case platform) |
 | CI/CD deployment | @DevOps | build/deploy records, env URL, log summary | `multica-artifact-cicd-sync` (default CI system) |
 
 > Code artifacts live in the real code repo; the changed-file list is written into the corresponding stage artifact file for downstream/gate review.

@@ -21,10 +21,10 @@ UI / 交互设计 → @Designer（范围含设计时；G0 确认后再派；用 
 后端实现 → @BackendDev（范围含后端时；与前端并行；G0 确认后再派）
 
 【Tester 三阶段路由】（@Tester 在场时；**T1 / T2 / 接口用例 = 只写用例**；**T3 = 唯一执行阶段**，硬依赖 @DevOps G2.5）
-T1 写功能用例 → G1 后，与 API 契约并行；功能用例 + 设计研读（`multica-test-design` + `multica-artifact-test-sync`）→ G2-prep 汇合
-接口用例（写）→ API 契约就绪后，与前后端实现并行（`multica-artifact-test-sync`）→ G2 汇合之一
+T1 写功能用例 → G1 后，与 API 契约并行；功能用例 + 设计研读（`multica-test-t1-design` + `multica-test-orchestration`）→ G2-prep 汇合
+接口用例（写）→ API 契约就绪后，与前后端实现并行（`multica-test-orchestration`）→ G2 汇合之一
 T2 写补充 + 覆盖率 → G2 PASS 后；对照 diff 补用例、评覆盖率（可与 DevOps 并行，**T3 前须完成**）
-T3 执行自动化 → **G2.5 PASS 后**；对部署环境跑用例（`multica-test-automation` + `multica-artifact-test-sync`）→ G3
+T3 执行自动化 → **G2.5 PASS 后**；对部署环境跑用例（`multica-test-t3-ui-automation` + `multica-test-orchestration`）→ G3
 
 CI/CD 构建部署 → @DevOps（范围含 CI/CD；**G2 PASS 且 deploy branch 已 push**；`multica-artifact-cicd-sync`）→ G2.5（**T3 的前置，须先于 T3 派发**）
 业务评审（设计 / 关键改动）→ @Reviewer

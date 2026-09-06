@@ -17,7 +17,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from resolve_skills import resolve_skill_dir  # noqa: E402
+from 按 skill 名 import resolve_skill_dir  # noqa: E402
 
 
 def run_python(script: Path, args: list[str]) -> tuple[int, str]:
@@ -67,7 +67,7 @@ def main() -> int:
     parser.add_argument("--discover-only", action="store_true")
     parser.add_argument("--no-last-success", action="store_true", help="Do not seed params from last SUCCESS build")
     parser.add_argument("--env", default="", choices=("", "dev", "sit"), help="dev or sit (default from config)")
-    parser.add_argument("--service", action="append", default=[], help="Logical service e.g. <service>")
+    parser.add_argument("--service", action="append", default=[], help="Logical service e.g. acme")
     parser.add_argument("--profile", default="", help="Deprecated alias for --env sit|dev")
     parser.add_argument("--promote-prod", action="store_true", help="Legacy projectmanagement flow only")
     parser.add_argument("--project", action="append", default=[])
@@ -134,7 +134,7 @@ def main() -> int:
             te_args.append("--json")
         rc, log = run_python(jenkins_scripts / "trigger_env.py", te_args)
     else:
-        print("ERROR: specify --service <service> or configure issue_service_map for Issue prefix", file=sys.stderr)
+        print("ERROR: specify --service acme or configure issue_service_map for Issue prefix", file=sys.stderr)
         return 1
 
     build_urls = sorted(set(re.findall(r"https?://[^\s]+/job/[^\s/]+(?:/[^/\s]+)?/\d+/?", log)))
@@ -176,5 +176,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-

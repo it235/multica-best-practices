@@ -34,11 +34,11 @@ except Exception as e:
 }
 
 # 获取凭据
-CONFLUENCE_URL="${CONFLUENCE_URL:-$(parse_config confluence.url 2>/dev/null || echo 'http://<CONFLUENCE_URL>')}"
+CONFLUENCE_URL="${CONFLUENCE_URL:-$(parse_config confluence.url 2>/dev/null || echo 'http://your-domain.atlassian.net/wiki:8090')}"
 CONFLUENCE_TOKEN="${CONFLUENCE_TOKEN:-${CONFLUENCE_PAT:-}}"
 CONFLUENCE_AUTH_MODE="${CONFLUENCE_AUTH_MODE:-basic}"  # basic | form | token
 DEFAULT_SPACE="${DEFAULT_SPACE:-$(parse_config confluence.default_space 2>/dev/null || echo 'CRM')}"
-DEFAULT_PARENT="${DEFAULT_PARENT:-$(parse_config confluence.default_parent_page_id 2>/dev/null || echo '<CONFLUENCE_PARENT_PAGE_ID>')}"
+DEFAULT_PARENT="${DEFAULT_PARENT:-$(parse_config confluence.default_parent_page_id 2>/dev/null || echo '125836668')}"
 
 # 检查凭据
 CURL_AUTH_ARGS=()
@@ -53,7 +53,7 @@ trap cleanup_auth EXIT
 
 require_user_pass() {
   if [ -z "$CONFLUENCE_USER" ] || [ -z "$CONFLUENCE_PASS" ]; then
-    echo "❌ 未配置凭据。请设置 ATLASSIAN_USER / ATLASSIAN_PASS，或在 .env 中设置 CONFLUENCE_USER 和 CONFLUENCE_PASS"
+    echo "❌ 未配置凭据。请设置 JIRA_USERNAME / JIRA_PASSWORD，或在 .env 中设置 CONFLUENCE_USER 和 CONFLUENCE_PASS"
     exit 1
   fi
 }
@@ -335,14 +335,14 @@ Confluence API Wrapper v2.2
   help                                              显示此帮助
 
 示例:
-  confluence.sh create-page "产品需求-XXX" <CONFLUENCE_PARENT_PAGE_ID> "<h1>需求</h1>" CRM
-  confluence.sh get-page <CONFLUENCE_PAGE_ID>
-  confluence.sh find-page "KiD看板"
+  confluence.sh create-page "产品需求-XXX" 125836668 "<h1>需求</h1>" CRM
+  confluence.sh get-page 131429035
+  confluence.sh find-page "概览看板"
   confluence.sh list-pages CRM
 
 配置:
   凭据通过 .env 或环境变量设置（域账号优先）:
-    ATLASSIAN_USER, ATLASSIAN_PASS
+    JIRA_USERNAME, JIRA_PASSWORD
     CONFLUENCE_URL, CONFLUENCE_USER, CONFLUENCE_PASS
     CONFLUENCE_AUTH_MODE=basic   默认，老版本 Confluence 用户名密码 Basic Auth
     CONFLUENCE_AUTH_MODE=form    老版本表单登录 cookie 模式
@@ -369,6 +369,3 @@ case "${1:-help}" in
     exit 1
     ;;
 esac
-
-
-

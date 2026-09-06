@@ -20,10 +20,10 @@ Backend API contract → @BackendDev (when scope includes backend; after G1, in 
 Frontend implementation → @FrontendDev (when scope includes frontend; after API contract + UI link ready; after G0)
 
 【Tester three-phase routing】(@Tester present; **T1 / T2 / API cases = write cases only**; **T3 = the only execution phase**, hard-dependent on @DevOps G2.5)
-T1 write feature cases → after G1, in parallel with the API contract; feature cases + design study (`multica-test-design` + `multica-artifact-test-sync`) → G2-prep merge
-API cases (write) → after API contract ready, in parallel with frontend/backend implementation (`multica-artifact-test-sync`) → one of G2 merges
+T1 write feature cases → after G1, in parallel with the API contract; feature cases + design study (`multica-test-t1-design` + `multica-test-orchestration`) → G2-prep merge
+API cases (write) → after API contract ready, in parallel with frontend/backend implementation (`multica-test-orchestration`) → one of G2 merges
 T2 write supplements + coverage → after G2 PASS; against the diff, supplement cases and assess coverage (can run in parallel with DevOps, **must finish before T3**)
-T3 execute automation → **after G2.5 PASS**; run cases against the deploy environment (`multica-test-automation` + `multica-artifact-test-sync`) → G3
+T3 execute automation → **after G2.5 PASS**; run cases against the deploy environment (`multica-test-t3-ui-automation` + `multica-test-orchestration`) → G3
 
 CI/CD build & deploy → @DevOps (when scope includes CI/CD; **after G2 PASS and deploy branch pushed**; `multica-artifact-cicd-sync`) → G2.5 (**precedes T3, dispatch before T3**)
 Business review (design / critical changes) → @Reviewer

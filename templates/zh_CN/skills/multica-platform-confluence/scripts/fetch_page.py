@@ -30,20 +30,22 @@ def load_config() -> dict:
 
 def resolve_credentials() -> tuple[str, str]:
     user = (
-        os.environ.get("ATLASSIAN_USER")
+        os.environ.get("JIRA_USERNAME")
+        or os.environ.get("JIRA_USERNAME")
         or os.environ.get("CONFLUENCE_USER")
         or os.environ.get("JIRA_USER")
         or ""
     )
     password = (
-        os.environ.get("ATLASSIAN_PASS")
+        os.environ.get("JIRA_PASSWORD")
+        or os.environ.get("JIRA_PASSWORD")
         or os.environ.get("CONFLUENCE_PASS")
         or os.environ.get("JIRA_PASS")
         or ""
     )
     if not user or not password:
         print(
-            "ERROR: missing credentials. Set ATLASSIAN_* or CONFLUENCE_USER/PASS",
+            "ERROR: missing credentials. Set JIRA_USERNAME / JIRA_PASSWORD or CONFLUENCE_USER/PASS",
             file=sys.stderr,
         )
         sys.exit(2)
@@ -141,5 +143,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

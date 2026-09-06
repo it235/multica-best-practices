@@ -37,10 +37,12 @@ description: 判门功能：客观检查产物是否满足验收标准。由 Lea
 
 **BLOCKED** —— 缺信息 / 缺环境，无法验证。如实报告，绝不转成 PASS。
 
-## 与 CI 硬门禁的关系
+## 与产品仓 CI 的关系
 
-本 Skill 是验证功能在 Agent 世界的形态（软门禁），适合起步、无 CI 或探索期。
-同一功能的机器形态是 `multica-gate-setup` skill 携带的 CI 硬门禁模板。能上 CI 就上 CI，软门禁是过渡。
+本 Skill 是 Leader **判门**时用的软门禁（无 CI 或 CI 未覆盖的检查）。
+产品仓已有 **自建 CI** 且 G2 相关 check 已绿时，Leader **引用 check 结论**，不必重复跑同一命令。
+
+**第二层**（reviewed 版）：各角色 **multica-review-*** 专属 Reviewer，与判门独立。
 
 ## 为什么有效
 

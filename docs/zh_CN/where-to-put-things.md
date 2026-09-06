@@ -11,6 +11,11 @@
 | 「你是什么角色」 | Agent Instructions |
 | 「谁负责什么」 | Squad Instructions |
 | 「各阶段产物放哪 / 下游怎么读」 | 由 `multica-artifact-*-sync` skill 落地到团队平台并回传稳定链接（见 [artifact-conventions](./artifact-conventions.md)） |
+| 「某条能力该写成 Skill / 角色提示词 / 平台脚本」 | [role-skills-architecture](./role-skills-architecture.md)（四层模型） |
+| 「平台 URL / 凭据 / REST 细节放哪」 | 只放 `multica-platform-*` 一层（见 [platform-collaboration](./platform-collaboration.md)） |
+| 「完整流程怎么裁剪、谁先谁后」 | [FLOW](./FLOW.md)（交付物驱动，非角色流水线） |
+| 「前后端分仓 / 多仓怎么路由」 | [multi-repo-and-issue-links](./multi-repo-and-issue-links.md) |
+| 「自动化测试脚本放产品仓哪个目录」 | 目标仓库根目录的 `MULTICA.md`（见 [test-automation-in-repo](./test-automation-in-repo.md)） |
 | 「怎么做某类检查」 | Skill |
 | 「必须通过测试」 | CI（工程系统） |
 | 「谁最终决定上线」 | Human |

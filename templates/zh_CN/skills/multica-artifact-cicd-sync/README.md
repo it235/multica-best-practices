@@ -26,7 +26,7 @@ pip install -r requirements.txt   # 仅 requests
 | 脚本 | 作用 | 示例 |
 |---|---|---|
 | `trigger_cicd.py` | 根据评审结论触发对应 service 的 CICD | `python scripts/trigger_cicd.py --issue <ISSUE_KEY> --env sit --service <service>` |
-| `resolve_skills.py` | 解析依赖的 platform skill 路径 | `python scripts/resolve_skills.py` |
+| `按 skill 名.py` | 解析依赖的 platform skill 路径 | `python scripts/按 skill 名.py` |
 | `validate.py` | 校验入参 / 配置 | `python scripts/validate.py --issue <ISSUE_KEY>` |
 
 ## 5. 注意事项

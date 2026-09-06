@@ -6,7 +6,10 @@
 > Practical Agent · Squad · Skill · Issue templates for [Multica](https://github.com/multica-ai/multica).
 > **Copy. Paste. Run.**
 
-This repo gives you ready-to-reuse practices that continue to be validated on real tasks.
+This repo turns everything a requirement needs to travel from Issue to production — **roles, workflow, gates, platform integration** — into copy-ready config. You don't write prompts from scratch: copy a Starter → fill the platform shells' `.env` → run a real task, then tailor to your team.
+
+> **Background**: many teams keep rebuilding the "requirement → design → implementation → test → deploy" loop on Multica, and hard-code Confluence / Jira / Jenkins / Figma URLs and credentials into prompts — so switching company or platform means rewriting everything.
+> The core idea here: **platforms live only inside `multica-platform-*` shells; role prompts only say "which skill to use"**. Skills mount by name, so a team just fills the shells to reuse. Every template is validated on real tasks and published as "Copy. Paste. Run.".
 
 ![Multica Best Practices intro](./display.png)
 
@@ -53,7 +56,7 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
    templates/  ⭐ Start here: all copy-ready config
    ├── zh_CN/              Chinese templates (default; copy the whole subdir)
    │   ├── agents/           Shared Agent Instructions (15 role defs: 9 regular + 6 dedicated Reviewers)
-   │   ├── skills/           Shared Skills (22, unified multica- prefix: gatekeeping / CI integration / test design / requirement analysis / technical design / implementation / artifact-orchestration / platform-shell / 6 dedicated reviews)
+   │   ├── skills/           Shared Skills (30, unified multica- prefix, four layers: content / orchestration / platform / review; see skills/README.md)
    │   │   └── multica-gate-setup/  CI hard-gate templates ship inside this Skill (delivery-gate.yml, etc.)
    │   └── squad/            Squad starters
    │       ├── software-development/  Regular development (squad / issue / README incl. workflow)
@@ -93,7 +96,7 @@ flowchart TB
         direction TB
         ARCH["@Architect (optional)<br/>multica-technical-design<br/>+ multica-artifact-design-sync"]
         DESIGNER["@Designer (optional)<br/>multica-artifact-ui-sync"]
-        T1["@Tester T1 (optional)<br/>multica-test-design<br/>+ multica-artifact-test-sync"]
+        T1["@Tester T1 (optional)<br/>multica-test-t1-design<br/>+ multica-test-orchestration"]
         R1["@Reviewer (optional)<br/>G1 business design review"]
         V1["@Leader<br/>multica-verification<br/>check design vs AC-"]
         G1{"G1 pass?"}
@@ -111,7 +114,7 @@ flowchart TB
         API["@BackendDev (optional)<br/>publish API contract first<br/>multica-artifact-api-sync"]
         BDEV["@BackendDev (optional)<br/>multica-implementation"]
         FDEV["@FrontendDev (optional)<br/>depends on UI + API contract<br/>multica-implementation"]
-        APICASE["@Tester (optional)<br/>write API cases in parallel<br/>multica-artifact-test-sync"]
+        APICASE["@Tester (optional)<br/>write API cases in parallel<br/>multica-test-orchestration"]
         SELF["dev self-check<br/>multica-verification"]
         R2["@Reviewer (optional)<br/>G2 review"]
         V2["@Leader<br/>multica-verification<br/>rerun impl evidence"]
@@ -132,7 +135,7 @@ flowchart TB
 
     subgraph P25["Phase 2.5: coverage, CI/CD & deploy"]
         direction TB
-        T2["@Tester T2 (optional)<br/>multica-test-design<br/>coverage vs AC-"]
+        T2["@Tester T2 (optional)<br/>multica-test-t2-coverage<br/>coverage vs AC-"]
         DEVOPS["@DevOps (optional)<br/>multica-artifact-cicd-sync<br/>(calls multica-platform-* shell)"]
         DISCOVER["discover-only<br/>copy last good params, change branch"]
         READY{"discover ready?"}
@@ -148,7 +151,7 @@ flowchart TB
 
     subgraph P3["Phase 3: live automation & G3"]
         direction TB
-        T3["@Tester T3 (optional)<br/>in: T1 + API cases + T2 + env URL<br/>multica-test-automation"]
+        T3["@Tester T3 (optional)<br/>in: T1 + API cases + T2 + env URL<br/>multica-test-t3-ui-automation"]
         REPORT[/"Test report<br/>logs + AC- per item<br/>PASS / FAIL / BLOCKED"/]
         V3["@Leader<br/>multica-verification<br/>review test evidence"]
         G3{"G3 pass?"}
@@ -216,8 +219,8 @@ Don't have one yet? Read the [Multica docs](https://www.multica.ai/docs) or [How
 You get:
 
 - 1 Squad Leader (orchestration + gatekeeping)
-- 9 Agents: Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps
-- 16 Skills (`multica-verification` is the mandatory gatekeeping Skill)
+- 9 Agents: Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps (the `software-development-reviewed` Starter additionally uses 6 dedicated `*-reviewer` agents)
+- 30 Skills (copy as needed; `multica-verification` is the mandatory gatekeeping Skill, minimum set in the table below)
 - 1 Issue template (with the "affected ends" scope declaration; source supports "linked / fully self-contained" — pick one)
 - 1 software-development workflow (conditional routing where any role can be missing, incl. G2.5 CI/CD)
 
@@ -241,13 +244,12 @@ In Multica, create 9 Agents (naming follows [`docs/en_US/naming-conventions.md`]
 
 ### Step 2 — Create Skills
 
-In Multica, create 16 Skills, copying the code block from the matching `SKILL.md`:
+In Multica, create the Skills below, copying the code block from the matching `SKILL.md`:
 
 | Skill | Source | Mount to |
 | --- | --- | --- |
 | `multica-verification` (gatekeeping, required) | [`templates/en_US/skills/multica-verification/SKILL.md`](./templates/en_US/skills/multica-verification/SKILL.md) | **Leader** |
 | `multica-gate-setup` | [`templates/en_US/skills/multica-gate-setup/SKILL.md`](./templates/en_US/skills/multica-gate-setup/SKILL.md) | Leader (when integrating CI hard gates) |
-| `multica-test-design` | [`templates/en_US/skills/multica-test-design/SKILL.md`](./templates/en_US/skills/multica-test-design/SKILL.md) | Tester |
 | `multica-requirement-analysis` | [`templates/en_US/skills/multica-requirement-analysis/SKILL.md`](./templates/en_US/skills/multica-requirement-analysis/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`templates/en_US/skills/multica-technical-design/SKILL.md`](./templates/en_US/skills/multica-technical-design/SKILL.md) | Architect |
 | `multica-implementation` | [`templates/en_US/skills/multica-implementation/SKILL.md`](./templates/en_US/skills/multica-implementation/SKILL.md) | FrontendDev / BackendDev |
@@ -255,14 +257,12 @@ In Multica, create 16 Skills, copying the code block from the matching `SKILL.md
 | `multica-artifact-ui-sync` | [`templates/en_US/skills/multica-artifact-ui-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-ui-sync/SKILL.md) | Designer (lands artifacts to the design platform) |
 | `multica-artifact-design-sync` | [`templates/en_US/skills/multica-artifact-design-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-design-sync/SKILL.md) | Architect (lands artifacts to Git / knowledge platform) |
 | `multica-artifact-api-sync` | [`templates/en_US/skills/multica-artifact-api-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-api-sync/SKILL.md) | BackendDev (lands artifacts to the API platform) |
-| `multica-artifact-test-sync` | [`templates/en_US/skills/multica-artifact-test-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-test-sync/SKILL.md) | Tester (lands artifacts to the case platform) |
 | `multica-artifact-cicd-sync` | [`templates/en_US/skills/multica-artifact-cicd-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-cicd-sync/SKILL.md) | DevOps (triggers CI/CD deploy) |
-| `multica-test-automation` | [`templates/en_US/skills/multica-test-automation/SKILL.md`](./templates/en_US/skills/multica-test-automation/SKILL.md) | Tester (T3 automation) |
 | `multica-platform-jenkins` | [`templates/en_US/skills/multica-platform-jenkins/SKILL.md`](./templates/en_US/skills/multica-platform-jenkins/SKILL.md) | platform-layer shell (CI/CD system) |
 | `multica-platform-jira` | [`templates/en_US/skills/multica-platform-jira/SKILL.md`](./templates/en_US/skills/multica-platform-jira/SKILL.md) | platform-layer shell (Issue system) |
 | `multica-platform-confluence` | [`templates/en_US/skills/multica-platform-confluence/SKILL.md`](./templates/en_US/skills/multica-platform-confluence/SKILL.md) | platform-layer shell (knowledge base / Wiki) |
 
-> All 16 Skills are shared under `templates/en_US/skills/` with the unified `multica-` prefix namespace, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-test-design / multica-requirement-analysis / multica-technical-design / multica-implementation); **artifact-orchestration** (the five `multica-artifact-*-sync` + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three + multica-test-automation, the only place allowed to hold company-internal URLs/credentials — the public repo ships placeholder shells only). Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See artifact-conventions for the three-layer model. Skills mount **by name** — whoever needs one writes "use the xxx skill" in their Instructions, independent of repo paths.
+> The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-requirement-analysis / multica-technical-design / multica-implementation); **artifact-orchestration** (the `multica-artifact-*-sync` set + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 30-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
 
 ### Step 3 — Create the Squad
 
@@ -341,9 +341,14 @@ Details:
 | Doc | Content |
 | --- | --- |
 | [where-to-put-things](docs/en_US/where-to-put-things.md) | Where instructions belong — cheat sheet (most worth reading) |
+| [FLOW](docs/en_US/FLOW.md) | Deliverable-driven end-to-end flow and gate trimming (5 diagrams + work-package table + three trims) |
+| [role-skills-architecture](docs/en_US/role-skills-architecture.md) | The four skill layers (content / orchestration / platform / review) and the inventory |
 | [artifact-conventions](docs/en_US/artifact-conventions.md) | Collaboration artifact conventions: content spec + sync skill (platforms are not written into role prompts; they sink into `multica-artifact-*-sync` and are swappable per company) |
+| [platform-collaboration](docs/en_US/platform-collaboration.md) | Platform capability written once: URLs / credentials / REST details exist only in `multica-platform-*` |
 | [gates-and-evidence](docs/en_US/gates-and-evidence.md) | Gates G0–G4 (+G2.5 CI/CD) and evidence requirements |
 | [cicd-and-test-pipeline](docs/en_US/cicd-and-test-pipeline.md) | CI/CD and test-pipeline methodology (G2.5, Tester three-phase, deploy branch) |
+| [test-automation-in-repo](docs/en_US/test-automation-in-repo.md) | Automation assets in the repo: paths come only from `MULTICA.md` at the product repo root |
+| [multi-repo-and-issue-links](docs/en_US/multi-repo-and-issue-links.md) | Multi-repo matrix routing and mandatory upstream reads of linked Issues |
 | [common-mistakes](docs/en_US/common-mistakes.md) | Bad → Good examples |
 | [adapt-and-scale](docs/en_US/adapt-and-scale.md) | Cut down, extend, pilot, roll out |
 | [naming-conventions](docs/en_US/naming-conventions.md) | Agent naming rules (role + project + member-id) |

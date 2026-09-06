@@ -3,7 +3,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$SKILL_DIR"
-for f in SKILL.md config.yaml .env.example scripts/credentials.sh scripts/confluence.sh scripts/fetch_page.py scripts/publish_design.py scripts/lib/md_to_confluence.py scripts/lib/html_to_md.py scripts/lib/resolve_skills.sh; do
+for f in SKILL.md config.yaml .env.example scripts/credentials.sh scripts/confluence.sh scripts/fetch_page.py scripts/publish_design.py scripts/lib/md_to_confluence.py scripts/lib/html_to_md.py scripts/lib/按 skill 名.sh; do
   [ -f "$f" ] || { echo "missing $f"; exit 1; }
 done
 bash -n scripts/credentials.sh

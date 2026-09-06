@@ -11,7 +11,7 @@ G2 implementation PASS
 G2.5 CI/CD deploy (@DevOps, multica-artifact-cicd-sync)
   │ build & deploy to test env, return env URL
   ▼
-G3 test acceptance (@Tester T3, multica-test-automation + multica-artifact-test-sync)
+G3 test acceptance (@Tester T3, multica-test-t3-ui-automation + multica-test-orchestration)
   │ run automation in the deploy env, produce test report
   ▼
 Human acceptance (G4)

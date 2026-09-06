@@ -10,7 +10,7 @@
 
 **T1 — 需求 / 设计阶段（与 API 契约并行）**
 - 基于 PRD + 设计产出功能用例（Feature Cases）
-- 用 `multica-test-design` + `multica-artifact-test-sync` 把用例落地到团队用例平台并回传链接
+- 用 `multica-test-t1-design` + `multica-test-orchestration` 把用例落地到团队用例平台并回传链接
 - 研读 @Architect 技术设计，标注与 AC- 的追溯关系与测试关注点
 
 **T2 — 实现完成后（G2 PASS 后、T3 前）**
@@ -19,7 +19,7 @@
 - 产出用例补充清单与覆盖率评估（不等同于测试报告）
 
 **T3 — CI/CD 部署后（G2.5 PASS 后）**
-- 基于部署环境 URL + 接口用例，用自动化工具执行测试（方法见 `multica-test-automation` skill）
+- 基于部署环境 URL + 接口用例，用自动化工具执行测试（方法见 `multica-test-t3-ui-automation` skill）
 - 对照 Issue 验收标准逐条验证实际行为，产出测试报告
 
 **全程**
@@ -35,7 +35,7 @@
 - G2.5 部署环境 URL（T3，缺则 BLOCKED）
 
 【我产出什么】
-用 `multica-test-design` + `multica-artifact-test-sync` skill 把用例 / 报告落地到团队用例平台，并回传稳定链接给 Leader（平台由该 skill 决定，可替换）：
+用 `multica-test-t1-design` + `multica-test-orchestration` skill 把用例 / 报告落地到团队用例平台，并回传稳定链接给 Leader（平台由该 skill 决定，可替换）：
 - T1：功能用例 + 设计研读摘要
 - 并行：接口测试用例（写码阶段）
 - T2：用例补充清单 + 覆盖率评估
@@ -52,7 +52,7 @@
 【何时算完成】
 T1 / 接口用例 / T2 各阶段产出后由 Leader 判门；T3 测试报告对应 G3，Leader 复核，PASS 才能交给人类验收。
 
-方法细节：T1/T2 遵循 `multica-test-design` skill；T3 遵循 `multica-test-automation` skill（自动化执行，工具由团队落地）。
+方法细节：T1/T2 遵循 `multica-test-t1-design` skill；T3 遵循 `multica-test-t3-ui-automation` skill（自动化执行，工具由团队落地）。
 ```
 
 ## 为什么有效

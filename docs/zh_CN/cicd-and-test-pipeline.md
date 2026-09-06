@@ -11,7 +11,7 @@ G2 实现验收 PASS
 G2.5 CI/CD 部署（@DevOps，multica-artifact-cicd-sync）
   │ 构建部署到测试环境，回传环境 URL
   ▼
-G3 测试验收（@Tester T3，multica-test-automation + multica-artifact-test-sync）
+G3 测试验收（@Tester T3，multica-test-t3-ui-automation + multica-test-orchestration）
   │ 在部署环境跑自动化，出测试报告
   ▼
 人类验收（G4）

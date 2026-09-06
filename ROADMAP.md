@@ -11,6 +11,24 @@ Software Development Starter
 └── 1 Workflow
 ```
 
+## 内部版回流迁移 / Internal-edition back-migration
+
+> 本仓库与一份内部版（CORP）同源分叉。以下为把内部版已验证能力回流到公开版的批次计划 / Batched plan for back-porting validated capabilities from the internal fork.
+
+| 批次 | 内容 | i18n |
+| --- | --- | --- |
+| **B1** | 5 篇方法论文档（`FLOW` / `role-skills-architecture` / `test-automation-in-repo` / `multi-repo-and-issue-links` / `platform-collaboration`）+ `templates/MULTICA.md` | 双语同步 |
+| **B2** | 新增 9 个 skill：`multica-backend-impl`、`multica-frontend-impl`、`multica-test-orchestration`、`multica-test-t1-design`、`multica-test-t2-coverage`、`multica-test-t3-ui-automation`、`multica-test-t3-api-automation`、`multica-platform-apifox`、`multica-platform-figma` | zh_CN 先行 |
+| **B3** | 升级现有 skill（6 个 `multica-review-*`、`multica-technical-design`、`multica-requirement-analysis`、3 个 `multica-artifact-*-sync`、`multica-platform-jira` / `-confluence` 脚本增强、`multica-manage-skills`） | zh_CN 先行 |
+| **B4** | agents / squad 同步；移除被取代的 `multica-test-design` / `multica-test-automation` / `multica-artifact-test-sync`；README / AGENTS / CHANGELOG 收尾 | 双语同步 |
+
+### 迁移红线 / Migration red lines
+
+- 不引入内部域名 / IP / 账号体系变量，一律占位化 / no internal hosts, IPs, or account-system env vars — placeholders only
+- 不迁移绑定公司内部系统的实现（`multica-design-ui-impl` 的 BOSS / AngelAlign、`multica-platform-knowledge-base` 的 138 Bridge、`import_to_jira.py` 的 SynapseRT）/ skip company-coupled implementations
+- 保留公开版既有 skill 名，只做内容升级、不做重命名 / keep public skill names; upgrade in place, no renames
+- Skill 英文版可滞后，但 `docs/` 与根目录文档必须中英同步 / skill `en_US` may lag, but `docs/` and root docs stay in sync
+
 ## 近期 / Near term
 
 - [x] Starter-first 结构：`templates/` 为唯一入口 / Starter-first structure with `templates/` as the only entry

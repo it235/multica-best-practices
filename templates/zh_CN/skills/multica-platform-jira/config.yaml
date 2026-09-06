@@ -2,83 +2,83 @@
 version: "1.0"
 
 jira:
-  url: "<JIRA_URL>"
-  issue_type_id: "<JIRA_OPTION_ID_10001>"   # Story
+  url: "http://your-domain.atlassian.net:8080"
+  issue_type_id: "10001"   # Story
 
 workflow_fields:
-  sprint:                 { customId: "<JIRA_CUSTOM_FIELD_10004>", type: "number", label: "Sprint",       required: false }
-  design_hours:           { customId: "<JIRA_CUSTOM_FIELD_15700>", type: "number", label: "设计时间",       required: false }
-  test_owner:             { customId: "<JIRA_CUSTOM_FIELD_14301>", type: "user",   label: "测试Owner",     required: false }
-  estimated_test_date:    { customId: "<JIRA_CUSTOM_FIELD_14303>", type: "date",   label: "预计提测时间",   required: false }
-  estimated_release_date: { customId: "<JIRA_CUSTOM_FIELD_12500>", type: "date",   label: "预计发布日期",   required: false }
+  sprint:                 { customId: "10004", type: "number", label: "Sprint",       required: false }
+  design_hours:           { customId: "15700", type: "number", label: "设计时间",       required: false }
+  test_owner:             { customId: "14301", type: "user",   label: "测试Owner",     required: false }
+  estimated_test_date:    { customId: "14303", type: "date",   label: "预计提测时间",   required: false }
+  estimated_release_date: { customId: "12500", type: "date",   label: "预计发布日期",   required: false }
 
 projects:
-  AAI:
-    id: "<JIRA_OPTION_ID_18500>"
-    name: "<JIRA_PROJECT_NAME>"
-    default_epic: "<JIRA_ISSUE_KEY>"
+  PROJ:
+    id: "18500"
+    name: "Angelalign Intellect"
+    default_epic: "SCP-201"
     epics:
-      - { key: "<JIRA_ISSUE_KEY>", name: "<JIRA_PROJECT_A_EPIC_NAME>" }
+      - { key: "SCP-201", name: "2026年 - 示例项目" }
     fields:
-      need_user:     { customId: "<JIRA_CUSTOM_FIELD_11700>", type: "user",   label: "需求人",             required: true }
-      background:    { customId: "<JIRA_CUSTOM_FIELD_12200>", type: "string", label: "需求背景",            required: true }
-      center_source: { customId: "<JIRA_CUSTOM_FIELD_14700>", type: "array",  label: "需求来源（中心级）",  required: true }
-      region_source: { customId: "<JIRA_CUSTOM_FIELD_16100>", type: "object", label: "需求来源（区域）",    required: true }
-      req_type:      { customId: "<JIRA_CUSTOM_FIELD_14305>", type: "array",  label: "需求类型",            required: true }
-      compliance:    { customId: "<JIRA_CUSTOM_FIELD_14602>", type: "object", label: "是否涉及合规",        required: true }
-      epic_link:     { customId: "<JIRA_CUSTOM_FIELD_10000>", type: "string", label: "Epic Link",          required: true }
+      need_user:     { customId: "11700", type: "user",   label: "需求人",             required: true }
+      background:    { customId: "12200", type: "string", label: "需求背景",            required: true }
+      center_source: { customId: "14700", type: "array",  label: "需求来源（中心级）",  required: true }
+      region_source: { customId: "16100", type: "object", label: "需求来源（区域）",    required: true }
+      req_type:      { customId: "14305", type: "array",  label: "需求类型",            required: true }
+      compliance:    { customId: "14602", type: "object", label: "是否涉及合规",        required: true }
+      epic_link:     { customId: "10000", type: "string", label: "Epic Link",          required: true }
     field_options:
       center_source:
-        - { label: "国内医学",          id: "<JIRA_OPTION_ID_14100>" }
-        - { label: "产品研发中心",       id: "<JIRA_OPTION_ID_12906>" }
-        - { label: "医学支持&教育中心",  id: "<JIRA_OPTION_ID_12903>" }
-        - { label: "国内事业中心",       id: "<JIRA_OPTION_ID_12900>" }
-        - { label: "软件研发中心",       id: "<JIRA_OPTION_ID_12904>" }
-        - { label: "系统软件中心",       id: "<JIRA_OPTION_ID_12905>" }
+        - { label: "国内医学",          id: "14100" }
+        - { label: "产品研发中心",       id: "12906" }
+        - { label: "医学支持&教育中心",  id: "12903" }
+        - { label: "国内事业中心",       id: "12900" }
+        - { label: "软件研发中心",       id: "12904" }
+        - { label: "系统软件中心",       id: "12905" }
       region_source:
-        - { label: "国内",     id: "<JIRA_OPTION_ID_14600>" }
-        - { label: "集团",     id: "<JIRA_OPTION_ID_14606>" }
-        - { label: "海外共享", id: "<JIRA_OPTION_ID_14601>" }
+        - { label: "国内",     id: "14600" }
+        - { label: "集团",     id: "14606" }
+        - { label: "海外共享", id: "14601" }
       req_type:
-        - { label: "业务需求", id: "<JIRA_OPTION_ID_12500>" }
-        - { label: "产品需求", id: "<JIRA_OPTION_ID_12501>" }
-        - { label: "技术需求", id: "<JIRA_OPTION_ID_12502>" }
-        - { label: "配置需求", id: "<JIRA_OPTION_ID_14500>" }
+        - { label: "业务需求", id: "12500" }
+        - { label: "产品需求", id: "12501" }
+        - { label: "技术需求", id: "12502" }
+        - { label: "配置需求", id: "14500" }
       compliance:
-        - { label: "涉及",   id: "<JIRA_OPTION_ID_12704>" }
-        - { label: "不涉及", id: "<JIRA_OPTION_ID_12705>" }
+        - { label: "涉及",   id: "12704" }
+        - { label: "不涉及", id: "12705" }
   MDP:
-    id: "<JIRA_OPTION_ID_18700>"
-    name: "<JIRA_PROJECT_B_NAME>"
-    default_epic: "<JIRA_ISSUE_KEY>"
+    id: "18700"
+    name: "主数据平台"
+    default_epic: "MDP-81"
     epics:
-      - { key: "<JIRA_ISSUE_KEY>", name: "<JIRA_PROJECT_B_NAME>" }
+      - { key: "MDP-81", name: "主数据平台" }
     fields:
-      need_user:     { customId: "<JIRA_CUSTOM_FIELD_11700>", type: "user",   label: "需求人",             required: true }
-      background:    { customId: "<JIRA_CUSTOM_FIELD_12200>", type: "string", label: "需求背景",            required: true }
-      center_source: { customId: "<JIRA_CUSTOM_FIELD_14700>", type: "array",  label: "需求来源（中心级）",  required: true }
-      region_source: { customId: "<JIRA_CUSTOM_FIELD_16100>", type: "object", label: "需求来源（区域）",    required: true }
-      req_type:      { customId: "<JIRA_CUSTOM_FIELD_14305>", type: "array",  label: "需求类型",            required: true }
-      compliance:    { customId: "<JIRA_CUSTOM_FIELD_14602>", type: "object", label: "是否涉及合规",        required: true }
-      epic_link:     { customId: "<JIRA_CUSTOM_FIELD_10000>", type: "string", label: "Epic Link",          required: true }
+      need_user:     { customId: "11700", type: "user",   label: "需求人",             required: true }
+      background:    { customId: "12200", type: "string", label: "需求背景",            required: true }
+      center_source: { customId: "14700", type: "array",  label: "需求来源（中心级）",  required: true }
+      region_source: { customId: "16100", type: "object", label: "需求来源（区域）",    required: true }
+      req_type:      { customId: "14305", type: "array",  label: "需求类型",            required: true }
+      compliance:    { customId: "14602", type: "object", label: "是否涉及合规",        required: true }
+      epic_link:     { customId: "10000", type: "string", label: "Epic Link",          required: true }
     field_options:
       center_source:
-        - { label: "产品研发中心", id: "<JIRA_OPTION_ID_12906>" }
-        - { label: "软件研发中心", id: "<JIRA_OPTION_ID_12904>" }
-        - { label: "系统软件中心", id: "<JIRA_OPTION_ID_12905>" }
+        - { label: "产品研发中心", id: "12906" }
+        - { label: "软件研发中心", id: "12904" }
+        - { label: "系统软件中心", id: "12905" }
       region_source:
-        - { label: "国内", id: "<JIRA_OPTION_ID_14600>" }
-        - { label: "集团", id: "<JIRA_OPTION_ID_14606>" }
+        - { label: "国内", id: "14600" }
+        - { label: "集团", id: "14606" }
       req_type:
-        - { label: "产品需求", id: "<JIRA_OPTION_ID_12501>" }
-        - { label: "技术需求", id: "<JIRA_OPTION_ID_12502>" }
-        - { label: "配置需求", id: "<JIRA_OPTION_ID_14500>" }
+        - { label: "产品需求", id: "12501" }
+        - { label: "技术需求", id: "12502" }
+        - { label: "配置需求", id: "14500" }
       compliance:
-        - { label: "涉及",   id: "<JIRA_OPTION_ID_12704>" }
-        - { label: "不涉及", id: "<JIRA_OPTION_ID_12705>" }
+        - { label: "涉及",   id: "12704" }
+        - { label: "不涉及", id: "12705" }
 
 defaults:
-  project: "AAI"
+  project: "PROJ"
   center_source: "国内医学"
   region_source: "集团"
   req_type: "业务需求"
@@ -89,12 +89,8 @@ defaults:
 dingtalk:
   enabled: true
   project_webhook_map:
-    AAI: "<DINGTALK_WEBHOOK>"
-    MDP: "<DINGTALK_WEBHOOK>"
+    PROJ: "DINGTALK_PROJ_WEBHOOK"
+    MDP: "DINGTALK_MDP_WEBHOOK"
 
 description_append:
   design_heading: "h3. 设计文档 (Design Document)"
-
-
-
-

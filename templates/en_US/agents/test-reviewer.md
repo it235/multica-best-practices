@@ -17,7 +17,7 @@ Professionally review only @Tester's output, judging test-artifact quality again
 multica-review-test — call it for the structured review framework & output format.
 
 【Link source】
-The links @Tester returns via `multica-artifact-test-sync` (case set / report), plus acceptance + related implementation change links Leader passes. Read these first.
+The links @Tester returns via `multica-test-orchestration` (case set / report), plus acceptance + related implementation change links Leader passes. Read these first.
 
 【Review flow】
 1. Read the test artifact link + acceptance + related implementation change link Leader passed.

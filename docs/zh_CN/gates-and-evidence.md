@@ -133,7 +133,7 @@ Tests / Lint / Build / CI / 分支保护 / PR 审批
 3. **实现**：Frontend / BackendDev（按 Issue 范围）提交代码 + 单元测试 + 变更文件列表 + 验证命令输出（自证）。
 4. **G2**：Leader 优先引用 CI 结论（未配 CI 则自己复跑验证命令），并检查 diff 是否只涉及本次需求。PASS。
 5. **G2.5**：@DevOps 在 G2 PASS 且代码已 push 后触发 CI/CD，构建部署到测试环境并回传环境 URL；Leader 核对 CI 证据判 G2.5 PASS。（无 @DevOps / 无 CI 时可略过，T3 退化为本地或手动验证并显式标注。）
-6. **G3**：Tester 按 multica-test-design skill 出功能 / 接口用例；在 G2.5 部署环境就绪后，用 multica-test-automation 执行，按验收标准验证「筛选 → 导出 → 检查 CSV 内容」出测试报告，Leader 复核报告是否逐条覆盖验收标准。
+6. **G3**：Tester 按 multica-test-t1-design skill 出功能 / 接口用例；在 G2.5 部署环境就绪后，用 multica-test-t3-ui-automation 执行，按验收标准验证「筛选 → 导出 → 检查 CSV 内容」出测试报告，Leader 复核报告是否逐条覆盖验收标准。
 7. **G4**：人类查看证据后决定是否合并 / 上线。
 
 任何一个 G2/G3 FAIL，任务回到对应实现者，且**之前的门禁结论作废，需要重新走**——不能因为「上次通过了」就跳过复跑。更一般地：**任一产物被修改，其下游门禁立即失效，必须重判**。不只是实现改动：设计 / API 契约 / 用例一旦变更，下游的实现、测试、验收门禁同样重新失效，不得沿用旧 PASS。范围内某产物若判定为「不适用（N/A）」，也禁止静默跳过——必须显式标注 N/A、写明理由并由 Leader 确认；未确认的 N/A 视为范围缺失，回写 Issue。

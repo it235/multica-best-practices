@@ -41,10 +41,10 @@ Squad instructions only write the "role prefix" above. A workspace routinely hos
 【STAGE-GATE MAP】(pipeline at a glance; skip the line for any missing layer)
 S0 requirement @ProductManager (PRD with G-/FR-/BR-/AC-/KPI-/RISK-/OP-) → G0 scope (based on PRD, declare deploy branch)
 → S1a technical design @Architect (via `multica-artifact-design-sync`) / S1b UI design @Designer (via `multica-artifact-ui-sync`, parallel, both produce) → G1 design gate (incl. UI review)
-→ parallel: S2a API contract @BackendDev (via `multica-artifact-api-sync`) / S2b feature cases @Tester (via `multica-artifact-test-sync`) → G2 join gate (both PASS)
-→ parallel: S3a frontend @FrontendDev (depends on UI link + API contract link) / S3b backend @BackendDev / S3c API cases @Tester (via `multica-artifact-test-sync`) → G2 join gate (all three PASS)
+→ parallel: S2a API contract @BackendDev (via `multica-artifact-api-sync`) / S2b feature cases @Tester (via `multica-test-orchestration`) → G2 join gate (both PASS)
+→ parallel: S3a frontend @FrontendDev (depends on UI link + API contract link) / S3b backend @BackendDev / S3c API cases @Tester (via `multica-test-orchestration`) → G2 join gate (all three PASS)
 → G2.5 CI/CD @DevOps (scope includes CI/CD; after G2 PASS and code pushed to deploy branch, via `multica-artifact-cicd-sync` deploy to test env and return URL) → G2.5 deploy gate
-→ S4 test report @Tester (T3; after G2.5 PASS via `multica-test-automation` + `multica-artifact-test-sync`) → G3 test gate → human acceptance Done
+→ S4 test report @Tester (T3; after G2.5 PASS via `multica-test-t3-ui-automation` + `multica-test-orchestration`) → G3 test gate → human acceptance Done
 (no @ProductManager = Issue is already a ready scope, skip S0, G0 uses the Issue; no technical design = skip S1a/G1 technical part; no UI = skip S1b, frontend falls back to design doc or mock; no frontend = skip S3a; no backend = skip S2a/S3b; no @Tester = skip S2b/S3c/S4; no @DevOps or no triggerable CI = skip G2.5, T3 degrades to local / manual verification with explicit labeling)
 Note: @Architect is technical architecture design, @Designer is UI design — different expertise, different artifacts; the frontend depends on both (via the skill-returned links).
 
@@ -69,14 +69,14 @@ From the (PRD's or Issue's) 【Scope】, confirm: is design needed? frontend? ba
 2. Design (scope includes design) → @Architect uses `multica-artifact-design-sync` to produce the design and return a reference → G1: check alignment with the acceptance criteria using the multica-verification skill, then ask @Reviewer for a business review
 3. Parallel artifacts (dispatch together after the design is final; downstream reads upstream links):
    a. API contract (scope includes backend) → @BackendDev uses `multica-artifact-api-sync` to produce the contract and return a link → you gate (parallel input for frontend and testing)
-   b. Feature cases (@Tester present) → @Tester uses `multica-test-design` + `multica-artifact-test-sync` to produce cases and return a link → you gate
+   b. Feature cases (@Tester present) → @Tester uses `multica-test-t1-design` + `multica-test-orchestration` to produce cases and return a link → you gate
 4. Implementation and API test cases (advance in parallel; gate each artifact when complete; all read upstream links):
    a. Frontend implementation (scope includes frontend) → @FrontendDev reads the UI link + API contract link → G2: prefer the CI verdict (e.g. [G2 PASS · CI #123]), check the diff scope; only rerun the verification commands if CI is missing
    b. Backend implementation (scope includes backend) → @BackendDev reads the design reference + API contract link → G2: same as above
-   c. API test cases (@Tester present; start as soon as the API contract is ready) → @Tester uses `multica-test-design` + `multica-artifact-test-sync` to produce cases and return a link → you gate
-5. API test cases (@Tester present; start as soon as the API contract is ready) → @Tester uses `multica-test-design` + `multica-artifact-test-sync` to produce cases and return a link → you gate
+   c. API test cases (@Tester present; start as soon as the API contract is ready) → @Tester uses `multica-test-t1-design` + `multica-test-orchestration` to produce cases and return a link → you gate
+5. API test cases (@Tester present; start as soon as the API contract is ready) → @Tester uses `multica-test-t1-design` + `multica-test-orchestration` to produce cases and return a link → you gate
 6. **After G2, each end merges to the deploy branch and pushes** → if scope includes CI/CD, dispatch @DevOps: use `multica-artifact-cicd-sync` to trigger build/deploy to the test env and return the URL → G2.5: you gate PASS from the CI evidence (no @DevOps / no CI → skip, T3 degrades to local / manual verification with explicit labeling)
-7. Test report (@Tester present) → **after G2.5 PASS** @Tester uses `multica-test-automation` + `multica-artifact-test-sync` to execute in the deploy env and return a report link → G3: you review whether it covers every acceptance criterion
+7. Test report (@Tester present) → **after G2.5 PASS** @Tester uses `multica-test-t3-ui-automation` + `multica-test-orchestration` to execute in the deploy env and return a report link → G3: you review whether it covers every acceptance criterion
 8. Human acceptance (G4) → only a Human (or explicit authorization) can declare Done / ship
 
 【PARALLEL DISPATCH】

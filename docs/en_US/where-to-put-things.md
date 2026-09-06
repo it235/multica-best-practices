@@ -11,6 +11,11 @@
 | "What role are you" | Agent Instructions |
 | "Who is responsible for what" | Squad Instructions |
 | "Where do stage artifacts go / how does downstream read" | landed by the `multica-artifact-*-sync` skill to the team platform, returning a stable link (see [artifact-conventions](./artifact-conventions.md)) |
+| "Should this capability be a Skill, a role prompt, or a platform script" | [role-skills-architecture](./role-skills-architecture.md) (four layers) |
+| "Where do platform URLs / credentials / REST details go" | only in the `multica-platform-*` layer (see [platform-collaboration](./platform-collaboration.md)) |
+| "How do I trim the full flow, what runs first" | [FLOW](./FLOW.md) (deliverable-driven, not a role assembly line) |
+| "How do split / multiple repos get routed" | [multi-repo-and-issue-links](./multi-repo-and-issue-links.md) |
+| "Which directory do automation scripts go in inside the product repo" | `MULTICA.md` at the target repo root (see [test-automation-in-repo](./test-automation-in-repo.md)) |
 | "How to do a certain kind of check" | Skill |
 | "Tests must pass" | CI (engineering system) |
 | "Who decides what ships" | Human |

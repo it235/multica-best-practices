@@ -3,6 +3,53 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.12 - 2026-09-05 · 内部版回流迁移批次 2–4：Skills 全量回流 + 脱敏闭环 / Internal back-migration batches 2–4: full skill back-migration + desensitization closed-loop
+
+### Added / 新增（回流自内部版，已脱敏）
+
+- **新增 10 个 skill（zh_CN）**：`multica-backend-impl`、`multica-frontend-impl`、`multica-artifact-frontend`、`multica-test-orchestration`、`multica-test-t1-design`、`multica-test-t2-coverage`、`multica-test-t3-ui-automation`、`multica-test-t3-api-automation`、`multica-platform-apifox`、`multica-platform-figma`
+- **升级 15 个现有 skill（zh_CN，就地覆盖为内部版更成熟内容）**：`multica-review-*`（×6）、`multica-technical-design`、`multica-verification`、`multica-artifact-cicd-sync`、`multica-platform-jira`、`multica-platform-confluence`，以及内部版已重命名的 4 个：`multica-pm-requirement-spec`→`multica-requirement-analysis`、`multica-pm-artifact-publish`→`multica-artifact-req-sync`、`multica-artifact-architect`→`multica-artifact-design-sync`、`multica-artifact-backend`→`multica-artifact-api-sync`
+- **`MULTICA.md` 机制落地**：产品仓库根目录上下文模板（layout / 测试自动化路径 / 构建验证命令 / 分支约定），分仓各一份，缺失即 BLOCKED
+
+### Changed / 变更
+
+- **移除被取代的 3 个 skill（zh + en）**：`multica-test-design`、`multica-test-automation`、`multica-artifact-test-sync`，统一由 `multica-test-orchestration` + `multica-test-t1/t2/t3-*` 取代
+- **全局引用更新**：agents / squad（zh+en）/ docs（zh+en）/ README（zh+en）/ skills 索引 全部改指向新 skill 名；`multica-design-ui-impl`、`multica-platform-knowledge-base` 等未随附能力标记为「可选、本仓库未随附」
+- **脱敏闭环**：内部域名 / IP / 域账号变量 / 业务系统名 / 项目 Key / 138 Bridge 全部替换为占位或通用示例；凭据与平台基址一律走环境变量 / `.env`（如 `JIRA_USERNAME`、`ATLASSIAN_PASS`、`APIFOX_API_BASE_URL`、`TEAM_KB_URL`）
+- **`templates/zh_CN/skills/README.md`** 重写为四层（内容 / 编排 / 平台 / 评审）索引
+- **ROADMAP 红线更新**：明确 `multica-implementation` 保留（未被取代）
+
+### Migration notes / 迁移说明
+
+- **未迁移**（绑定公司内部系统，已在 ROADMAP 红线记录）：`multica-design-ui-impl`（BOSS 母版 / AngelAlign）、`multica-platform-knowledge-base`（138 Bridge）、`import_to_jira.py`（SynapseRT，改为团队自备脚本 + `references/import-contract.md` 约定）
+- **Skill 英文版滞后**：本次 zh_CN 全量回流；`en_US/skills` 仍为旧版（仅移除被取代项、修正失效引用），新增 / 升级内容待 B2–B3 完成后补齐，状态在 CHANGELOG 跟踪 / skill `en_US` lags behind `zh_CN` and is tracked here
+- 后续：完善 `en_US/skills` 双语、补齐 `software-development-reviewed` squad 与 agents 的细化挂载 / finish `en_US/skills` i18n and the reviewed-Starter wiring
+
+## v0.0.11 - 2026-09-05 · 内部版回流迁移批次 1：方法论文档 + MULTICA.md / Internal back-migration batch 1: methodology docs + MULTICA.md
+
+### Added / 新增
+
+- `docs/zh_CN/FLOW.md` + `docs/en_US/FLOW.md` — 交付物驱动的完整流程：纠正「产出角色必须依次出场」的误解，改为「工作包 Required 才入场」；单交付物两层闭环（Reviewer 驳回后**必须重跑验证**再复审）、动态主流程、验证/评审子循环、时序图、工作包表、三种典型裁剪、Leader 检查清单 / Deliverable-driven flow: work packages enter only when Required; after a Reviewer rejects, verification must be re-run before re-review
+- `docs/zh_CN/role-skills-architecture.md` + `docs/en_US/role-skills-architecture.md` — Skill **四层模型**（内容 / 编排 / 平台 / 评审）与分层判定法「换个公司会不会改写」；含角色 → skill 挂载矩阵与常见错误 / four-layer skill model and the "would this change if we changed company" test
+- `docs/zh_CN/test-automation-in-repo.md` + `docs/en_US/test-automation-in-repo.md` — 自动化资产入仓约定：正文在团队平台、可执行脚本入 Git，**路径只读产品仓根目录 `MULTICA.md`**，缺文件即 BLOCKED / automation assets: prose on the team platform, scripts in Git, paths owned by `MULTICA.md`
+- `docs/zh_CN/multi-repo-and-issue-links.md` + `docs/en_US/multi-repo-and-issue-links.md` — 多仓矩阵是唯一事实源（Multica 不会自动识别）；关联 Issue 上游必读清单与角色读法 / the repo matrix is the single source of truth; mandatory upstream reads for linked Issues
+- `docs/zh_CN/platform-collaboration.md` + `docs/en_US/platform-collaboration.md` — 平台能力只写一份：URL / 凭据 / REST 细节只存在于 `multica-platform-*`，角色 skill 只声明「读什么、写什么、调谁」/ platform capability written exactly once
+- `templates/zh_CN/MULTICA.md` + `templates/en_US/MULTICA.md` — 产品仓库根目录上下文模板：layout、测试自动化路径（分仓各一份）、构建与验证命令、分支约定、凭据**只写变量名** / repo-root context template: layout, automation paths, build commands, branches, credential variable names only
+
+### Changed / 变更
+
+- `docs/zh_CN/where-to-put-things.md` + `docs/en_US/where-to-put-things.md`：速查表新增 5 行（能力该放哪层 / 平台细节放哪 / 流程怎么裁剪 / 多仓怎么路由 / 自动化脚本放哪）/ cheat sheet gains 5 rows
+- `README.md` + `README.en.md`：文档表新增 `FLOW`、`role-skills-architecture`、`platform-collaboration`、`test-automation-in-repo`、`multi-repo-and-issue-links` 五个条目 / docs table gains five entries
+- `ROADMAP.md`：新增「内部版回流迁移 / Internal-edition back-migration」四批次计划与四条迁移红线 / adds the four-batch back-migration plan and four red lines
+- `AGENTS.md`：结构图补 `MULTICA.md` 与新增方法论文档；三层模型扩展为**四层**（内容 / 编排 / 平台 / 评审）并说明 `MULTICA.md` 机制 / structure diagram and the three-layer model extended to four layers
+
+### Migration notes / 迁移说明
+
+- 回流自内部分叉版本，**已脱敏**：移除内部域名 / IP / 域账号变量（`SHIDAITS_DOMAIN_*` → `ATLASSIAN_USER` / `ATLASSIAN_PASS`）、内部系统名（BOSS / AngelAlign / SynapseRT / 138 Bridge）、公司项目名示例（`cds-*` → `acme-*`）/ desensitized: internal hosts, account env vars, internal system names and project examples replaced with placeholders
+- **未迁移**（绑定公司内部系统，记录在 ROADMAP 红线）：`multica-design-ui-impl`（BOSS 母版 / AngelAlign 规范）、`multica-platform-knowledge-base`（138 Bridge）、`import_to_jira.py`（SynapseRT）/ skipped as company-coupled
+- **Skill 英文版滞后**：本批次只落地 `docs/` 与根目录文档的双语；新增 / 升级的 skill 先保证 `zh_CN`，`en_US` 在 B2–B3 完成后补齐并在此文件追踪 / skill `en_US` lags behind `zh_CN` and is tracked here as pending
+- 后续批次：B2 新增 9 个 skill、B3 升级现有 skill、B4 agents / squad 同步与收尾 / upcoming: B2 adds 9 skills, B3 upgrades existing ones, B4 syncs agents/squads
+
 ## v0.0.10 - 2026-08-22 · 全量 Review 修复：一致性/双语文档同步 / Full-review fixes: consistency & bilingual sync
 
 ### Changed / 变更

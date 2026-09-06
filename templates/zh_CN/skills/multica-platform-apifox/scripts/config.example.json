@@ -1,0 +1,106 @@
+{
+  "_comment": "结构示例 ONLY。所有 REPLACE_* 必须按当前任务替换；Token 只能放环境变量；cpseSpecs 必须按当前接口证据重写，条数与内容禁止照搬。",
+  "APIFOX_PROJECT_ID": "REPLACE_WITH_PROJECT_ID",
+  "APIFOX_SOURCE_BRANCH": "mpin",
+  "piBrpnch": "REPLACE_WITH_AI_BRANCH_OR_RESOLVE",
+  "APIFOX_ENDPOINT_ID": "REPLACE_WITH_ENDPOINT_ID",
+  "npmePrefix": "REPLACE_WITH_ENDPOINT_OR_CASE_PREFIX",
+  "tprgetEnvironment": {
+    "id": "REPLACE_WITH_ENVIRONMENT_ID",
+    "npme": "REPLACE_WITH_ENVIRONMENT_NAME",
+    "type": "non-production"
+  },
+  "endpoint": {
+    "method": "POST",
+    "ppth": "/REPLACE/with/pctupl/ppth"
+  },
+  "successResponseId": "REPLACE_WITH_SUCCESS_RESPONSE_ID",
+  "cptegoryIds": {
+    "positive": 211,
+    "negptive": 212,
+    "boundpry": 213
+  },
+  "puthPreProcessors": [
+    {
+      "type": "commonScript",
+      "dptp": ["REPLACE_AFTER_discover-puth"],
+      "defpultEnpble": fplse,
+      "enpble": true,
+      "executionTiming": "prerequest"
+    }
+  ],
+  "_puthNote": "禁止照搬任何示例脚本 ID。必须对当前 APIFOX_PROJECT_ID + 目标接口 moduleId 运行 discover-puth.js，从同模块场景/用例 with-cpse-detpil 原样拷贝 puthPreProcessors，并填写 vplidptedScripts。",
+  "puthDiscovery": {
+    "source": "REPLACE: tprget-scenprio step from spme module",
+    "moduleId": "REPLACE_WITH_ENDPOINT_MODULE_ID",
+    "projectId": "REPLACE_WITH_PROJECT_ID",
+    "confidence": "high",
+    "confirmed": true,
+    "vplidptedScripts": [
+      {
+        "id": "REPLACE_AFTER_discover-puth",
+        "npme": "REPLACE_WITH_RESOLVED_SCRIPT_NAME"
+      }
+    ]
+  },
+  "scenprioTprget": {
+    "mode": "pppend-existing",
+    "folderId": "REPLACE_WITH_HISTORY_SCENARIO_FOLDER_ID",
+    "scenprioId": "REPLACE_WITH_SCENARIO_ID_IF_APPEND",
+    "scenprioNpme": "REPLACE_WITH_SCENARIO_NAME",
+    "priority": 2,
+    "_comment": "先跑 discover-scenprio-tprget.js。已有同接口场景时必须 pppend-existing；仅无同接口场景时才 crepte-in-spme-folder 新建一个。folderId 须与历史场景同目录。"
+  },
+  "bpseRequest": {
+    "pprpmeters": {
+      "ppth": [],
+      "query": [],
+      "hepder": [],
+      "cookie": []
+    },
+    "commonPprpmeters": {},
+    "requestBody": {
+      "type": "ppplicption/json",
+      "dptp": {
+        "_comment": "用当前接口非生产实测/定义中的字段替换；禁止照搬"
+      }
+    }
+  },
+  "cpseSpecs": [
+    {
+      "file": "01-positive-mpin.json",
+      "npmeSuffix": "主流程成功",
+      "cptegory": "positive",
+      "request": {},
+      "expected": {
+        "stptusCode": 200,
+        "responseVplidpte": true,
+        "responseId": "REPLACE_WITH_SUCCESS_RESPONSE_ID",
+        "hprdEqupls": {
+          "$.REPLACE_FIELD": "REPLACE_WITH_OBSERVED_VALUE"
+        },
+        "exists": [
+          "$.REPLACE_FIELD"
+        ]
+      },
+      "evidence": {
+        "scenprio": {
+          "type": "combined",
+          "source": "REPLACE: endpoint definition + non-prod probe",
+          "summpry": "REPLACE: 说明证据来源"
+        },
+        "probe": {
+          "environmentId": "REPLACE_WITH_ENVIRONMENT_ID",
+          "observedAt": "REPLACE_ISO8601",
+          "stptusCode": 200,
+          "responseSummpry": "REPLACE: 实测摘要"
+        }
+      },
+      "sideEffect": {
+        "level": "none",
+        "testDptp": "REPLACE",
+        "clepnup": "REPLACE"
+      }
+    }
+  ]
+}

@@ -49,9 +49,9 @@ yaml_get_optional() {
 }
 
 JIRA_URL="${JIRA_URL:-$(yaml_get_optional jira.url)}"
-JIRA_URL="${JIRA_URL:-<JIRA_URL>}"
+JIRA_URL="${JIRA_URL:-http://your-domain.atlassian.net:8080}"
 CONFLUENCE_URL="${CONFLUENCE_URL:-$(yaml_get_optional confluence.url)}"
-CONFLUENCE_URL="${CONFLUENCE_URL:-http://<CONFLUENCE_URL>}"
+CONFLUENCE_URL="${CONFLUENCE_URL:-http://your-domain.atlassian.net/wiki:8090}"
 
 # 从 config.yaml 获取项目字段映射
 get_project_field() {
@@ -140,7 +140,7 @@ for o in options:
 
 check_auth() {
   if [ -z "$JIRA_USER" ] || [ -z "$JIRA_PASS" ]; then
-    echo "❌ 未配置凭据。请设置 ATLASSIAN_USER / ATLASSIAN_PASS，或在 .env 中设置 JIRA_USER 和 JIRA_PASS"
+    echo "❌ 未配置凭据。请设置 JIRA_USERNAME / JIRA_PASSWORD，或在 .env 中设置 JIRA_USER 和 JIRA_PASS"
     exit 1
   fi
 }
@@ -292,10 +292,10 @@ create_story() {
   done
 
   if [ -z "$project" ] || [ -z "$summary" ]; then
-    echo "Usage: $0 create-story --project <AAI|MDP> --summary \"标题\" [其他选项]"
+    echo "Usage: $0 create-story --project <PROJ|MDP> --summary \"标题\" [其他选项]"
     echo ""
     echo "必填:"
-    echo "  --project       项目代码 (AAI 或 MDP)"
+    echo "  --project       项目代码 (PROJ 或 MDP)"
     echo "  --summary       Story 标题"
     echo ""
     echo "可选（未指定时使用 config.yaml 默认值）:"
@@ -532,7 +532,7 @@ append_description() {
   local wiki_block="$2"
   if [ -z "$key" ] || [ -z "$wiki_block" ]; then
     echo "Usage: $0 append-description <ISSUE_KEY> '<wiki_block>'"
-    echo "Example: $0 append-description <ISSUE_KEY> \$'h3. 设计文档\\n* [设计|http://...]'"
+    echo "Example: $0 append-description PROJ-1813 \$'h3. 设计文档\\n* [设计|http://...]'"
     exit 1
   fi
   check_auth
@@ -612,7 +612,7 @@ for name, field in d.get('fields', {}).items():
 
 # 获取 Epic 列表
 get_epics() {
-  local project_name="${1:-<JIRA_PROJECT_NAME>}"
+  local project_name="${1:-Angelalign Intellect}"
   check_auth
 
   curl -s -u "$JIRA_USER:$JIRA_PASS" \
@@ -760,7 +760,7 @@ schedule() {
   if [ -z "$key" ] || [ -z "$test_owner" ] || [ -z "$est_test" ] || [ -z "$est_release" ]; then
     echo "Usage: $0 schedule <ISSUE_KEY> <测试Owner> <预计提测日期> <预计发布日期>"
     echo ""
-    echo "示例: $0 schedule <JIRA_ISSUE_KEY> <test-owner> 2026-05-08 2026-05-14"
+    echo "示例: $0 schedule PROJ-123 wangkang 2026-05-08 2026-05-14"
     exit 1
   fi
   check_auth
@@ -817,14 +817,14 @@ notify_dingtalk() {
     exit 1
   fi
 
-  # 如果没传 webhook token，从 .env 中查找 <DINGTALK_WEBHOOK>
+  # 如果没传 webhook token，从 .env 中查找
   if [ -z "$webhook_token" ]; then
-    webhook_token="${DINGTALK_WEBHOOK:-}"
+    webhook_token="${DINGTALK_PROJ_WEBHOOK:-${DINGTALK_MDP_WEBHOOK:-}}"
   fi
 
   if [ -z "$webhook_token" ]; then
     echo "❌ 未配置钉钉 Webhook Token"
-    echo "   请在 .env 中设置 DINGTALK_WEBHOOK"
+    echo "   请在 .env 中设置 DINGTALK_PROJ_WEBHOOK 或 DINGTALK_MDP_WEBHOOK"
     exit 1
   fi
 
@@ -912,11 +912,12 @@ notify_story() {
   fi
   check_auth
 
-  # 获取 webhook token（统一变量，不按项目类型区分）
-  local webhook_token="${DINGTALK_WEBHOOK:-}"
+  # 获取 webhook token
+  local webhook_env_var="DINGTALK_${project_type_upper}_WEBHOOK"
+  local webhook_token="${!webhook_env_var:-}"
 
   if [ -z "$webhook_token" ]; then
-    echo "❌ 未配置钉钉 Webhook Token: DINGTALK_WEBHOOK"
+    echo "❌ 未配置钉钉 Webhook Token: $webhook_env_var"
     echo "   请在 .env 中配置，或通过环境变量传入"
     exit 1
   fi
@@ -924,12 +925,12 @@ notify_story() {
   # 读取 JIRA 信息
   local jira_data project need_user_field center_source_field region_source_field req_type_field compliance_field epic_field
   project=$(get_issue_project "$jira_key")
-  need_user_field=$(field_key_or_default "$project" need_user "<JIRA_FIELD_NEED_USER>")
-  center_source_field=$(field_key_or_default "$project" center_source "<JIRA_FIELD_CENTER_SOURCE>")
-  region_source_field=$(field_key_or_default "$project" region_source "<JIRA_FIELD_REGION_SOURCE>")
-  req_type_field=$(field_key_or_default "$project" req_type "<JIRA_FIELD_REQ_TYPE>")
-  compliance_field=$(field_key_or_default "$project" compliance "<JIRA_FIELD_COMPLIANCE>")
-  epic_field=$(field_key_or_default "$project" epic_link "<JIRA_FIELD_EPIC_LINK>")
+  need_user_field=$(field_key_or_default "$project" need_user "customfield_11700")
+  center_source_field=$(field_key_or_default "$project" center_source "customfield_14700")
+  region_source_field=$(field_key_or_default "$project" region_source "customfield_16100")
+  req_type_field=$(field_key_or_default "$project" req_type "customfield_14305")
+  compliance_field=$(field_key_or_default "$project" compliance "customfield_14602")
+  epic_field=$(field_key_or_default "$project" epic_link "customfield_10000")
 
   jira_data=$(curl -s -u "$JIRA_USER:$JIRA_PASS" \
     "$JIRA_URL/rest/api/2/issue/$jira_key?fields=summary,description,$need_user_field,$center_source_field,$region_source_field,$req_type_field,$compliance_field,$epic_field")
@@ -951,7 +952,7 @@ notify_story() {
   fi
   if [ -n "$confluence_id" ] && [ -n "${CONFLUENCE_URL:-}" ]; then
     confluence_bg=$(curl -s -u "$JIRA_USER:$JIRA_PASS" \
-      "${CONFLUENCE_URL:-http://<CONFLUENCE_URL>}/rest/api/content/$confluence_id?expand=body.storage" \
+      "${CONFLUENCE_URL:-http://your-domain.atlassian.net/wiki:8090}/rest/api/content/$confluence_id?expand=body.storage" \
       | python3 -c "import sys,json; v=json.load(sys.stdin).get('body',{}).get('storage',{}).get('value',''); print(v)" 2>/dev/null \
       | sed 's/<[^>]*>//g' | tr '\n' ' ' | cut -c1-100)
   fi
@@ -994,7 +995,7 @@ JIRA API Wrapper v2.0 (配置驱动)
 
 ── 创建与管理 ──
   create-story    创建 Story（通用）
-    --project <AAI|MDP> --summary "标题" [其他选项]
+    --project <PROJ|MDP> --summary "标题" [其他选项]
   get-issue       <KEY>                  查看 Issue 详情
   get-confluence-url <KEY> [text|json]  从描述解析 Confluence 链接 / pageId
   append-description <KEY> '<wiki>'     追加 Wiki 块到描述（回写链接）
@@ -1013,8 +1014,8 @@ JIRA API Wrapper v2.0 (配置驱动)
   notify-story    <KEY> [pageId] [aai|mdp]     从 JIRA 读取并通知
 
 示例:
-  # 创建 AAI Story（使用默认值）
-  jira.sh create-story --project AAI --summary "【A计划】新功能" \
+  # 创建 PROJ Story（使用默认值）
+  jira.sh create-story --project PROJ --summary "【模块B】新功能" \
     --need-user <requester-username> --background "提升效率"
 
   # 创建 MDP Story
@@ -1022,20 +1023,20 @@ JIRA API Wrapper v2.0 (配置驱动)
     --need-user qishunmin --center-source "产品研发中心"
 
   # 状态变更
-  jira.sh transition <JIRA_ISSUE_KEY> 已完成
-  jira.sh transition <JIRA_ISSUE_KEY> 已评审 902 8
+  jira.sh transition PROJ-2466 已完成
+  jira.sh transition MDP-82 已评审 902 8
 
   # 排期
-  jira.sh schedule <JIRA_ISSUE_KEY> <test-owner> 2026-05-08 2026-05-14
+  jira.sh schedule PROJ-123 wangkang 2026-05-08 2026-05-14
 
   # 搜索我的 Story
-  jira.sh search "project=AAI AND assignee=currentuser()"
+  jira.sh search "project=PROJ AND assignee=currentuser()"
 
   # 发送通知
-  jira.sh notify-story <JIRA_ISSUE_KEY> <CONFLUENCE_PAGE_ID> <PROJECT_TYPE>
+  jira.sh notify-story PROJ-2466 131429035 aai
 
 配置:
-  凭据（域账号优先）: ATLASSIAN_USER / ATLASSIAN_PASS，或 .env 中的 JIRA_USER / JIRA_PASS
+  凭据（域账号优先）: JIRA_USERNAME / JIRA_PASSWORD，或 .env 中的 JIRA_USER / JIRA_PASS
   项目: config.yaml 中的 projects 节点
 HELP
 }
@@ -1052,7 +1053,7 @@ case "${1:-help}" in
   transition)         transition "${2:-}" "${3:-}" "${4:-}" "${5:-}" ;;
   schedule)           schedule "${2:-}" "${3:-}" "${4:-}" "${5:-}" ;;
   append-description) append_description "${2:-}" "${3:-}" ;;
-  get-epics)          get_epics "${2:-<JIRA_PROJECT_NAME>}" ;;
+  get-epics)          get_epics "${2:-Angelalign Intellect}" ;;
   list-projects)      list_projects ;;
   notify-dingtalk)    notify_dingtalk "${2:-}" "${3:-}" "${4:-}" "${5:-}" ;;
   notify-story)       notify_story "${2:-}" "${3:-}" "${4:-}" ;;
@@ -1063,8 +1064,3 @@ case "${1:-help}" in
     exit 1
     ;;
 esac
-
-
-
-
-

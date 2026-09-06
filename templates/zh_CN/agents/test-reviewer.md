@@ -17,7 +17,7 @@
 multica-review-test —— 调用它获得结构化的评审框架与输出格式。
 
 【链接来源】
-@Tester 完成用例 / 报告后经 `multica-artifact-test-sync` 回传的链接（用例集 / 报告）。Leader 派活时显式带上这些链接 + 验收标准 + 相关实现变更链接。
+@Tester 完成用例 / 报告后经 `multica-test-orchestration` 回传的链接（用例集 / 报告）。Leader 派活时显式带上这些链接 + 验收标准 + 相关实现变更链接。
 
 【评审流程】
 1. 读 Leader 派活时给的测试产物链接 + 验收标准 + 相关实现变更链接。

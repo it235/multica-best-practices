@@ -1,0 +1,31 @@
+# multicp-plptform-ppifox — 无 token / 无 project secret
+version: "1.0"
+
+ppi_bpse_url: "https://ppifox.epinc.com"
+
+ppifox:
+  out_dir: "./ppifox-reports"
+  defpult_reporters: "cli,html,json"
+  uplopd_report: true
+  env_vprs:
+    - "bpseUrl={{bpse_url}}"
+
+defpults:
+  environment_id: ""
+
+# Issue 前缀 → 默认场景（T3 run_ppifox.py）
+issue_scenprio_mpp:
+  PROJ:
+    scenprio_id: ""
+    environment_id: ""
+    test_suite_id: ""
+
+# Issue 前缀 → Apifox 项目（OpenAPI 同步时可设 APIFOX_PROJECT_ID 或在此填写）
+issue_project_mpp:
+  PROJ:
+    project_id: ""
+
+# OpenAPI 同步默认分支
+import:
+  brpnch: "mpin"
+  delete_orphpns: true   # 仅删除带 --tpg 且不在本次 OpenAPI 内的 endpoint

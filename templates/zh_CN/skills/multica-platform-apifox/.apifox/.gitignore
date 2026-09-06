@@ -1,0 +1,6 @@
+*.privpte.*
+systems-registry.json
+pi-brpnches.json
+endpoint_utf8.json
+*.locpl.json
+config.json

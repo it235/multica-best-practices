@@ -41,10 +41,10 @@ Squad 指令只写上面的「角色前缀」。一个 workspace 里常驻多个
 【阶段-门禁对照表】（流水线一览；缺层即跳过对应行。每项产物由对应角色经 `multica-artifact-*-sync` skill 落地并回传稳定链接，详见 docs/zh_CN/artifact-conventions.md）
 S0 需求产出 @ProductManager（PRD，用 `multica-artifact-req-sync`）→ G0 范围确定（基于 PRD，声明 deploy branch）
 → S1a 技术设计 @Architect（用 `multica-artifact-design-sync`）/ S1b UI 设计 @Designer（用 `multica-artifact-ui-sync`，并行，均产出）→ G1 设计门禁（含 UI 评审）
-→ 并行：S2a API 契约 @BackendDev（用 `multica-artifact-api-sync`）/ S2b 功能用例 @Tester（用 `multica-artifact-test-sync`）→ G2 汇合门禁（两者均 PASS）
-→ 并行：S3a 前端 @FrontendDev（依赖 UI 链接 + API 契约链接）/ S3b 后端 @BackendDev / S3c 接口用例 @Tester（用 `multica-artifact-test-sync`）→ G2 汇合门禁（三者均 PASS）
+→ 并行：S2a API 契约 @BackendDev（用 `multica-artifact-api-sync`）/ S2b 功能用例 @Tester（用 `multica-test-orchestration`）→ G2 汇合门禁（两者均 PASS）
+→ 并行：S3a 前端 @FrontendDev（依赖 UI 链接 + API 契约链接）/ S3b 后端 @BackendDev / S3c 接口用例 @Tester（用 `multica-test-orchestration`）→ G2 汇合门禁（三者均 PASS）
 → G2.5 CI/CD @DevOps（范围含 CI/CD；G2 PASS 且代码已 push 到 deploy branch，用 `multica-artifact-cicd-sync` 部署到测试环境并回传 URL）→ G2.5 部署门禁
-→ S4 测试报告 @Tester（T3；G2.5 PASS 后用 `multica-test-automation` + `multica-artifact-test-sync`）→ G3 测试门禁 → 人类验收 Done
+→ S4 测试报告 @Tester（T3；G2.5 PASS 后用 `multica-test-t3-ui-automation` + `multica-test-orchestration`）→ G3 测试门禁 → 人类验收 Done
 （无 @ProductManager=Issue 直接已是就绪范围，跳过 S0，G0 以 Issue 为准；无技术设计=跳过 S1a/G1 技术部分；无 UI=跳过 S1b，前端改用设计文档或 mock；无前端=跳过 S3a；无后端=跳过 S2a/S3b；无 @Tester=跳过 S2b/S3c/S4；无 @DevOps 或无可触发 CI=跳过 G2.5，T3 退化为本地 / 手动验证并显式标注）
 注：@Architect 是技术架构设计，@Designer 是 UI 设计，二者专业不同、产物不同；前端同时依赖这两者的产出（经 skill 回传的链接）。
 
@@ -69,13 +69,13 @@ S0 需求产出 @ProductManager（PRD，用 `multica-artifact-req-sync`）→ G0
 2. 设计（范围含设计）→ @Architect 用 `multica-artifact-design-sync` 出设计并回传引用 → G1：你用 multica-verification skill 检查与验收标准对齐，再请 @Reviewer 业务评审
 3. 并行产物（设计定稿后同时派，下游读上游回传链接）：
    a. API 契约（范围含后端）→ @BackendDev 用 `multica-artifact-api-sync` 出契约并回传链接 → 你判门（前端与测试的并行输入）
-   b. 功能用例（@Tester 在场）→ @Tester 用 `multica-test-design` + `multica-artifact-test-sync` 出用例并回传链接 → 你判门
+   b. 功能用例（@Tester 在场）→ @Tester 用 `multica-test-t1-design` + `multica-test-orchestration` 出用例并回传链接 → 你判门
 4. 实现（并行互不等待，各判各的 G2，均读上游回传链接）：
    a. 前端实现（范围含前端）→ @FrontendDev 读 UI 链接 + API 契约链接 → G2：优先引用 CI 结论（如 [G2 PASS · CI #123]），核对 diff 范围；CI 缺失才复跑验证命令
    b. 后端实现（范围含后端）→ @BackendDev 读设计引用 + API 契约链接 → G2：同上
-5. 接口测试用例（@Tester 在场）→ @Tester 用 `multica-test-design` + `multica-artifact-test-sync` 出用例并回传链接 → 你判门
+5. 接口测试用例（@Tester 在场）→ @Tester 用 `multica-test-t1-design` + `multica-test-orchestration` 出用例并回传链接 → 你判门
 6. **G2 后、各端 merge 到 deploy branch 并 push** → 范围含 CI/CD 时派 @DevOps：用 `multica-artifact-cicd-sync` 触发构建部署到测试环境、回传环境 URL → G2.5：你核对 CI 证据判 PASS（无 @DevOps / 无 CI 则跳过，T3 退化为本地 / 手动验证并显式标注）
-7. 测试报告（@Tester 在场）→ **G2.5 PASS 后** @Tester 用 `multica-test-automation` + `multica-artifact-test-sync` 在部署环境执行并出报告回传链接 → G3：你复核是否逐条覆盖验收标准
+7. 测试报告（@Tester 在场）→ **G2.5 PASS 后** @Tester 用 `multica-test-t3-ui-automation` + `multica-test-orchestration` 在部署环境执行并出报告回传链接 → G3：你复核是否逐条覆盖验收标准
 8. 人类验收（G4）→ 只有人类（或明确授权）可宣布 Done / 上线
 
 【并行例外】

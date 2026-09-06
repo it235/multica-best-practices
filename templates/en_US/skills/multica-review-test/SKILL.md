@@ -5,7 +5,7 @@ description: Test-artifact dedicated review framework. Called by TestReviewer to
 
 # Test Artifact Professional Review (TestReviewer)
 
-Structured professional review framework for **test artifacts (functional/API cases, test report, coverage doc)**. Called by `TestReviewer`; reviews the links `Tester` returns via `multica-artifact-test-sync` (case set / report), plus acceptance + related implementation change links Leader passes.
+Structured professional review framework for **test artifacts (functional/API cases, test report, coverage doc)**. Called by `TestReviewer`; reviews the links `Tester` returns via `multica-test-orchestration` (case set / report), plus acceptance + related implementation change links Leader passes.
 
 ## When to use
 - TestReviewer receives a "review test artifact" dispatch from Leader (case review / report review both apply).

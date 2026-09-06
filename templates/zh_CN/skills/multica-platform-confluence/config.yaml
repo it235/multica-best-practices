@@ -2,25 +2,22 @@
 version: "1.0"
 
 confluence:
-  url: "http://<CONFLUENCE_URL>"
+  url: "http://your-domain.atlassian.net/wiki:8090"
   default_space: "CRM"
-  default_parent_page_id: "<CONFLUENCE_PARENT_PAGE_ID>"      # PRD 默认父页面
-  design_parent_page_id: "<CONFLUENCE_DESIGN_PAGE_ID>"       # 技术设计文档父页面
+  default_parent_page_id: "125836668"      # 无 JIRA 链接时 PRD 默认父页面
+  design_parent_page_id: "137288252"       # 无 JIRA 链接时文档产物回退父页面（优先用 Issue Hub）
   # 完整空间列表见 spaces.json（来自 dev-workflow/confluence.conf）
 
 projects:
   default:
-    design_parent_page_id: "<CONFLUENCE_DESIGN_PAGE_ID>"
-  <ISSUE_PREFIX_A>:
-    confluence_space: "CDS"
-    design_parent_page_id: "<CONFLUENCE_DESIGN_PAGE_ID>"
-  AAI:
+    design_parent_page_id: "137288252"
+  acme:
+    confluence_space: "<CONFLUENCE_SPACE>"
+    design_parent_page_id: "137288252"
+  PROJ:
     confluence_space: "CRM"
-    design_parent_page_id: "<CONFLUENCE_DESIGN_PAGE_ID>"
+    design_parent_page_id: "137288252"
 
 local_paths:
   requirements_dir: "docs/requirements"    # 需求文档本地缓存（fetch 时用）
   design_dir: "docs/design"                # 技术设计草稿：docs/design/<ISSUE-KEY>/design.md
-
-
-

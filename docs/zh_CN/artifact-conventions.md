@@ -30,7 +30,7 @@
 
 - **@ProductManager**：先用 `multica-requirement-analysis` 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-artifact-req-sync` 编排落地（内部调用平台层）。
 - **@Architect**：先用 `multica-technical-design` 写本地设计文档，再用 `multica-artifact-design-sync` 发布（内部调用平台层）。
-- **@Tester**：先用 `multica-test-design` 产出用例内容，再用 `multica-artifact-test-sync` 落地；T3 自动化用 `multica-test-automation`。
+- **@Tester**：先用 `multica-test-t1-design` 产出用例内容，再用 `multica-test-orchestration` 落地；T3 自动化用 `multica-test-t3-ui-automation`。
 
 「分析 / 设计」类 skill 负责**内容**，「artifact-sync」类 skill 负责**落地与回传引用**——两者分离，内容可复用、平台可替换。
 
@@ -42,7 +42,7 @@
 | 产品需求 PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- 编号化需求 | `multica-artifact-req-sync`（默认 Wiki 平台） |
 | 开发设计文档 | @Architect | 当前架构、最小改动、受影响组件、实现步骤、风险 | `multica-artifact-design-sync`（默认 Git 仓库 / Wiki 平台） |
 | API 接口文档 | @BackendDev | 端点、入参 / 出参、错误码、鉴权、BR- 对应 | `multica-artifact-api-sync`（默认 API 工具） |
-| 测试用例 / 报告 | @Tester | 功能 / 接口用例、覆盖 AC-、测试报告 | `multica-artifact-test-sync`（默认 用例平台） |
+| 测试用例 / 报告 | @Tester | 功能 / 接口用例、覆盖 AC-、测试报告 | `multica-test-orchestration`（默认 用例平台） |
 | CI/CD 部署 | @DevOps | 构建 / 部署记录、环境 URL、日志摘要 | `multica-artifact-cicd-sync`（默认 CI 系统） |
 
 > 实现类产物（代码）在真实代码仓库，其变更文件列表写进对应阶段产物文件，由下游与门禁核对。

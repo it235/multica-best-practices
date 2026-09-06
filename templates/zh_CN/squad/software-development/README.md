@@ -98,7 +98,7 @@ Reviewer
 | --- | --- | --- |
 | `multica-verification`（判门，必备） | [`../../skills/multica-verification/SKILL.md`](../../skills/multica-verification/SKILL.md) | **Leader** |
 | `multica-gate-setup` | [`../../skills/multica-gate-setup/SKILL.md`](../../skills/multica-gate-setup/SKILL.md) | Leader（集成 CI 硬门禁时） |
-| `multica-test-design` | [`../../skills/multica-test-design/SKILL.md`](../../skills/multica-test-design/SKILL.md) | Tester |
+| `multica-test-t1-design` | [`../../skills/multica-test-t1-design/SKILL.md`](../../skills/multica-test-t1-design/SKILL.md) | Tester |
 | `multica-requirement-analysis` | [`../../skills/multica-requirement-analysis/SKILL.md`](../../skills/multica-requirement-analysis/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`../../skills/multica-technical-design/SKILL.md`](../../skills/multica-technical-design/SKILL.md) | Architect |
 | `multica-implementation` | [`../../skills/multica-implementation/SKILL.md`](../../skills/multica-implementation/SKILL.md) | FrontendDev / BackendDev |
@@ -106,9 +106,9 @@ Reviewer
 | `multica-artifact-ui-sync` | [`../../skills/multica-artifact-ui-sync/SKILL.md`](../../skills/multica-artifact-ui-sync/SKILL.md) | Designer |
 | `multica-artifact-design-sync` | [`../../skills/multica-artifact-design-sync/SKILL.md`](../../skills/multica-artifact-design-sync/SKILL.md) | Architect |
 | `multica-artifact-api-sync` | [`../../skills/multica-artifact-api-sync/SKILL.md`](../../skills/multica-artifact-api-sync/SKILL.md) | BackendDev |
-| `multica-artifact-test-sync` | [`../../skills/multica-artifact-test-sync/SKILL.md`](../../skills/multica-artifact-test-sync/SKILL.md) | Tester |
+| `multica-test-orchestration` | [`../../skills/multica-test-orchestration/SKILL.md`](../../skills/multica-test-orchestration/SKILL.md) | Tester |
 | `multica-artifact-cicd-sync` | [`../../skills/multica-artifact-cicd-sync/SKILL.md`](../../skills/multica-artifact-cicd-sync/SKILL.md) | DevOps |
-| `multica-test-automation` | [`../../skills/multica-test-automation/SKILL.md`](../../skills/multica-test-automation/SKILL.md) | Tester（T3） |
+| `multica-test-t3-ui-automation` | [`../../skills/multica-test-t3-ui-automation/SKILL.md`](../../skills/multica-test-t3-ui-automation/SKILL.md) | Tester（T3） |
 | `multica-platform-jenkins` | [`../../skills/multica-platform-jenkins/SKILL.md`](../../skills/multica-platform-jenkins/SKILL.md) | 平台层占位壳（CI/CD） |
 | `multica-platform-jira` | [`../../skills/multica-platform-jira/SKILL.md`](../../skills/multica-platform-jira/SKILL.md) | 平台层占位壳（Issue） |
 | `multica-platform-confluence` | [`../../skills/multica-platform-confluence/SKILL.md`](../../skills/multica-platform-confluence/SKILL.md) | 平台层占位壳（Wiki） |

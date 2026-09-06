@@ -1,8 +1,9 @@
 {
-  "_description": "Confluence 空间注册表 — 所有可用空间列表（未来新增空间请追加到此文件）。已脱敏为占位骨架，请按你的 Confluence 实例填写。",
+  "_description": "Confluence 空间注册表示例 — spaces 列表请按团队实际情况替换（以下 key/name 均为占位示例，发布前改为贵司真实空间）",
   "spaces": [
-    {"key": "<SPACE_KEY_1>", "name": "<SPACE_NAME_1>", "description": "<SPACE_DESC_1>"},
-    {"key": "<SPACE_KEY_2>", "name": "<SPACE_NAME_2>", "description": "<SPACE_DESC_2>"},
-    {"key": "<SPACE_KEY_3>", "name": "<SPACE_NAME_3>", "description": "<SPACE_DESC_3>"}
+    {"key": "TEAM",    "name": "团队空间",   "description": "团队协作文档"},
+    {"key": "PRODUCT", "name": "产品文档",   "description": "需求与规格"},
+    {"key": "DEV",     "name": "研发空间",   "description": "研发过程文档"},
+    {"key": "OPS",     "name": "运维空间",   "description": "运维手册与发布记录"}
   ]
 }

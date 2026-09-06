@@ -21,6 +21,46 @@ sys.path.insert(0, str(SCRIPT_DIR / "lib"))
 from md_to_confluence import MarkdownToConfluenceConverter  # noqa: E402
 
 
+def jira_lib_dir() -> Path:
+    root = os.environ.get("MULTICA_SKILLS_ROOT")
+    if root:
+        candidate = Path(root) / "multica-platform-jira" / "scripts" / "lib"
+        if candidate.is_dir():
+            return candidate
+    sibling = SKILL_DIR.parent / "multica-platform-jira" / "scripts" / "lib"
+    if sibling.is_dir():
+        return sibling
+    print(
+        "ERROR: cannot locate multica-platform-jira/scripts/lib. "
+        "Set MULTICA_SKILLS_ROOT or co-locate platform skills.",
+        file=sys.stderr,
+    )
+    sys.exit(2)
+
+
+def resolve_parent_page_id(
+    issue_key: str,
+    explicit_parent: str | None,
+    no_parent_from_jira: bool,
+    project_cfg: dict,
+    conf: dict,
+) -> str | None:
+    if explicit_parent:
+        return explicit_parent
+    if not no_parent_from_jira:
+        sys.path.insert(0, str(jira_lib_dir()))
+        from jira_client import resolve_requirement_parent_page_id  # noqa: E402
+
+        parent = resolve_requirement_parent_page_id(issue_key, required=False)
+        if parent:
+            return parent
+    return (
+        project_cfg.get("design_parent_page_id")
+        or conf.get("design_parent_page_id")
+        or conf.get("default_parent_page_id")
+    )
+
+
 def load_config() -> dict:
     with open(SKILL_DIR / "config.yaml", encoding="utf-8") as f:
         return yaml.safe_load(f)
@@ -28,20 +68,22 @@ def load_config() -> dict:
 
 def resolve_credentials() -> tuple[str, str]:
     user = (
-        os.environ.get("ATLASSIAN_USER")
+        os.environ.get("JIRA_USERNAME")
+        or os.environ.get("JIRA_USERNAME")
         or os.environ.get("CONFLUENCE_USER")
         or os.environ.get("JIRA_USER")
         or ""
     )
     password = (
-        os.environ.get("ATLASSIAN_PASS")
+        os.environ.get("JIRA_PASSWORD")
+        or os.environ.get("JIRA_PASSWORD")
         or os.environ.get("CONFLUENCE_PASS")
         or os.environ.get("JIRA_PASS")
         or ""
     )
     if not user or not password:
         print(
-            "ERROR: missing credentials. Set ATLASSIAN_USER/PASSWORD "
+            "ERROR: missing credentials. Set JIRA_USERNAME/PASSWORD "
             "or CONFLUENCE_USER/CONFLUENCE_PASS",
             file=sys.stderr,
         )
@@ -116,10 +158,20 @@ def page_url(base_url: str, page: dict) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Publish design Markdown to Confluence")
-    parser.add_argument("issue_key", help="JIRA issue key, e.g. <ISSUE_KEY>")
+    parser.add_argument("issue_key", help="JIRA issue key, e.g. PROJ-1813")
     parser.add_argument("md_file", help="Path to design Markdown file")
     parser.add_argument("--space", help="Confluence space key override")
     parser.add_argument("--parent", help="Parent page ID override")
+    parser.add_argument(
+        "--no-parent-from-jira",
+        action="store_true",
+        help="Do not resolve parent from JIRA Confluence link; use config fallback only",
+    )
+    parser.add_argument(
+        "--append-jira",
+        action="store_true",
+        help="Append published page link to JIRA issue description",
+    )
     parser.add_argument("--title", help="Page title override")
     parser.add_argument("--json", action="store_true", help="Print JSON result")
     args = parser.parse_args()
@@ -138,12 +190,20 @@ def main() -> None:
 
     project_cfg = resolve_project(cfg, args.issue_key)
     space = args.space or project_cfg.get("confluence_space") or conf.get("default_space")
-    parent_id = (
-        args.parent
-        or project_cfg.get("design_parent_page_id")
-        or conf.get("design_parent_page_id")
-        or conf.get("default_parent_page_id")
+    parent_id = resolve_parent_page_id(
+        args.issue_key,
+        args.parent,
+        args.no_parent_from_jira,
+        project_cfg,
+        conf,
     )
+    if not parent_id:
+        print(
+            "ERROR: no parent page ID. JIRA issue needs a Confluence PRD link, "
+            "or pass --parent / configure design_parent_page_id fallback.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
     if not space:
         print("ERROR: no Confluence space configured", file=sys.stderr)
         sys.exit(2)
@@ -161,6 +221,17 @@ def main() -> None:
 
     page = upsert_page(session, base_url, space, title, body, parent_id)
     url = page_url(base_url, page)
+    if args.append_jira:
+        sys.path.insert(0, str(jira_lib_dir()))
+        from jira_client import append_artifact_link  # noqa: E402
+
+        append_artifact_link(
+            args.issue_key,
+            section="设计文档 (Design Document)",
+            title=title,
+            url=url,
+            source_file=md_path.name,
+        )
     result = {
         "issue_key": args.issue_key,
         "page_id": page.get("id"),
@@ -179,4 +250,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

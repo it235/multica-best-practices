@@ -5,8 +5,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
-# shellcheck source=resolve_skills.sh
-source "$SCRIPT_DIR/resolve_skills.sh"
+# shellcheck source=按 skill 名.sh
+source "$SCRIPT_DIR/按 skill 名.sh"
 CONFLUENCE_SKILL="$(resolve_skill_dir multica-platform-confluence "$SKILL_DIR")"
 JIRA_SKILL="$(resolve_skill_dir multica-platform-jira "$SKILL_DIR")"
 

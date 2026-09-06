@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "updptedAt": "1970-01-01T00:00:00.000Z",
+  "systems": {},
+  "_comment": "共享 Skill 分发用的空模板。真实登记写到运行时文件（见 systems-registry.js 路径解析），勿把个人项目 ID 打进分发包。"
+}

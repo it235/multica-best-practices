@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
-for rel in ["SKILL.md", "config.yaml", "scripts/trigger_cicd.py", "scripts/resolve_skills.py"]:
+for rel in ["SKILL.md", "config.yaml", "scripts/trigger_cicd.py", "scripts/按 skill 名.py"]:
     assert (SKILL_DIR / rel).is_file(), rel
 
 ast.parse((SKILL_DIR / "scripts/trigger_cicd.py").read_text(encoding="utf-8"))
