@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file.
 - **`multica_client.py` 扩展**：新增 `create_squad` / `update_squad` / `add_squad_member` / `list_squads` / `create_agent` / `add_agent_skills` / `set_agent_skills` / `list_runtimes`
 - **AGENTS.md / README（中英）** 仓库结构补充 `scripts/` 说明，并在核心约定中加入「自动化配置驱动且不含机密」
 - **5 分钟快速开始拆为两种模式**：**方式 A 自动**（脚本，一条命令建好整套）/ **方式 B 手工**（复制粘贴 Step 1–3）；Step 4–6（建 Issue → 分配 → 运行）两种模式共用
+- **主流程表述修正（中英）**：`需求收敛(G0) → 设计 → 实现 → 单测 → 部署 → 自动化测试` —— 原「测试」明确为**单测**（实现阶段内完成），**自动化测试**（T3）明确置于**部署之后**（对应 G2.5 部署 → T3 跑自动化）
+- **标语微调（中英 + AGENTS）**：`Copy. Paste. Run.` 后补「复制即用；或者一条命令自动建好整套」，覆盖脚本自动模式
 
 ### Security / 安全
 

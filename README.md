@@ -20,7 +20,7 @@
 ```text
 你创建：Agent（角色） + Squad（编排） + Skill（做法） + Issue（任务）
                   ↓
-       Leader 带队：需求收敛(G0) → 设计 → 实现 → 测试 → 部署
+       Leader 带队：需求收敛(G0) → 设计 → 实现 → 单测 → 部署 → 自动化测试
                   ↓
    每步门禁（multica-verification skill 复跑）→ Human 最终验收
 ```

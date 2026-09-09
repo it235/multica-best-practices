@@ -20,7 +20,7 @@ In one sentence: **a set of Multica squad configurations continuously refined th
 ```text
 You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue (task)
                   ↓
-       Leader runs the squad: converge (G0) → design → implement → test → deploy
+       Leader runs the squad: converge (G0) → design → implement → unit test → deploy → automated testing
                   ↓
    Gate each step (rerun via the multica-verification skill) → Human final acceptance
    ```
