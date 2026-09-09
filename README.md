@@ -4,7 +4,7 @@
 
 > 一个复用度极高的超级个体编排流程（从 PRD 到 CICD）。
 > 面向 [Multica](https://github.com/multica-ai/multica) 的 Agent · Squad · Skill · Issue 实战模板。
-> **Copy. Paste. Run.**
+> **Copy. Paste. Run.** —— 复制即用；或者一条命令自动建好整套。
 
 本仓库把「一个需求从 Issue 走到可上线」需要的**角色、流程、门禁、平台对接**做成可直接复制的配置。你不必从零写 Prompt：复制一个 Starter → 在平台壳里填 `.env` → 跑真实任务，再按团队情况裁剪。
 
@@ -66,6 +66,8 @@ templates/  ⭐ 从这里开始：可直接复制的全部配置
 docs/          ⭐ 先读这一页：指令放哪 / 门禁证据 / 常见错误 / 裁剪扩展
 ├── zh_CN/              中文方法论
 └── en_US/              英文方法论
+scripts/       ⚙️ 可选自动化：一键把模板推送到 Multica（建小队 / 建智能体 / 导入并绑定 skills）
+└── multica-sync/       Python 3.9+ 仅标准库，全部幂等；详见 scripts/multica-sync/README.md
 ```
 
 ## 完整流程一览
@@ -212,7 +214,47 @@ flowchart TB
 一个 **Multica 环境**（能创建 Agent / Squad / Skill / Issue）。
 还没有？先看 [Multica 文档](https://www.multica.ai/docs) 或 [How Multica works](https://www.multica.ai/docs/how-multica-works)（3 分钟）。
 
-### 复制 software-development Starter
+下面两条路，**选一条**即可：
+
+| 模式 | 你要做的 | 耗时 | 适合 |
+| --- | --- | --- | --- |
+| **方式 A · 自动** | 跑 1 条命令，整套小队自动建好 | ~1 分钟 | 想在自己 workspace 里直接跑起来 |
+| **方式 B · 手工** | 按 Step 1–3 复制粘贴 | ~5 分钟 | 只想看模板长什么样，或只取走一两个文件 |
+
+Step 4–6（建 Issue → 分配 → 运行）两种模式**共用**。
+
+---
+
+### 方式 A — 自动（脚本，推荐）
+
+[`scripts/multica-sync`](./scripts/multica-sync) 把本仓库模板一次性推到你的 workspace：
+**导入 skills → 创建/更新 agents → 创建小队 → 加成员 → 绑定 skills**。
+幂等（可反复跑）、以**名称**对齐（不用填任何 UUID）、仅依赖 Python 3.9+ 标准库。
+
+```powershell
+cd scripts/multica-sync
+
+$env:MULTICA_API_TOKEN = "mul_xxx"                           # 你的 API Token
+$env:MULTICA_API_URL   = "https://your-multica.example.com"  # 你的 Multica 地址
+
+python bootstrap_squad.py --workspace 100 --dry-run   # 先预览（可选）
+python bootstrap_squad.py --workspace 100             # 一条命令建好整套
+```
+
+就这两条命令：默认用内置的 `squad-bootstrap.example.json`（15 个角色 + 各自挂载的 skills）。
+想改角色或挂载时，复制一份再改：
+
+```powershell
+cp squad-bootstrap.example.json squad-bootstrap.json
+python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
+```
+
+> 只想同步部分角色 / 精确覆盖绑定 / 指定 runtime：见 [`scripts/multica-sync/README.md`](./scripts/multica-sync/README.md)。
+> 自动模式已完成 Step 1–3，直接跳到 **Step 4 创建 Issue**。
+
+---
+
+### 方式 B — 手工（复制粘贴）
 
 👉 **[`templates/zh_CN/squad/software-development`](./templates/zh_CN/squad/software-development)**
 
@@ -224,7 +266,7 @@ flowchart TB
 - 1 个 Issue 模板（含「涉及端」范围声明；来源支持「链接型 / 全量自包含」二选一）
 - 1 个软件开发工作流（任意角色可缺失的条件路由，含 G2.5 CI/CD）
 
-### Step 1 — 创建 Agents
+#### Step 1 — 创建 Agents
 
 在 Multica 创建 9 个 Agent（命名遵循 [`docs/zh_CN/naming-conventions.md`](./docs/zh_CN/naming-conventions.md)），把 [`templates/zh_CN/agents/`](./templates/zh_CN/agents/) 下对应文件的代码块复制到各自 Instructions：
 
@@ -242,7 +284,7 @@ flowchart TB
 
 > `leader.md` 不需要单独建 Agent：Squad Instructions 只注入 Leader，`squad.md` 就是它的行为配置。ProductManager 为可选角色，仅当需求无就绪范围标识时由 Leader 派发。
 
-### Step 2 — 创建 Skills
+#### Step 2 — 创建 Skills
 
 把 `templates/zh_CN/skills/` 下的 Skill 按需复制到 Multica 的 `skills/`（完整清单与分层见 [`skills/README.md`](./templates/zh_CN/skills/README.md)，目前共 30 个，分**内容 / 编排 / 平台 / 评审**四层）。推荐起步最少集：
 
@@ -271,7 +313,7 @@ flowchart TB
 
 > 所有 Skill 共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间，分四类（详见 `skills/README.md` 与 `docs/zh_CN/role-skills-architecture.md`）：**内容层**（requirement-analysis / technical-design / backend-impl / frontend-impl / test-t1·t2·t3 / verification）；**编排层**（`multica-artifact-*-sync` 六个 + `multica-test-orchestration`，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 五个，唯一允许出现公司基建地址/凭据**占位**的地方，公开仓库只给占位壳）；**评审层**（multica-review-* 六个 + gate-setup）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
 
-### Step 3 — 创建 Squad
+#### Step 3 — 创建 Squad
 
 创建 Squad，把 `templates/zh_CN/squad/software-development/squad.md` 复制到 Squad Instructions。
 

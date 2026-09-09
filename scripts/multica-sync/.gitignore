@@ -1,0 +1,7 @@
+# 本地环境值（含内网地址 / workspace）—— 不提交
+config.local.json
+squad-bootstrap.json
+agent-mapping.json
+
+__pycache__/
+*.pyc

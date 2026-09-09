@@ -4,7 +4,7 @@
 
 > A highly reusable super-individual orchestration flow — from PRD to CICD.
 > Practical Agent · Squad · Skill · Issue templates for [Multica](https://github.com/multica-ai/multica).
-> **Copy. Paste. Run.**
+> **Copy. Paste. Run.** — copy and it works; or build the whole squad with one command.
 
 This repo turns everything a requirement needs to travel from Issue to production — **roles, workflow, gates, platform integration** — into copy-ready config. You don't write prompts from scratch: copy a Starter → fill the platform shells' `.env` → run a real task, then tailor to your team.
 
@@ -66,6 +66,8 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
    docs/          ⭐ Read this first: where instructions go / gates & evidence / common mistakes / adapt & scale
    ├── zh_CN/              Chinese methodology
    └── en_US/              English methodology
+   scripts/       ⚙️ Optional automation: push templates to Multica in one shot (squad / agents / skills / bindings)
+   └── multica-sync/       Python 3.9+, stdlib only, fully idempotent; see scripts/multica-sync/README.md
    ```
 
    ## Full flow at a glance
@@ -212,7 +214,48 @@ flowchart TB
 A **Multica environment** where you can create Agents / Squads / Skills / Issues.
 Don't have one yet? Read the [Multica docs](https://www.multica.ai/docs) or [How Multica works](https://www.multica.ai/docs/how-multica-works) (3 minutes).
 
-### Copy the software-development Starter
+Two paths — **pick one**:
+
+| Mode | What you do | Time | Good for |
+| --- | --- | --- | --- |
+| **Mode A · automatic** | Run one command; the whole squad is built | ~1 min | Getting it running in your own workspace |
+| **Mode B · manual** | Copy-paste through Step 1–3 | ~5 min | Just browsing the templates, or taking one or two files |
+
+Steps 4–6 (create Issue → assign → run) are **shared** by both modes.
+
+---
+
+### Mode A — Automatic (scripts, recommended)
+
+[`scripts/multica-sync`](./scripts/multica-sync) pushes this repo's templates to your workspace in one shot:
+**import skills → create/update agents → create squad → add members → bind skills**.
+It is idempotent (re-runnable), joins everything **by name** (no UUIDs to fill in), and needs only the Python 3.9+ standard library.
+
+```powershell
+cd scripts/multica-sync
+
+$env:MULTICA_API_TOKEN = "mul_xxx"                           # your API token
+$env:MULTICA_API_URL   = "https://your-multica.example.com"  # your Multica URL
+
+python bootstrap_squad.py --workspace 100 --dry-run   # preview first (optional)
+python bootstrap_squad.py --workspace 100             # one command builds everything
+```
+
+That's it — it uses the bundled `squad-bootstrap.example.json` (15 roles with their skills) by default.
+To customise roles or mounts, copy it first:
+
+```powershell
+cp squad-bootstrap.example.json squad-bootstrap.json
+python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
+```
+
+> Reading English templates? Add `$env:MULTICA_TEMPLATE_LANG = "en_US"` (default is `zh_CN`, which is the most complete tree).
+> Mode A already covers Steps 1–3; jump straight to **Step 4 — Create the Issue**.
+> For partial syncs, exact binding replacement or a specific runtime, see [`scripts/multica-sync/README.md`](./scripts/multica-sync/README.md).
+
+---
+
+### Mode B — Manual (copy-paste)
 
 👉 **[`templates/en_US/squad/software-development/README.md`](./templates/en_US/squad/software-development/README.md)**
 
@@ -224,7 +267,7 @@ You get:
 - 1 Issue template (with the "affected ends" scope declaration; source supports "linked / fully self-contained" — pick one)
 - 1 software-development workflow (conditional routing where any role can be missing, incl. G2.5 CI/CD)
 
-### Step 1 — Create Agents
+#### Step 1 — Create Agents
 
 In Multica, create 9 Agents (naming follows [`docs/en_US/naming-conventions.md`](./docs/en_US/naming-conventions.md)) and copy the code block from the matching file under [`templates/en_US/agents/`](./templates/en_US/agents/) into each Agent's Instructions:
 
@@ -242,7 +285,7 @@ In Multica, create 9 Agents (naming follows [`docs/en_US/naming-conventions.md`]
 
 > `leader.md` does not need a separate Agent: Squad Instructions only inject the Leader, and `squad.md` is its behavior config. ProductManager is optional — dispatched by the Leader only when the requirement has no ready-scope marker.
 
-### Step 2 — Create Skills
+#### Step 2 — Create Skills
 
 In Multica, create the Skills below, copying the code block from the matching `SKILL.md`:
 
@@ -264,7 +307,7 @@ In Multica, create the Skills below, copying the code block from the matching `S
 
 > The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-requirement-analysis / multica-technical-design / multica-implementation); **artifact-orchestration** (the `multica-artifact-*-sync` set + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 30-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
 
-### Step 3 — Create the Squad
+#### Step 3 — Create the Squad
 
 Create a Squad and copy `templates/en_US/squad/software-development/squad.md` into the Squad Instructions.
 

@@ -1,0 +1,5 @@
+{
+  "_comment": "复制为 config.local.json（已在 .gitignore 中）。只放本机/本环境的值，切勿提交真实地址或凭据。",
+  "base_url": "https://multica.example.com",
+  "workspace": "100"
+}

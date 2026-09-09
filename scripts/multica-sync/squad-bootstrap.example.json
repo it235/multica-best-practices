@@ -1,0 +1,124 @@
+{
+  "_comment": "复制为 squad-bootstrap.json 后按需修改。stem = templates/zh_CN/agents/<stem>.md；skills = templates/zh_CN/skills 下 SKILL.md frontmatter 的 name；role 用于小队成员角色（与 squad_mapping.ROLE_TO_STEM 保持一致）；instructions_file 相对 templates/<lang> 解析。",
+  "squad": {
+    "name": "软件开发小队",
+    "description": "需求到上线的交付物驱动小队（含评审门禁）",
+    "instructions_file": "squad/software-development/squad.md",
+    "leader": "leader"
+  },
+  "defaults": {
+    "visibility": "workspace",
+    "description": ""
+  },
+  "agents": [
+    {
+      "stem": "leader",
+      "name": "Leader",
+      "role": "Leader",
+      "skills": ["multica-verification", "multica-manage-skills"]
+    },
+    {
+      "stem": "product-manager",
+      "name": "ProductManager",
+      "role": "ProductManager",
+      "skills": [
+        "multica-requirement-analysis",
+        "multica-artifact-req-sync",
+        "multica-platform-confluence",
+        "multica-platform-jira"
+      ]
+    },
+    {
+      "stem": "architect",
+      "name": "Architect",
+      "role": "Architect",
+      "skills": ["multica-technical-design", "multica-artifact-design-sync"]
+    },
+    {
+      "stem": "designer",
+      "name": "Designer",
+      "role": "Designer",
+      "skills": ["multica-artifact-ui-sync", "multica-platform-figma"]
+    },
+    {
+      "stem": "frontend-developer",
+      "name": "FrontendDev",
+      "role": "FrontendDev",
+      "skills": ["multica-frontend-impl", "multica-artifact-frontend", "multica-implementation"]
+    },
+    {
+      "stem": "backend-developer",
+      "name": "BackendDev",
+      "role": "BackendDev",
+      "skills": ["multica-backend-impl", "multica-artifact-api-sync", "multica-implementation"]
+    },
+    {
+      "stem": "tester",
+      "name": "Tester",
+      "role": "Tester",
+      "skills": [
+        "multica-test-orchestration",
+        "multica-test-t1-design",
+        "multica-test-t2-coverage",
+        "multica-test-t3-ui-automation",
+        "multica-test-t3-api-automation",
+        "multica-platform-apifox"
+      ]
+    },
+    {
+      "stem": "devops",
+      "name": "DevOps",
+      "role": "DevOps",
+      "skills": ["multica-artifact-cicd-sync", "multica-platform-jenkins", "multica-gate-setup"]
+    },
+    {
+      "stem": "reviewer",
+      "name": "Reviewer",
+      "role": "Reviewer",
+      "skills": [
+        "multica-review-product",
+        "multica-review-architect",
+        "multica-review-designer",
+        "multica-review-frontend",
+        "multica-review-backend",
+        "multica-review-test"
+      ]
+    },
+    {
+      "stem": "product-reviewer",
+      "name": "ProductReviewer",
+      "role": "Reviewer",
+      "skills": ["multica-review-product"]
+    },
+    {
+      "stem": "arch-reviewer",
+      "name": "ArchReviewer",
+      "role": "Reviewer",
+      "skills": ["multica-review-architect"]
+    },
+    {
+      "stem": "design-reviewer",
+      "name": "DesignReviewer",
+      "role": "Reviewer",
+      "skills": ["multica-review-designer"]
+    },
+    {
+      "stem": "frontend-reviewer",
+      "name": "FrontendReviewer",
+      "role": "Reviewer",
+      "skills": ["multica-review-frontend"]
+    },
+    {
+      "stem": "backend-reviewer",
+      "name": "BackendReviewer",
+      "role": "Reviewer",
+      "skills": ["multica-review-backend"]
+    },
+    {
+      "stem": "test-reviewer",
+      "name": "TestReviewer",
+      "role": "Reviewer",
+      "skills": ["multica-review-test"]
+    }
+  ]
+}

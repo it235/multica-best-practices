@@ -1,0 +1,18 @@
+{
+  "_comment": "复制为 agent-mapping.json 后填入你的 agent UUID 或名称。示例值均为占位，不要提交真实 ID。",
+  "architect": "Architect",
+  "backend-developer": "BackendDev",
+  "backend-reviewer": "BackendReviewer",
+  "design-reviewer": "DesignReviewer",
+  "designer": "Designer",
+  "devops": "DevOps",
+  "frontend-developer": "FrontendDev",
+  "frontend-reviewer": "FrontendReviewer",
+  "leader": "Leader",
+  "product-manager": "ProductManager",
+  "product-reviewer": "ProductReviewer",
+  "arch-reviewer": "ArchReviewer",
+  "reviewer": "Reviewer",
+  "test-reviewer": "TestReviewer",
+  "tester": "Tester"
+}

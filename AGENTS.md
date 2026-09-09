@@ -27,6 +27,8 @@ docs/                Methodology (split by language: zh_CN/ + en_US/)
 ├── platform-collaboration.md      Platform capability is written exactly once
 ├── test-automation-in-repo.md     Automation assets land in the product repo; paths come from MULTICA.md
 └── multi-repo-and-issue-links.md  Multi-repo matrix routing + mandatory upstream reads
+scripts/             Optional automation: push templates to a Multica workspace (Python 3.9+, stdlib only)
+└── multica-sync/    Idempotent sync: import skills -> create/update agents -> create squad -> add members -> bind skills
 SECURITY.md          Security check before sharing templates
 ```
 
@@ -35,6 +37,7 @@ SECURITY.md          Security check before sharing templates
 - **Skill naming**: `multica-` prefix + lowercase hyphenated; the `name` field in `SKILL.md` matches the directory name.
 - **Skills mount by name**: documents reference `multica-xxx` (in backticks), never a repo path.
 - **Agent naming**: `role + project + member-id` (e.g. `BackendDev-user-service-u1024`).
+- **Automation is config-driven and secret-free**: `scripts/multica-sync/` holds optional sync scripts (Python 3.9+, stdlib only). They never contain a host, token, workspace or ID — those come from env vars or the git-ignored `config.local.json`; the join key is always the *name* (agent name, skill name, squad name), so no UUID is ever committed.
 - **Directory semantics**: inside each language tree, `agents/` = roles, `skills/` = practices, `squad/` = squad combinations, and `docs/` = methodology. CI hard-gate templates live in the `multica-gate-setup` skill; artifact landing to team platforms lives in the six `multica-artifact-*-sync` skills (see `artifact-conventions.md` — platforms are decoupled from role prompts, swappable per company); there is no standalone `gates/` directory.
 - **Four-layer skill model**: **content** (`multica-requirement-analysis`, `multica-technical-design`, `multica-backend-impl`, `multica-frontend-impl`, `multica-test-t1-design` / `-t2-coverage` / `-t3-*`) defines what "good" means; **orchestration** (`multica-artifact-*-sync`, `multica-test-orchestration`) lands artifacts and returns stable links; **platform** (`multica-platform-*`) is the only layer touching external systems; **review** (`multica-review-*`, plus `multica-verification` for gatekeeping) is executed by non-producers. Company-specific URLs/credentials live **only** in `multica-platform-*` shells. Public repo ships content + orchestration + platform shells; a team fills the shells' `config.yaml` / `scripts/` without touching roles. See `docs/zh_CN/role-skills-architecture.md`.
 - **`MULTICA.md` per product repo**: automation paths differ per project, so the product repo (one copy per repo when frontend/backend are split) carries a root `MULTICA.md` declaring layout, test paths, build/verify commands, and branch conventions. Tester/FrontendDev/BackendDev read it instead of guessing; a missing file is BLOCKED. See `docs/zh_CN/test-automation-in-repo.md`.

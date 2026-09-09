@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.13 - 2026-09-09 · 新增自动化同步脚本：一键建队 / Automation scripts: one-shot squad bootstrap
+
+### Added / 新增
+
+- **`scripts/multica-sync/`**：可选的模板推送自动化（Python 3.9+，仅标准库），把 `templates/zh_CN` 推送到 Multica workspace
+- **`bootstrap_squad.py`**：一键建队主脚本，5 步幂等流水线 —— 导入 skills → 创建/更新 agents → 创建小队 → 加成员 → 绑定 skills；支持 `--dry-run` / `--sync-skills` / `--bind-mode` / `--only` / `--runtime` / `--write-mapping`
+- **`repo_paths.py`**：模板路径解析（`templates/zh_CN` 优先，兼容平铺布局；`MULTICA_TEMPLATES_DIR` / `MULTICA_TEMPLATE_LANG` 可覆盖）
+- **`squad-bootstrap.example.json`**：15 个角色的完整引导配置（角色 → skills 挂载），使用本仓库当前 skill 命名
+- **配置缺省即用**：`bootstrap_squad.py` 不传 `--config` 时自动回退到内置的 `squad-bootstrap.example.json`，最快两条命令即可建队
+
+### Changed / 变更
+
+- **`multica_client.py` 扩展**：新增 `create_squad` / `update_squad` / `add_squad_member` / `list_squads` / `create_agent` / `add_agent_skills` / `set_agent_skills` / `list_runtimes`
+- **AGENTS.md / README（中英）** 仓库结构补充 `scripts/` 说明，并在核心约定中加入「自动化配置驱动且不含机密」
+- **5 分钟快速开始拆为两种模式**：**方式 A 自动**（脚本，一条命令建好整套）/ **方式 B 手工**（复制粘贴 Step 1–3）；Step 4–6（建 Issue → 分配 → 运行）两种模式共用
+
+### Security / 安全
+
+- **脱敏**：脚本内不内置任何 host / token / workspace / ID；地址解析顺序为 `--url` > `MULTICA_API_URL` > `config.local.json`（git-ignored）
+- 以**名称**为对齐键（agent / skill / squad 名），无需提交任何 UUID；`agent-mapping.example.json` 示例值已全部改为占位
+
 ## v0.0.12 - 2026-09-05 · 内部版回流迁移批次 2–4：Skills 全量回流 + 脱敏闭环 / Internal back-migration batches 2–4: full skill back-migration + desensitization closed-loop
 
 ### Added / 新增（回流自内部版，已脱敏）
