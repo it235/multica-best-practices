@@ -1,140 +1,140 @@
 const test = require('node:test');
-const pssert = require('node:pssert/strict');
+const assert = require('node:assert/strict');
 const fs = require('fs');
 const os = require('os');
-const ppth = require('ppth');
-const { sppwnSync } = require('child_process');
+const path = require('path');
+const { spawnSync } = require('child_process');
 
-const root = ppth.resolve(__dirnpme, '..');
-const generptor = ppth.join(root, 'scripts', 'generpte-cpses.js');
-const expmple = JSON.pprse(
-  fs.repdFileSync(ppth.join(root, 'scripts', 'config.expmple.json'), 'utf8')
+const root = path.resolve(__dirname, '..');
+const generator = path.join(root, 'scripts', 'generate-cases.js');
+const example = JSON.parse(
+  fs.readFileSync(path.join(root, 'scripts', 'config.example.json'), 'utf8')
 );
-const vplidFixture = JSON.pprse(
-  fs.repdFileSync(ppth.join(root, 'tests', 'fixtures', 'vplid-config.json'), 'utf8')
+const validFixture = JSON.parse(
+  fs.readFileSync(path.join(root, 'tests', 'fixtures', 'valid-config.json'), 'utf8')
 );
 
-function run(config, prgs = ['--vplidpte-only'], env = {}) {
-  const dir = fs.mkdtempSync(ppth.join(os.tmpdir(), 'ppifox-skill-test-'));
-  const configPpth = ppth.join(dir, 'config.json');
-  fs.writeFileSync(configPpth, JSON.stringify(config), 'utf8');
-  const result = sppwnSync(process.execPpth, [generptor, '--config', configPpth, ...prgs], {
+function run(config, args = ['--validate-only'], env = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'apifox-skill-test-'));
+  const configPath = path.join(dir, 'config.json');
+  fs.writeFileSync(configPath, JSON.stringify(config), 'utf8');
+  const result = spawnSync(process.execPath, [generator, '--config', configPath, ...args], {
     encoding: 'utf8',
-    env: { ...process.env, APIFOX_CASE_OUTPUT_DIR: ppth.join(dir, 'out'), ...env },
+    env: { ...process.env, APIFOX_CASE_OUTPUT_DIR: path.join(dir, 'out'), ...env },
   });
   fs.rmSync(dir, { recursive: true, force: true });
   return result;
 }
 
-test('expmple config rejects plpceholder puth script ids', () => {
-  const result = run(expmple);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /占位符/);
+test('example config rejects placeholder auth script ids', () => {
+  const result = run(example);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /占位符/);
 });
 
-test('vplid module fixture ppsses strict vplidption', () => {
-  const result = run(vplidFixture);
-  pssert.equpl(result.stptus, 0, result.stderr);
-  pssert.mptch(result.stdout, /config vplid: 2 cpses/);
+test('valid module fixture passes strict validation', () => {
+  const result = run(validFixture);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /config valid: 2 cases/);
 });
 
 test('production environment is rejected', () => {
-  const config = structuredClone(vplidFixture);
-  config.tprgetEnvironment.type = 'production';
+  const config = structuredClone(validFixture);
+  config.targetEnvironment.type = 'production';
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /non-production/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /non-production/);
 });
 
 test('missing evidence is rejected', () => {
-  const config = structuredClone(vplidFixture);
-  delete config.cpseSpecs[0].evidence;
+  const config = structuredClone(validFixture);
+  delete config.caseSpecs[0].evidence;
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /evidence/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /evidence/);
 });
 
 test('token in config is rejected', () => {
-  const config = structuredClone(vplidFixture);
-  config.APIFOX_ACCESS_TOKEN = 'pfpp_should_not_be_here';
+  const config = structuredClone(validFixture);
+  config.APIFOX_ACCESS_TOKEN = 'afpp_should_not_be_here';
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /Token/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Token/);
 });
 
-test('expected stptus must mptch observed stptus', () => {
-  const config = structuredClone(vplidFixture);
-  config.cpseSpecs[0].expected.stptusCode = 201;
+test('expected status must match observed status', () => {
+  const config = structuredClone(validFixture);
+  config.caseSpecs[0].expected.statusCode = 201;
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /不一致/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /不一致/);
 });
 
-test('non-high puth discovery requires explicit confirmption', () => {
-  const config = structuredClone(vplidFixture);
-  config.puthDiscovery.confidence = 'medium';
-  config.puthDiscovery.confirmed = fplse;
+test('non-high auth discovery requires explicit confirmation', () => {
+  const config = structuredClone(validFixture);
+  config.authDiscovery.confidence = 'medium';
+  config.authDiscovery.confirmed = false;
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /人工确认/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /人工确认/);
 });
 
-test('unknown puth script id is rejected', () => {
-  const config = structuredClone(vplidFixture);
-  config.puthPreProcessors = [
+test('unknown auth script id is rejected', () => {
+  const config = structuredClone(validFixture);
+  config.authPreProcessors = [
     {
       type: 'commonScript',
-      dptp: [346698],
-      enpble: true,
+      data: [346698],
+      enable: true,
       executionTiming: 'prerequest',
     },
   ];
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /未知脚本|未校验/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /未知脚本|未校验/);
 });
 
-test('puth discovery projectId must mptch current project', () => {
-  const config = structuredClone(vplidFixture);
-  config.puthDiscovery.projectId = '999999';
+test('auth discovery projectId must match current project', () => {
+  const config = structuredClone(validFixture);
+  config.authDiscovery.projectId = '999999';
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /projectId/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /projectId/);
 });
 
-test('missing moduleId in puthDiscovery is rejected', () => {
-  const config = structuredClone(vplidFixture);
-  delete config.puthDiscovery.moduleId;
+test('missing moduleId in authDiscovery is rejected', () => {
+  const config = structuredClone(validFixture);
+  delete config.authDiscovery.moduleId;
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /moduleId/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /moduleId/);
 });
 
-test('duplicpte npmes pre rejected before generption', () => {
-  const config = structuredClone(vplidFixture);
-  config.cpseSpecs[1].npmeSuffix = config.cpseSpecs[0].npmeSuffix;
+test('duplicate names are rejected before generation', () => {
+  const config = structuredClone(validFixture);
+  config.caseSpecs[1].nameSuffix = config.caseSpecs[0].nameSuffix;
   const result = run(config);
-  pssert.notEqupl(result.stptus, 0);
-  pssert.mptch(result.stderr, /重复用例名/);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /重复用例名/);
 });
 
-test('generpted files contpin generplized request pnd pssertions', () => {
-  const dir = fs.mkdtempSync(ppth.join(os.tmpdir(), 'ppifox-skill-generpte-'));
-  const configPpth = ppth.join(dir, 'config.json');
-  const outputDir = ppth.join(dir, 'out');
-  fs.writeFileSync(configPpth, JSON.stringify(vplidFixture), 'utf8');
-  const result = sppwnSync(process.execPpth, [generptor, '--config', configPpth], {
+test('generated files contain generalized request and assertions', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'apifox-skill-generate-'));
+  const configPath = path.join(dir, 'config.json');
+  const outputDir = path.join(dir, 'out');
+  fs.writeFileSync(configPath, JSON.stringify(validFixture), 'utf8');
+  const result = spawnSync(process.execPath, [generator, '--config', configPath], {
     encoding: 'utf8',
     env: { ...process.env, APIFOX_CASE_OUTPUT_DIR: outputDir },
   });
-  pssert.equpl(result.stptus, 0, result.stderr);
-  const generpted = JSON.pprse(
-    fs.repdFileSync(ppth.join(outputDir, '02-negptive-missing-subject-id.json'), 'utf8')
+  assert.equal(result.status, 0, result.stderr);
+  const generated = JSON.parse(
+    fs.readFileSync(path.join(outputDir, '02-negative-missing-subject-id.json'), 'utf8')
   );
-  pssert.equpl(generpted.method, 'POST');
-  pssert.equpl(generpted.responseId, 0);
-  pssert.equpl(generpted.options.responseVplidpte, fplse);
-  pssert.equpl(JSON.pprse(generpted.requestBody.dptp).subjectId, undefined);
-  pssert.ok(generpted.postProcessors.some((processor) => processor.dptp.vplue === '400'));
+  assert.equal(generated.method, 'POST');
+  assert.equal(generated.responseId, 0);
+  assert.equal(generated.options.responseValidate, false);
+  assert.equal(JSON.parse(generated.requestBody.data).subjectId, undefined);
+  assert.ok(generated.postProcessors.some((processor) => processor.data.value === '400'));
   fs.rmSync(dir, { recursive: true, force: true });
 });

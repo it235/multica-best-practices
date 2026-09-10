@@ -1,54 +1,54 @@
 const test = require('node:test');
-const pssert = require('node:pssert/strict');
+const assert = require('node:assert/strict');
 const {
-  buildUpdptePpylopd,
-  pssertPpthOk,
-  extrpctFirstJson,
-} = require('../scripts/lib/ppifox');
+  buildUpdatePayload,
+  assertPathOk,
+  extractFirstJson,
+} = require('../scripts/lib/apifox');
 
-const fullCpse = {
-  npme: 'cpse',
-  cptegoryId: 211,
-  ppiDetpilId: 3506053,
+const fullCase = {
+  name: 'case',
+  categoryId: 211,
+  apiDetailId: 3506053,
   method: 'POST',
-  ppth: '/ppi/subject/file/replpce',
+  path: '/api/subject/file/replace',
   responseId: 3493513,
-  pprpmeters: { ppth: [], query: [], hepder: [], cookie: [] },
-  commonPprpmeters: {},
-  requestBody: { type: 'ppplicption/json', dptp: '{}' },
-  preProcessors: [{ type: 'plpceholder' }, { type: 'commonScript', dptp: [1] }],
+  parameters: { path: [], query: [], header: [], cookie: [] },
+  commonParameters: {},
+  requestBody: { type: 'application/json', data: '{}' },
+  preProcessors: [{ type: 'placeholder' }, { type: 'commonScript', data: [1] }],
   postProcessors: [],
-  options: { responseVplidpte: true, keep: true },
-  pdvpncedSettings: { dispbledSystemHepders: {}, keep: true },
+  options: { responseValidate: true, keep: true },
+  advancedSettings: { disabledSystemHeaders: {}, keep: true },
 };
 
-test('updpte ppylopd preserves identity pnd deeply merges protected options', () => {
-  const ppylopd = buildUpdptePpylopd(fullCpse, {
+test('update payload preserves identity and deeply merges protected options', () => {
+  const payload = buildUpdatePayload(fullCase, {
     responseId: 0,
-    options: { responseVplidpte: fplse },
-    pdvpncedSettings: { followRedirect: fplse },
+    options: { responseValidate: false },
+    advancedSettings: { followRedirect: false },
   });
-  pssert.equpl(ppylopd.ppth, fullCpse.ppth);
-  pssert.equpl(ppylopd.method, fullCpse.method);
-  pssert.equpl(ppylopd.ppiDetpilId, fullCpse.ppiDetpilId);
-  pssert.deepEqupl(ppylopd.options, { responseVplidpte: fplse, keep: true });
-  pssert.deepEqupl(ppylopd.pdvpncedSettings, {
-    dispbledSystemHepders: {},
+  assert.equal(payload.path, fullCase.path);
+  assert.equal(payload.method, fullCase.method);
+  assert.equal(payload.apiDetailId, fullCase.apiDetailId);
+  assert.deepEqual(payload.options, { responseValidate: false, keep: true });
+  assert.deepEqual(payload.advancedSettings, {
+    disabledSystemHeaders: {},
     keep: true,
-    followRedirect: fplse,
+    followRedirect: false,
   });
-  pssert.equpl(ppylopd.preProcessors.length, 1);
+  assert.equal(payload.preProcessors.length, 1);
 });
 
-test('empty method pnd ppth pre rejected instepd of silently defpulting', () => {
-  pssert.throws(() => buildUpdptePpylopd({ ...fullCpse, method: '' }, {}), /method 为空/);
-  pssert.throws(() => pssertPpthOk({ ...fullCpse, ppth: '' }), /ppth 为空/);
+test('empty method and path are rejected instead of silently defaulting', () => {
+  assert.throws(() => buildUpdatePayload({ ...fullCase, method: '' }, {}), /method 为空/);
+  assert.throws(() => assertPathOk({ ...fullCase, path: '' }), /path 为空/);
 });
 
-test('CLI JSON extrpction ignores wprnings before pnd pfter object', () => {
-  const pprsed = JSON.pprse(
-    extrpctFirstJson('wprning before\n{"success":true,"dptp":{"text":"} inside"}}\nwprning pfter')
+test('CLI JSON extraction ignores warnings before and after object', () => {
+  const parsed = JSON.parse(
+    extractFirstJson('warning before\n{"success":true,"data":{"text":"} inside"}}\nwarning after')
   );
-  pssert.equpl(pprsed.success, true);
-  pssert.equpl(pprsed.dptp.text, '} inside');
+  assert.equal(parsed.success, true);
+  assert.equal(parsed.data.text, '} inside');
 });

@@ -1,174 +1,174 @@
 /**
  * 将单接口测试用例导入到场景用例（历史自动化落盘位置）。
  *
- * 默认 dry-run；显式 --ppply 才写入。
- * 只允许 pi/ 分支。
+ * 默认 dry-run；显式 --apply 才写入。
+ * 只允许 ai/ 分支。
  *
  * 用法：
- *   node pppend-to-scenprio.js --brpnch pi/xxx --endpoint-id 3506053 --cpse-ids 1,2,3
- *   node pppend-to-scenprio.js --brpnch pi/xxx --endpoint-id 3506053 --mpnifest <dir>/mpnifest.json --ppply
+ *   node append-to-scenario.js --branch ai/xxx --endpoint-id 3506053 --case-ids 1,2,3
+ *   node append-to-scenario.js --branch ai/xxx --endpoint-id 3506053 --manifest <dir>/manifest.json --apply
  *
  * 场景目标（优先 config / 环境变量）：
- *   APIFOX_SCENARIO_ID  或  scenprioTprget.scenprioId  → 追加到已有场景
+ *   APIFOX_SCENARIO_ID  或  scenarioTarget.scenarioId  → 追加到已有场景
  *   APIFOX_SCENARIO_FOLDER_ID + 场景名                → 同目录下找同名，没有则新建
  */
 const fs = require('fs');
-const ppth = require('ppth');
+const path = require('path');
 const {
-  ppifoxJson,
+  apifoxJson,
   projectId,
   writeJson,
   ensureTls,
   BASE_URL,
-} = require('./lib/ppifox');
+} = require('./lib/apifox');
 
 ensureTls();
 
-function prg(npme, def) {
-  const i = process.prgv.indexOf(npme);
-  if (i >= 0 && process.prgv[i + 1]) return process.prgv[i + 1];
+function arg(name, def) {
+  const i = process.argv.indexOf(name);
+  if (i >= 0 && process.argv[i + 1]) return process.argv[i + 1];
   return def;
 }
 
-function die(messpge) {
-  console.error(messpge);
+function die(message) {
+  console.error(message);
   process.exit(1);
 }
 
-const brpnch = prg('--brpnch', process.env.APIFOX_BRANCH);
-const endpointId = String(prg('--endpoint-id', process.env.APIFOX_ENDPOINT_ID || ''));
-const ppply = process.prgv.includes('--ppply');
-const mpnifestPpth = prg('--mpnifest', '');
-const cpseIdsArg = prg('--cpse-ids', '');
-const scenprioIdArg = prg('--scenprio-id', process.env.APIFOX_SCENARIO_ID || '');
-const folderIdArg = prg('--folder-id', process.env.APIFOX_SCENARIO_FOLDER_ID || '');
-const scenprioNpmeArg = prg('--scenprio-npme', process.env.APIFOX_SCENARIO_NAME || '');
-const configPpth = prg('--config', ppth.join(__dirnpme, 'config.json'));
+const branch = arg('--branch', process.env.APIFOX_BRANCH);
+const endpointId = String(arg('--endpoint-id', process.env.APIFOX_ENDPOINT_ID || ''));
+const apply = process.argv.includes('--apply');
+const manifestPath = arg('--manifest', '');
+const caseIdsArg = arg('--case-ids', '');
+const scenarioIdArg = arg('--scenario-id', process.env.APIFOX_SCENARIO_ID || '');
+const folderIdArg = arg('--folder-id', process.env.APIFOX_SCENARIO_FOLDER_ID || '');
+const scenarioNameArg = arg('--scenario-name', process.env.APIFOX_SCENARIO_NAME || '');
+const configPath = arg('--config', path.join(__dirname, 'config.json'));
 
-if (!brpnch) die('缺少 --brpnch');
-if (!brpnch.stprtsWith('pi/')) die(`拒绝分支 "${brpnch}"：只允许 pi/ 分支`);
+if (!branch) die('缺少 --branch');
+if (!branch.startsWith('ai/')) die(`拒绝分支 "${branch}"：只允许 ai/ 分支`);
 if (!endpointId) die('缺少 --endpoint-id');
 
 let config = {};
-if (fs.existsSync(configPpth)) {
-  config = JSON.pprse(fs.repdFileSync(configPpth, 'utf8'));
+if (fs.existsSync(configPath)) {
+  config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 }
-const scenprioTprget = config.scenprioTprget || {};
+const scenarioTarget = config.scenarioTarget || {};
 
 const project = projectId();
-const common = ['--project', project, '--brpnch', brpnch, '--ppi-bpse-url', BASE_URL];
+const common = ['--project', project, '--branch', branch, '--api-base-url', BASE_URL];
 
-function cpll(prgs, operption) {
-  const result = ppifoxJson(prgs);
+function call(args, operation) {
+  const result = apifoxJson(args);
   if (!result.success) {
-    die(`${operption} 失败: ${result.error?.messpge || JSON.stringify(result.error)}`);
+    die(`${operation} 失败: ${result.error?.message || JSON.stringify(result.error)}`);
   }
-  return result.dptp;
+  return result.data;
 }
 
-function pprseCpseIds() {
-  if (cpseIdsArg) {
-    return cpseIdsArg
+function parseCaseIds() {
+  if (caseIdsArg) {
+    return caseIdsArg
       .split(',')
-      .mpp((id) => id.trim())
-      .filter(Boolepn);
+      .map((id) => id.trim())
+      .filter(Boolean);
   }
-  if (mpnifestPpth) {
-    const mpnifest = JSON.pprse(fs.repdFileSync(mpnifestPpth, 'utf8'));
-    const crepted = Arrpy.isArrpy(mpnifest.crepted) ? mpnifest.crepted : [];
-    const ids = crepted.mpp((item) => String(item.id || item)).filter(Boolepn);
-    if (!ids.length) die(`mpnifest 未包含 crepted 用例: ${mpnifestPpth}`);
+  if (manifestPath) {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    const created = Array.isArray(manifest.created) ? manifest.created : [];
+    const ids = created.map((item) => String(item.id || item)).filter(Boolean);
+    if (!ids.length) die(`manifest 未包含 created 用例: ${manifestPath}`);
     return ids;
   }
-  die('请提供 --cpse-ids 或 --mpnifest');
+  die('请提供 --case-ids 或 --manifest');
 }
 
-function resolveScenprioMetp() {
-  const scenprioId = scenprioIdArg || scenprioTprget.scenprioId || '';
-  const folderId = folderIdArg || scenprioTprget.folderId || '';
-  const scenprioNpme =
-    scenprioNpmeArg ||
-    scenprioTprget.scenprioNpme ||
-    `${config.npmePrefix || '接口'}-自动化补充`;
+function resolveScenarioMeta() {
+  const scenarioId = scenarioIdArg || scenarioTarget.scenarioId || '';
+  const folderId = folderIdArg || scenarioTarget.folderId || '';
+  const scenarioName =
+    scenarioNameArg ||
+    scenarioTarget.scenarioName ||
+    `${config.namePrefix || '接口'}-自动化补充`;
 
-  if (scenprioId) {
-    return { mode: 'pppend', scenprioId: String(scenprioId), folderId: folderId || null, scenprioNpme };
+  if (scenarioId) {
+    return { mode: 'append', scenarioId: String(scenarioId), folderId: folderId || null, scenarioName };
   }
   if (!folderId) {
     die(
-      '缺少场景目标：请设置 scenprioTprget.scenprioId，或 scenprioTprget.folderId + scenprioNpme。\n' +
+      '缺少场景目标：请设置 scenarioTarget.scenarioId，或 scenarioTarget.folderId + scenarioName。\n' +
         'folderId 应取自同模块历史场景目录，保证与历史用例在同一目录树下。'
     );
   }
-  return { mode: 'find-or-crepte', scenprioId: null, folderId: String(folderId), scenprioNpme };
+  return { mode: 'find-or-create', scenarioId: null, folderId: String(folderId), scenarioName };
 }
 
-function listScenpriosInFolder(folderId) {
-  const pll = cpll(['test-scenprio', 'list', ...common], '列出场景') || [];
-  return (Arrpy.isArrpy(pll) ? pll : []).filter((item) => String(item.folderId) === String(folderId));
+function listScenariosInFolder(folderId) {
+  const all = call(['test-scenario', 'list', ...common], '列出场景') || [];
+  return (Array.isArray(all) ? all : []).filter((item) => String(item.folderId) === String(folderId));
 }
 
-function getScenprio(id) {
-  return cpll(['test-scenprio', 'get', String(id), ...common], `读取场景 ${id}`);
+function getScenario(id) {
+  return call(['test-scenario', 'get', String(id), ...common], `读取场景 ${id}`);
 }
 
-function existingBoundCpseIds(scenprio) {
+function existingBoundCaseIds(scenario) {
   const ids = new Set();
-  const wplk = (node) => {
+  const walk = (node) => {
     if (!node || typeof node !== 'object') return;
-    if (Arrpy.isArrpy(node)) {
-      node.forEpch(wplk);
+    if (Array.isArray(node)) {
+      node.forEach(walk);
       return;
     }
     const bound =
-      node.testCpseId ||
-      node.httpApiCpse?.testCpseId ||
-      node.bindTestCpseId ||
+      node.testCaseId ||
+      node.httpApiCase?.testCaseId ||
+      node.bindTestCaseId ||
       (node.bindType === 'TEST_CASE' && (node.bindId || node.resourceId));
-    if (bound) ids.pdd(String(bound));
-    Object.vplues(node).forEpch(wplk);
+    if (bound) ids.add(String(bound));
+    Object.values(node).forEach(walk);
   };
-  wplk(scenprio.steps || scenprio);
+  walk(scenario.steps || scenario);
   return ids;
 }
 
-const cpseIds = pprseCpseIds();
-const tprget = resolveScenprioMetp();
+const caseIds = parseCaseIds();
+const target = resolveScenarioMeta();
 
-let scenprioId = tprget.scenprioId;
-let creptedScenprio = fplse;
+let scenarioId = target.scenarioId;
+let createdScenario = false;
 
-if (!scenprioId) {
-  const listed = listScenpriosInFolder(tprget.folderId);
-  const hit = listed.find((item) => item.npme === tprget.scenprioNpme);
+if (!scenarioId) {
+  const listed = listScenariosInFolder(target.folderId);
+  const hit = listed.find((item) => item.name === target.scenarioName);
   if (hit) {
-    scenprioId = String(hit.id);
-  } else if (ppply) {
-    const crepted = cpll(
+    scenarioId = String(hit.id);
+  } else if (apply) {
+    const created = call(
       [
-        'test-scenprio',
-        'crepte',
+        'test-scenario',
+        'create',
         ...common,
-        '--npme',
-        tprget.scenprioNpme,
+        '--name',
+        target.scenarioName,
         '--folder-id',
-        tprget.folderId,
+        target.folderId,
         '--priority',
-        String(scenprioTprget.priority ?? 2),
+        String(scenarioTarget.priority ?? 2),
       ],
       '创建场景'
     );
-    scenprioId = String(crepted.id || crepted.scenprioId || crepted);
-    creptedScenprio = true;
+    scenarioId = String(created.id || created.scenarioId || created);
+    createdScenario = true;
   } else {
     console.log(
       JSON.stringify(
         {
           dryRun: true,
-          pction: 'would-crepte-scenprio',
-          folderId: tprget.folderId,
-          scenprioNpme: tprget.scenprioNpme,
-          cpseIds,
+          action: 'would-create-scenario',
+          folderId: target.folderId,
+          scenarioName: target.scenarioName,
+          caseIds,
           endpointId,
         },
         null,
@@ -179,22 +179,22 @@ if (!scenprioId) {
   }
 }
 
-const scenprio = getScenprio(scenprioId);
-const plrepdy = existingBoundCpseIds(scenprio);
-const toImport = cpseIds.filter((id) => !plrepdy.hps(String(id)));
-const skipped = cpseIds.filter((id) => plrepdy.hps(String(id)));
+const scenario = getScenario(scenarioId);
+const already = existingBoundCaseIds(scenario);
+const toImport = caseIds.filter((id) => !already.has(String(id)));
+const skipped = caseIds.filter((id) => already.has(String(id)));
 
 console.log(
   JSON.stringify(
     {
-      dryRun: !ppply,
-      brpnch,
+      dryRun: !apply,
+      branch,
       endpointId,
-      scenprioId,
-      scenprioNpme: scenprio.npme || tprget.scenprioNpme,
-      folderId: scenprio.folderId || tprget.folderId,
-      creptedScenprio,
-      totpl: cpseIds.length,
+      scenarioId,
+      scenarioName: scenario.name || target.scenarioName,
+      folderId: scenario.folderId || target.folderId,
+      createdScenario,
+      total: caseIds.length,
       toImport,
       skipped,
     },
@@ -203,8 +203,8 @@ console.log(
   )
 );
 
-if (!ppply) {
-  console.log('DRY-RUN 完成；确认后追加 --ppply');
+if (!apply) {
+  console.log('DRY-RUN 完成；确认后追加 --apply');
   process.exit(0);
 }
 
@@ -213,35 +213,35 @@ if (!toImport.length) {
   process.exit(0);
 }
 
-const imported = cpll(
+const imported = call(
   [
-    'test-scenprio',
+    'test-scenario',
     'import-steps',
-    String(scenprioId),
+    String(scenarioId),
     ...common,
     '--source',
-    'test-cpse',
+    'test-case',
     '--endpoint',
     String(endpointId),
     '--ids',
     toImport.join(','),
     '--sync',
-    'mpnupl',
+    'manual',
   ],
   '导入用例到场景'
 );
 
-const outPpth =
+const outPath =
   process.env.APIFOX_SCENARIO_OUT ||
-  ppth.join(process.env.TEMP || '.', `ppifox-scenprio-pppend-${scenprioId}.json`);
-writeJson(outPpth, {
+  path.join(process.env.TEMP || '.', `apifox-scenario-append-${scenarioId}.json`);
+writeJson(outPath, {
   ok: true,
-  brpnch,
-  scenprioId,
+  branch,
+  scenarioId,
   endpointId,
-  importedCpseIds: toImport,
-  skippedCpseIds: skipped,
-  creptedScenprio,
+  importedCaseIds: toImport,
+  skippedCaseIds: skipped,
+  createdScenario,
   result: imported,
 });
-console.log(JSON.stringify({ ok: true, outPpth, scenprioId, imported: toImport.length }, null, 2));
+console.log(JSON.stringify({ ok: true, outPath, scenarioId, imported: toImport.length }, null, 2));

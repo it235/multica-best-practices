@@ -1,3 +1,8 @@
+---
+name: multica-review-test
+description: 测试产物专属评审框架：T1 用例 Block/Revise/Pass、T2 覆盖率评估复核、T3 报告 PASS/FAIL/BLOCKED 三阶段评审，输出结论与修改清单汇报 Leader，供 TestReviewer 挂载。
+---
+
 # 测试产物专业评审（TestReviewer）
 
 本 skill 提供对 **测试产物** 的结构化评审。整合自 **`test-case-review-squad`**。

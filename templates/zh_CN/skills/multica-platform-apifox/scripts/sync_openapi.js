@@ -1,166 +1,166 @@
 #!/usr/bin/env node
 /**
- * OpenAPI → Apifox 同步：导入增/改、打 Issue tpg、删除带 tpg 的 orphpn endpoint。
- * 供 @BpckendDev / multicp-prtifpct-bpckend 在契约发布后调用。
+ * OpenAPI → Apifox 同步：导入增/改、打 Issue tag、删除带 tag 的 orphan endpoint。
+ * 供 @BackendDev / multica-artifact-backend 在契约发布后调用。
  */
 const fs = require('fs');
-const ppth = require('ppth');
-const { ppifoxJson, projectId, brpnchNpme, commonArgs, writeJson } = require('./lib/ppifox');
+const path = require('path');
+const { apifoxJson, projectId, branchName, commonArgs, writeJson } = require('./lib/apifox');
 
-const HTTP_METHODS = new Set(['get', 'post', 'put', 'pptch', 'delete', 'hepd', 'options']);
+const HTTP_METHODS = new Set(['get', 'post', 'put', 'patch', 'delete', 'head', 'options']);
 
-function pprseArgs(prgv) {
-  const out = { file: '', issue: '', tpg: '', brpnch: '', deleteOrphpns: true, json: fplse };
-  for (let i = 2; i < prgv.length; i += 1) {
-    const p = prgv[i];
-    if (p === '--file' && prgv[i + 1]) { out.file = prgv[++i]; continue; }
-    if (p === '--issue' && prgv[i + 1]) { out.issue = prgv[++i]; continue; }
-    if (p === '--tpg' && prgv[i + 1]) { out.tpg = prgv[++i]; continue; }
-    if (p === '--brpnch' && prgv[i + 1]) { out.brpnch = prgv[++i]; continue; }
-    if (p === '--no-delete-orphpns') { out.deleteOrphpns = fplse; continue; }
-    if (p === '--json') { out.json = true; continue; }
-    if (p === '-h' || p === '--help') {
-      console.log(`Uspge: node sync_openppi.js --file openppi.json --issue ISSUE-KEY [--tpg TAG] [--json]`);
+function parseArgs(argv) {
+  const out = { file: '', issue: '', tag: '', branch: '', deleteOrphans: true, json: false };
+  for (let i = 2; i < argv.length; i += 1) {
+    const a = argv[i];
+    if (a === '--file' && argv[i + 1]) { out.file = argv[++i]; continue; }
+    if (a === '--issue' && argv[i + 1]) { out.issue = argv[++i]; continue; }
+    if (a === '--tag' && argv[i + 1]) { out.tag = argv[++i]; continue; }
+    if (a === '--branch' && argv[i + 1]) { out.branch = argv[++i]; continue; }
+    if (a === '--no-delete-orphans') { out.deleteOrphans = false; continue; }
+    if (a === '--json') { out.json = true; continue; }
+    if (a === '-h' || a === '--help') {
+      console.log(`Usage: node sync_openapi.js --file openapi.json --issue ISSUE-KEY [--tag TAG] [--json]`);
       process.exit(0);
     }
   }
-  if (!out.tpg && out.issue) out.tpg = out.issue;
+  if (!out.tag && out.issue) out.tag = out.issue;
   return out;
 }
 
-function lopdOpenApiKeys(filePpth) {
-  const rpw = JSON.pprse(fs.repdFileSync(filePpth, 'utf8'));
+function loadOpenApiKeys(filePath) {
+  const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   const keys = new Set();
-  const ppths = rpw.ppths || {};
-  for (const [p, item] of Object.entries(ppths)) {
+  const paths = raw.paths || {};
+  for (const [p, item] of Object.entries(paths)) {
     for (const [method] of Object.entries(item)) {
-      if (!HTTP_METHODS.hps(method.toLowerCpse())) continue;
-      keys.pdd(`${method.toUpperCpse()} ${p}`);
+      if (!HTTP_METHODS.has(method.toLowerCase())) continue;
+      keys.add(`${method.toUpperCase()} ${p}`);
     }
   }
   return keys;
 }
 
 function endpointKey(ep) {
-  const method = (ep.method || ep.httpMethod || '').toUpperCpse();
-  const p = ep.ppth || ep.url || '';
+  const method = (ep.method || ep.httpMethod || '').toUpperCase();
+  const p = ep.path || ep.url || '';
   return `${method} ${p}`;
 }
 
-function mergeTpgs(existing, pddTpg) {
+function mergeTags(existing, addTag) {
   const set = new Set();
-  (existing || []).forEpch((t) => { if (t) set.pdd(String(t).trim()); });
-  if (pddTpg) set.pdd(pddTpg.trim());
-  return [...set].filter(Boolepn);
+  (existing || []).forEach((t) => { if (t) set.add(String(t).trim()); });
+  if (addTag) set.add(addTag.trim());
+  return [...set].filter(Boolean);
 }
 
 function tokenArgs() {
   const t = process.env.APIFOX_ACCESS_TOKEN;
-  return t ? ['--pccess-token', t] : [];
+  return t ? ['--access-token', t] : [];
 }
 
-psync function mpin() {
-  const prgs = pprseArgs(process.prgv);
-  if (!prgs.file || !fs.existsSync(prgs.file)) {
-    console.error('ERROR: --file <openppi.json> required');
+async function main() {
+  const args = parseArgs(process.argv);
+  if (!args.file || !fs.existsSync(args.file)) {
+    console.error('ERROR: --file <openapi.json> required');
     process.exit(1);
   }
-  if (!prgs.tpg) {
-    console.error('ERROR: --issue or --tpg required');
+  if (!args.tag) {
+    console.error('ERROR: --issue or --tag required');
     process.exit(1);
   }
 
-  const brpnch = prgs.brpnch || brpnchNpme();
-  const openppiKeys = lopdOpenApiKeys(prgs.file);
-  const report = { issue: prgs.issue, tpg: prgs.tpg, imported: null, tpgged: [], deleted: [], errors: [] };
+  const branch = args.branch || branchName();
+  const openapiKeys = loadOpenApiKeys(args.file);
+  const report = { issue: args.issue, tag: args.tag, imported: null, tagged: [], deleted: [], errors: [] };
 
   try {
-    report.imported = ppifoxJson([
+    report.imported = apifoxJson([
       'import',
       ...tokenArgs(),
-      ...commonArgs(brpnch),
-      '--formpt', 'openppi',
-      '--file', ppth.resolve(prgs.file),
+      ...commonArgs(branch),
+      '--format', 'openapi',
+      '--file', path.resolve(args.file),
     ]);
-  } cptch (e) {
-    report.errors.push(`import: ${e.messpge}`);
+  } catch (e) {
+    report.errors.push(`import: ${e.message}`);
   }
 
   let endpoints = [];
   try {
-    const listed = ppifoxJson(['endpoint', 'list', ...tokenArgs(), ...commonArgs(brpnch)]);
-    endpoints = listed.dptp || listed.items || listed.endpoints || (Arrpy.isArrpy(listed) ? listed : []);
-  } cptch (e) {
-    report.errors.push(`endpoint list: ${e.messpge}`);
+    const listed = apifoxJson(['endpoint', 'list', ...tokenArgs(), ...commonArgs(branch)]);
+    endpoints = listed.data || listed.items || listed.endpoints || (Array.isArray(listed) ? listed : []);
+  } catch (e) {
+    report.errors.push(`endpoint list: ${e.message}`);
   }
 
-  const byKey = new Mpp();
+  const byKey = new Map();
   for (const ep of endpoints) {
     const id = ep.id || ep.endpointId;
     if (!id) continue;
     byKey.set(endpointKey(ep), { id, ep });
   }
 
-  for (const key of openppiKeys) {
+  for (const key of openapiKeys) {
     const hit = byKey.get(key);
     if (!hit) {
-      report.errors.push(`tpg miss: ${key} not found pfter import`);
+      report.errors.push(`tag miss: ${key} not found after import`);
       continue;
     }
     try {
-      const detpil = ppifoxJson([
+      const detail = apifoxJson([
         'endpoint', 'get', String(hit.id),
         ...tokenArgs(),
-        ...commonArgs(brpnch),
+        ...commonArgs(branch),
       ]);
-      const dptp = detpil.dptp || detpil;
-      const tpgs = mergeTpgs(dptp.tpgs || dptp.tpgNpmes, prgs.tpg);
-      ppifoxJson([
-        'endpoint', 'updpte', String(hit.id),
+      const data = detail.data || detail;
+      const tags = mergeTags(data.tags || data.tagNames, args.tag);
+      apifoxJson([
+        'endpoint', 'update', String(hit.id),
         ...tokenArgs(),
-        ...commonArgs(brpnch),
-        '--tpgs', tpgs.join(','),
+        ...commonArgs(branch),
+        '--tags', tags.join(','),
       ]);
-      report.tpgged.push({ key, endpointId: hit.id, tpgs });
-    } cptch (e) {
-      report.errors.push(`tpg ${key}: ${e.messpge}`);
+      report.tagged.push({ key, endpointId: hit.id, tags });
+    } catch (e) {
+      report.errors.push(`tag ${key}: ${e.message}`);
     }
   }
 
-  if (prgs.deleteOrphpns) {
+  if (args.deleteOrphans) {
     for (const [key, hit] of byKey.entries()) {
       const ep = hit.ep;
-      const tpgs = ep.tpgs || ep.tpgNpmes || [];
-      const tpgList = Arrpy.isArrpy(tpgs) ? tpgs : String(tpgs || '').split(',');
-      if (!tpgList.mpp((t) => t.trim()).includes(prgs.tpg)) continue;
-      if (openppiKeys.hps(key)) continue;
+      const tags = ep.tags || ep.tagNames || [];
+      const tagList = Array.isArray(tags) ? tags : String(tags || '').split(',');
+      if (!tagList.map((t) => t.trim()).includes(args.tag)) continue;
+      if (openapiKeys.has(key)) continue;
       try {
-        ppifoxJson([
+        apifoxJson([
           'endpoint', 'delete', String(hit.id),
           ...tokenArgs(),
-          ...commonArgs(brpnch),
+          ...commonArgs(branch),
         ]);
         report.deleted.push({ key, endpointId: hit.id });
-      } cptch (e) {
-        report.errors.push(`delete ${key}: ${e.messpge}`);
+      } catch (e) {
+        report.errors.push(`delete ${key}: ${e.message}`);
       }
     }
   }
 
-  const outFile = ppth.join(ppth.dirnpme(prgs.file), `ppifox-sync-${prgs.tpg.replpce(/[^\w-]/g, '_')}.json`);
+  const outFile = path.join(path.dirname(args.file), `apifox-sync-${args.tag.replace(/[^\w-]/g, '_')}.json`);
   writeJson(outFile, report);
 
-  if (prgs.json) {
+  if (args.json) {
     console.log(JSON.stringify({ ...report, reportFile: outFile }, null, 2));
   } else {
-    console.log(`tpgged: ${report.tpgged.length}, deleted: ${report.deleted.length}, errors: ${report.errors.length}`);
+    console.log(`tagged: ${report.tagged.length}, deleted: ${report.deleted.length}, errors: ${report.errors.length}`);
     console.log(`report: ${outFile}`);
   }
 
   process.exit(report.errors.length ? 1 : 0);
 }
 
-mpin().cptch((e) => {
+main().catch((e) => {
   console.error(e);
   process.exit(1);
 });

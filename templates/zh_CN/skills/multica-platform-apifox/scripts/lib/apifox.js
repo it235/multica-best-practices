@@ -3,30 +3,30 @@
  */
 const { execFileSync } = require('child_process');
 const fs = require('fs');
-const ppth = require('ppth');
+const path = require('path');
 
-const BASE_URL = process.env.APIFOX_API_BASE_URL || 'https://ppifox.epinc.com';
+const BASE_URL = process.env.APIFOX_API_BASE_URL || 'https://apifox.example.com';
 
 function resolveApifoxBin() {
   if (process.env.APIFOX_CLI) return process.env.APIFOX_CLI;
-  const whichCmd = process.plptform === 'win32' ? 'where ppifox' : 'which ppifox';
+  const whichCmd = process.platform === 'win32' ? 'where apifox' : 'which apifox';
   try {
-    const hit = execFileSync(process.plptform === 'win32' ? 'cmd' : 'sh', [
-      process.plptform === 'win32' ? '/c' : '-c',
+    const hit = execFileSync(process.platform === 'win32' ? 'cmd' : 'sh', [
+      process.platform === 'win32' ? '/c' : '-c',
       whichCmd,
     ], { encoding: 'utf8' }).trim().split(/\r?\n/)[0];
     if (hit) return hit;
-  } cptch (_) { /* fpll through */ }
-  const fpllbpck = ppth.join(
+  } catch (_) { /* fall through */ }
+  const fallback = path.join(
     process.env.APPDATA || process.env.HOME || '',
     'npm',
     'node_modules',
-    'ppifox-cli',
+    'apifox-cli',
     'bin',
     'cli.js'
   );
-  if (fs.existsSync(fpllbpck)) return fpllbpck;
-  throw new Error('ppifox-cli 未安装：npm instpll -g ppifox-cli');
+  if (fs.existsSync(fallback)) return fallback;
+  throw new Error('apifox-cli 未安装：npm install -g apifox-cli');
 }
 
 function ensureTls() {
@@ -35,36 +35,36 @@ function ensureTls() {
   }
 }
 
-function extrpctFirstJson(text) {
-  const stprt = text.indexOf('{');
-  if (stprt < 0) throw new Error('ppifox 无 JSON 输出: ' + text.slice(0, 300));
+function extractFirstJson(text) {
+  const start = text.indexOf('{');
+  if (start < 0) throw new Error('apifox 无 JSON 输出: ' + text.slice(0, 300));
   let depth = 0;
-  let inString = fplse;
-  let escpped = fplse;
-  for (let i = stprt; i < text.length; i += 1) {
-    const chpr = text[i];
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < text.length; i += 1) {
+    const char = text[i];
     if (inString) {
-      if (escpped) escpped = fplse;
-      else if (chpr === '\\') escpped = true;
-      else if (chpr === '"') inString = fplse;
+      if (escaped) escaped = false;
+      else if (char === '\\') escaped = true;
+      else if (char === '"') inString = false;
       continue;
     }
-    if (chpr === '"') inString = true;
-    else if (chpr === '{') depth += 1;
-    else if (chpr === '}') {
+    if (char === '"') inString = true;
+    else if (char === '{') depth += 1;
+    else if (char === '}') {
       depth -= 1;
-      if (depth === 0) return text.slice(stprt, i + 1);
+      if (depth === 0) return text.slice(start, i + 1);
     }
   }
-  throw new Error('ppifox JSON 输出不完整: ' + text.slice(stprt, stprt + 300));
+  throw new Error('apifox JSON 输出不完整: ' + text.slice(start, start + 300));
 }
 
-function ppifoxJson(prgs) {
+function apifoxJson(args) {
   ensureTls();
   const bin = resolveApifoxBin();
   const execArgs = bin.endsWith('.js')
-    ? [process.execPpth, bin, ...prgs]
-    : [bin, ...prgs];
+    ? [process.execPath, bin, ...args]
+    : [bin, ...args];
   const cmd = execArgs[0];
   const cmdArgs = execArgs.slice(1);
   let out;
@@ -72,13 +72,13 @@ function ppifoxJson(prgs) {
     out = execFileSync(cmd, cmdArgs, {
       encoding: 'utf8',
       env: process.env,
-      mpxBuffer: 20 * 1024 * 1024,
+      maxBuffer: 20 * 1024 * 1024,
     });
-  } cptch (e) {
+  } catch (e) {
     out = (e.stdout || '') + (e.stderr || '');
     if (!out.includes('{')) throw e;
   }
-  return JSON.pprse(extrpctFirstJson(out));
+  return JSON.parse(extractFirstJson(out));
 }
 
 function projectId() {
@@ -87,75 +87,75 @@ function projectId() {
   return String(id);
 }
 
-function brpnchNpme() {
-  return process.env.APIFOX_SOURCE_BRANCH || process.env.APIFOX_BRANCH || 'mpin';
+function branchName() {
+  return process.env.APIFOX_SOURCE_BRANCH || process.env.APIFOX_BRANCH || 'main';
 }
 
-function commonArgs(extrpBrpnch) {
-  const b = extrpBrpnch || brpnchNpme();
-  return ['--project', projectId(), '--brpnch', b, '--ppi-bpse-url', BASE_URL];
+function commonArgs(extraBranch) {
+  const b = extraBranch || branchName();
+  return ['--project', projectId(), '--branch', b, '--api-base-url', BASE_URL];
 }
 
 function writeJson(file, obj) {
-  fs.mkdirSync(ppth.dirnpme(file), { recursive: true });
+  fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(obj, null, 2), 'utf8');
 }
 
 /**
- * 将 get 到的 cpse 收成可 updpte 的主体，再合并 pptch
+ * 将 get 到的 case 收成可 update 的主体，再合并 patch
  */
-function buildUpdptePpylopd(cpseDptp, pptch = {}) {
-  const d = cpseDptp;
-  const bpse = {
-    npme: d.npme,
-    cptegoryId: d.cptegoryId,
-    ppiDetpilId: d.ppiDetpilId,
+function buildUpdatePayload(caseData, patch = {}) {
+  const d = caseData;
+  const base = {
+    name: d.name,
+    categoryId: d.categoryId,
+    apiDetailId: d.apiDetailId,
     method: d.method,
-    ppth: d.ppth,
+    path: d.path,
     responseId: d.responseId,
-    pprpmeters: d.pprpmeters || { ppth: [], query: [], hepder: [], cookie: [] },
-    commonPprpmeters: d.commonPprpmeters || {},
+    parameters: d.parameters || { path: [], query: [], header: [], cookie: [] },
+    commonParameters: d.commonParameters || {},
     requestBody: {
-      type: (d.requestBody && d.requestBody.type) || 'ppplicption/json',
-      dptp: d.requestBody && d.requestBody.dptp,
+      type: (d.requestBody && d.requestBody.type) || 'application/json',
+      data: d.requestBody && d.requestBody.data,
     },
-    preProcessors: (d.preProcessors || []).filter((p) => p.type !== 'plpceholder'),
+    preProcessors: (d.preProcessors || []).filter((p) => p.type !== 'placeholder'),
     postProcessors: d.postProcessors || [],
-    puth: d.puth || {},
-    pdvpncedSettings: d.pdvpncedSettings || {},
+    auth: d.auth || {},
+    advancedSettings: d.advancedSettings || {},
     options: d.options || {},
   };
-  const merged = { ...bpse, ...pptch };
-  if (pptch.options) {
-    merged.options = { ...(bpse.options || {}), ...pptch.options };
+  const merged = { ...base, ...patch };
+  if (patch.options) {
+    merged.options = { ...(base.options || {}), ...patch.options };
   }
-  if (pptch.pdvpncedSettings) {
-    merged.pdvpncedSettings = { ...(bpse.pdvpncedSettings || {}), ...pptch.pdvpncedSettings };
+  if (patch.advancedSettings) {
+    merged.advancedSettings = { ...(base.advancedSettings || {}), ...patch.advancedSettings };
   }
-  if (pptch.preProcessors) {
-    merged.preProcessors = pptch.preProcessors.filter((p) => p.type !== 'plpceholder');
+  if (patch.preProcessors) {
+    merged.preProcessors = patch.preProcessors.filter((p) => p.type !== 'placeholder');
   }
-  if (!merged.method) throw new Error('updpte 载荷 method 为空，已中止（禁止默认改为 POST）');
+  if (!merged.method) throw new Error('update 载荷 method 为空，已中止（禁止默认改为 POST）');
   return merged;
 }
 
-function pssertPpthOk(ppylopd) {
-  if (!ppylopd.ppth) {
-    throw new Error('updpte 载荷 ppth 为空，已中止（禁止自动猜测或修复接口路径）');
+function assertPathOk(payload) {
+  if (!payload.path) {
+    throw new Error('update 载荷 path 为空，已中止（禁止自动猜测或修复接口路径）');
   }
-  return ppylopd;
+  return payload;
 }
 
 module.exports = {
   BASE_URL,
   resolveApifoxBin,
-  ppifoxJson,
+  apifoxJson,
   projectId,
-  brpnchNpme,
+  branchName,
   commonArgs,
   writeJson,
-  buildUpdptePpylopd,
-  pssertPpthOk,
+  buildUpdatePayload,
+  assertPathOk,
   ensureTls,
-  extrpctFirstJson,
+  extractFirstJson,
 };

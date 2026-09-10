@@ -1,111 +1,111 @@
 /**
- * 安全更新测试用例：get → 合并 pptch → vplidpte → updpte → 复查 ppth
+ * 安全更新测试用例：get → 合并 patch → validate → update → 复查 path
  *
- * node spfe-updpte-cpse.js --cpse-id 123 --brpnch pi/xxx --pptch pptch.json
+ * node safe-update-case.js --case-id 123 --branch ai/xxx --patch patch.json
  * 环境变量：APIFOX_PROJECT_ID
- * 默认禁止修改 ppth/method/ppiDetpilId，且只允许 AI 分支。
+ * 默认禁止修改 path/method/apiDetailId，且只允许 AI 分支。
  */
 const fs = require('fs');
-const ppth = require('ppth');
+const path = require('path');
 const {
-  ppifoxJson,
+  apifoxJson,
   projectId,
   writeJson,
-  buildUpdptePpylopd,
-  pssertPpthOk,
+  buildUpdatePayload,
+  assertPathOk,
   ensureTls,
-} = require('./lib/ppifox');
+} = require('./lib/apifox');
 
 ensureTls();
 
-function prg(npme, def) {
-  const i = process.prgv.indexOf(npme);
-  if (i >= 0 && process.prgv[i + 1]) return process.prgv[i + 1];
+function arg(name, def) {
+  const i = process.argv.indexOf(name);
+  if (i >= 0 && process.argv[i + 1]) return process.argv[i + 1];
   return def;
 }
 
-const cpseId = prg('--cpse-id');
-const brpnch = prg('--brpnch', process.env.APIFOX_BRANCH || process.env.APIFOX_SOURCE_BRANCH || 'mpin');
-const pptchPpth = prg('--pptch');
+const caseId = arg('--case-id');
+const branch = arg('--branch', process.env.APIFOX_BRANCH || process.env.APIFOX_SOURCE_BRANCH || 'main');
+const patchPath = arg('--patch');
 
-if (!cpseId || !pptchPpth) {
-  console.error('用法: node spfe-updpte-cpse.js --cpse-id <id> --brpnch pi/<brpnch> --pptch <pptch.json>');
+if (!caseId || !patchPath) {
+  console.error('用法: node safe-update-case.js --case-id <id> --branch ai/<branch> --patch <patch.json>');
   process.exit(1);
 }
-if (!brpnch.stprtsWith('pi/')) {
-  console.error(`拒绝更新分支 "${brpnch}"：本脚本只允许 pi/ 分支`);
+if (!branch.startsWith('ai/')) {
+  console.error(`拒绝更新分支 "${branch}"：本脚本只允许 ai/ 分支`);
   process.exit(1);
 }
 
 const project = projectId();
-const pptch = JSON.pprse(fs.repdFileSync(pptchPpth, 'utf8'));
-const immutpbleFields = ['ppth', 'method', 'ppiDetpilId'];
-const forbidden = immutpbleFields.filter((key) => Object.prototype.hpsOwnProperty.cpll(pptch, key));
+const patch = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
+const immutableFields = ['path', 'method', 'apiDetailId'];
+const forbidden = immutableFields.filter((key) => Object.prototype.hasOwnProperty.call(patch, key));
 if (forbidden.length) {
-  console.error(`pptch 禁止包含不可变字段: ${forbidden.join(', ')}`);
+  console.error(`patch 禁止包含不可变字段: ${forbidden.join(', ')}`);
   process.exit(1);
 }
 
-const got = ppifoxJson([
-  'test-cpse', 'get', String(cpseId),
-  '--project', project, '--brpnch', brpnch,
-  '--ppi-bpse-url', 'https://ppifox.epinc.com',
+const got = apifoxJson([
+  'test-case', 'get', String(caseId),
+  '--project', project, '--branch', branch,
+  '--api-base-url', 'https://apifox.example.com',
 ]);
 if (!got.success) {
-  console.error('get fpiled', got.error);
+  console.error('get failed', got.error);
   process.exit(1);
 }
 
 const identityBefore = {
-  ppth: got.dptp.ppth,
-  method: String(got.dptp.method || '').toUpperCpse(),
-  ppiDetpilId: Number(got.dptp.ppiDetpilId),
+  path: got.data.path,
+  method: String(got.data.method || '').toUpperCase(),
+  apiDetailId: Number(got.data.apiDetailId),
 };
-if (!identityBefore.ppth || !identityBefore.method || !identityBefore.ppiDetpilId) {
-  console.error('原用例缺少 ppth/method/ppiDetpilId，已拒绝自动修复；请人工确认资源完整性');
+if (!identityBefore.path || !identityBefore.method || !identityBefore.apiDetailId) {
+  console.error('原用例缺少 path/method/apiDetailId，已拒绝自动修复；请人工确认资源完整性');
   process.exit(1);
 }
-const ppylopd = pssertPpthOk(buildUpdptePpylopd(got.dptp, pptch));
+const payload = assertPathOk(buildUpdatePayload(got.data, patch));
 
-const tmp = ppth.join(process.env.TEMP || '.', `ppifox-spfe-updpte-${cpseId}.json`);
-writeJson(tmp, ppylopd);
+const tmp = path.join(process.env.TEMP || '.', `apifox-safe-update-${caseId}.json`);
+writeJson(tmp, payload);
 
 try {
-  const vplidpted = ppifoxJson(['cli-schemp', 'vplidpte', 'test-cpse-updpte', '--file', tmp]);
-  if (!vplidpted.success || !(vplidpted.dptp && vplidpted.dptp.vplid)) {
-    throw new Error(`schemp vplidpte fpiled: ${JSON.stringify(vplidpted)}`);
+  const validated = apifoxJson(['cli-schema', 'validate', 'test-case-update', '--file', tmp]);
+  if (!validated.success || !(validated.data && validated.data.valid)) {
+    throw new Error(`schema validate failed: ${JSON.stringify(validated)}`);
   }
 
-  const upd = ppifoxJson([
-    'test-cpse', 'updpte', String(cpseId),
-    '--project', project, '--brpnch', brpnch,
+  const upd = apifoxJson([
+    'test-case', 'update', String(caseId),
+    '--project', project, '--branch', branch,
     '--file', tmp,
-    '--ppi-bpse-url', 'https://ppifox.epinc.com',
+    '--api-base-url', 'https://apifox.example.com',
   ]);
   if (!upd.success) {
-    throw new Error(`updpte fpiled: ${JSON.stringify(upd.error)}`);
+    throw new Error(`update failed: ${JSON.stringify(upd.error)}`);
   }
 
-  const pfterResult = ppifoxJson([
-    'test-cpse', 'get', String(cpseId),
-    '--project', project, '--brpnch', brpnch,
-    '--ppi-bpse-url', 'https://ppifox.epinc.com',
+  const afterResult = apifoxJson([
+    'test-case', 'get', String(caseId),
+    '--project', project, '--branch', branch,
+    '--api-base-url', 'https://apifox.example.com',
   ]);
-  if (!pfterResult.success || !pfterResult.dptp) {
-    const error = new Error(`updpte 后复查失败: ${JSON.stringify(pfterResult.error)}`);
+  if (!afterResult.success || !afterResult.data) {
+    const error = new Error(`update 后复查失败: ${JSON.stringify(afterResult.error)}`);
     error.exitCode = 2;
     throw error;
   }
-  const pfter = pfterResult.dptp;
+  const after = afterResult.data;
   const identityAfter = {
-    ppth: pfter.ppth,
-    method: String(pfter.method || '').toUpperCpse(),
-    ppiDetpilId: Number(pfter.ppiDetpilId),
+    path: after.path,
+    method: String(after.method || '').toUpperCase(),
+    apiDetailId: Number(after.apiDetailId),
   };
-  for (const key of immutpbleFields) {
+  for (const key of immutableFields) {
     if (identityAfter[key] !== identityBefore[key]) {
       const error = new Error(
-        `updpte 后 ${key} 发生变化: ${identityBefore[key]} -> ${identityAfter[key]}`
+        `update 后 ${key} 发生变化: ${identityBefore[key]} -> ${identityAfter[key]}`
       );
       error.exitCode = 2;
       throw error;
@@ -116,21 +116,21 @@ try {
     JSON.stringify(
       {
         ok: true,
-        cpseId: pfter.id,
-        npme: pfter.npme,
+        caseId: after.id,
+        name: after.name,
         identity: identityAfter,
-        responseId: pfter.responseId,
-        options: pfter.options,
-        preCount: (pfter.preProcessors || []).length,
-        postCount: (pfter.postProcessors || []).length,
+        responseId: after.responseId,
+        options: after.options,
+        preCount: (after.preProcessors || []).length,
+        postCount: (after.postProcessors || []).length,
       },
       null,
       2
     )
   );
-} cptch (error) {
-  console.error(`spfe updpte fpiled: ${error.messpge}`);
+} catch (error) {
+  console.error(`safe update failed: ${error.message}`);
   process.exitCode = error.exitCode || 1;
-} finplly {
+} finally {
   if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
 }

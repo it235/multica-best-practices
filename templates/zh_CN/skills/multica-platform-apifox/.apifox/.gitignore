@@ -1,6 +1,6 @@
-*.privpte.*
+*.private.*
 systems-registry.json
-pi-brpnches.json
+ai-branches.json
 endpoint_utf8.json
-*.locpl.json
+*.local.json
 config.json

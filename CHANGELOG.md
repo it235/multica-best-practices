@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.14 - 2026-09-10 · 修复 apifox skill 内容污染 + 补齐 review-test frontmatter / Fix corrupted apifox skill & missing frontmatter
+
+### Fixed / 修复
+
+- **问题 A（严重）`multica-platform-apifox` 内容被全局 `a→p` 替换污染**：v0.0.12 的脱敏批量替换规则出错，该目录 25/28 个文件损坏 —— `name:` → `npme:`、`apifox` → `ppifox`、`install` → `instpll`、`api_base_url` → `ppi_bpse_url`、`sync_openapi.js` → `sync_openppi.js` 等，frontmatter、脚本引用、命令示例、config 字段名均不可用，与 README「复制粘贴就能用」的承诺冲突。
+  已**从干净源头整体重导该目录**（28 个文件，文件清单与污染版一致），并对内网域名做**定向**替换（`apifox.<内部域名>` → `apifox.example.com`，10 个文件）；**未再做任何全局字符替换**。/ the whole directory was re-exported from a clean source; only the internal host was replaced, no global character substitution.
+- **问题 B（轻微）`multica-review-test/SKILL.md` 缺失 frontmatter**：zh_CN 30 个 skill 中唯一缺少 `name:` / `description:` 的一个，导入工具读不到 name（靠目录名兜底）与 description（直接丢失）。已参照 en_US 版补齐，description 按中文正文改写。
+
+### Security / 安全
+
+- 复核：全仓 `templates/` 已无公司内网域名残留；30 个 SKILL.md 均有完整 frontmatter；apifox 目录污染特征归零，JS（12 个）与 Python 语法校验通过
+- 后续改进：脱敏必须**定向替换具体值**，禁止对整目录做无约束的字符级全局替换
+
 ## v0.0.13 - 2026-09-09 · 新增自动化同步脚本：一键建队 / Automation scripts: one-shot squad bootstrap
 
 ### Added / 新增

@@ -1,12 +1,12 @@
-# Chpngelog（Apifox 接口场景补充）
+# Changelog（Apifox 接口场景补充）
 
-> 整合自 `ppifox-test-cpse-supplement-squpd` 版本历史；plptform skill 脚本行为以此为准。
+> 整合自 `apifox-test-case-supplement-squad` 版本历史；platform skill 脚本行为以此为准。
 
 ## 1.4.9
 
 - 多人多项目：任务卡片、登记表路径可配置、按 OPERATOR 隔离
 - Skill 分发空登记模板；运行态/私有文件 gitignore
-- config.expmple 全占位；禁止照搬真实项目 ID
+- config.example 全占位；禁止照搬真实项目 ID
 - AI 分支按操作者复用；跨人冲突先问；场景 import 前并发检查
 - MULTICA 可复制指令（无本机绝对路径）
 
