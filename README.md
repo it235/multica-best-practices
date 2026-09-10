@@ -43,8 +43,8 @@
 
 | Starter | 用途 | 状态 |
 | --- | --- | --- |
-| [Software Development](./templates/zh_CN/squad/software-development) | 常规功能开发（前后端按范围路由，任意角色可缺失） | 推荐 |
-| [Software Development (Reviewed)](./templates/zh_CN/squad/software-development-reviewed) | 在 Software Development 基础上，每个常规角色配专属 Reviewer，两层门禁（通用门禁 + 专业产出物评审） | 实验性 |
+| [Software Development (Reviewed)](./templates/zh_CN/squad/software-development-reviewed) | 推荐主流程：每个常规角色配专属 Reviewer，两层门禁（通用门禁 + 专业产出物评审） | 推荐 |
+| [Software Development](./templates/zh_CN/squad/software-development) | 轻量替代：前后端按范围路由，任意角色可缺失，仅一层通用门禁（无专业评审） | 可选 |
 | [Bug Fix](./templates/zh_CN/squad/bug-fix) | 根因 / 修复 / 回归（按影响面路由，跳过 Architect） | 实验性 |
 
 更多 Starter（Technical Research 等）将基于真实任务验证后补充。**不要假装最佳实践已经完成。**
@@ -71,7 +71,7 @@ scripts/       ⚙️ 可选自动化：一键把模板推送到 Multica（建�
 
 ## 完整流程一览
 
-一个需求从 Issue 进来到测试通过的全链路（基于 `templates/zh_CN/squad/software-development`）：
+一个需求从 Issue 进来到测试通过的全链路（基于 `templates/zh_CN/squad/software-development-reviewed`，即双层门禁主流程；`software-development` 为无专业评审的轻量替代）：
 
 ```mermaid
 flowchart TB
@@ -98,7 +98,7 @@ flowchart TB
         ARCH["@Architect（可选）<br/>multica-technical-design<br/>+ multica-artifact-architect<br/>Output: 技术设计稳定引用"]
         DESIGNER["@Designer（可选）<br/>multica-design-ui-impl<br/>Output: UI、全状态、Token、标注"]
         T1["@Tester T1（可选）<br/>multica-test-t1-design<br/>+ multica-test-orchestration<br/>Output: 功能用例 + AC- 追溯"]
-        R1["@Reviewer（可选）<br/>G1 业务设计评审"]
+        R1["@ProductReviewer / @ArchReviewer / @DesignReviewer（可选）<br/>G1 专业产出物评审<br/>（需求 / 技术设计 / UI 各自独立评审）"]
         V1["@Leader<br/>multica-verification<br/>检查设计与 AC- 对齐"]
         G1{"G1 通过？"}
         FIX1["退回对应设计角色<br/>最多返工 2 次"]
@@ -117,7 +117,7 @@ flowchart TB
         FDEV["@FrontendDev（可选）<br/>依赖 UI + API 契约<br/>multica-frontend-impl"]
         APICASE["@Tester（可选）<br/>与开发并行写接口用例<br/>multica-test-orchestration"]
         SELF["开发自查<br/>multica-verification"]
-        R2["@Reviewer（可选）<br/>G2 业务 / 安全 / 兼容性评审"]
+        R2["@FrontendReviewer / @BackendReviewer（可选）<br/>G2 专业产出物评审<br/>（前端 / 后端各自独立评审）"]
         V2["@Leader<br/>multica-verification<br/>独立复跑实现证据"]
         G2{"G2 通过？"}
         FIX2["退回对应开发角色<br/>附失败证据与修改清单"]
@@ -153,13 +153,14 @@ flowchart TB
     subgraph P3["阶段 3：真实环境自动化测试与 G3"]
         direction TB
         T3["@Tester T3（可选）<br/>输入: T1 + 接口用例 + T2 + 环境 URL<br/>multica-test-t3-ui-automation<br/>+ multica-test-orchestration"]
+        RT["@TestReviewer（可选）<br/>G3 测试评审"]
         REPORT[/"测试报告<br/>自动化日志 + AC- 逐条结果<br/>PASS / FAIL / BLOCKED"/]
         V3["@Leader<br/>multica-verification<br/>复核测试证据"]
         G3{"G3 通过？"}
         FAIL3["FAIL: 建缺陷并退回开发<br/>修复后重新经过 G2 / G2.5 / G3"]
         BLOCK3["BLOCKED: 补环境、数据或权限"]
 
-        T3 --> REPORT --> V3 --> G3
+        T3 --> RT --> REPORT --> V3 --> G3
         G3 -->|"FAIL"| FAIL3
         G3 -->|"BLOCKED"| BLOCK3
     end
@@ -309,15 +310,15 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 | `multica-platform-figma` | [`templates/zh_CN/skills/platform/multica-platform-figma/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-figma/SKILL.md) | 平台层占位壳（设计平台） |
 | `multica-review-*`（×6） | [`templates/zh_CN/skills/reviewer/multica-review-product/SKILL.md`](./templates/zh_CN/skills/reviewer/multica-review-product/SKILL.md) 等 | 对应 Reviewer |
 
-> 所有 Skill 共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间，分四类（详见 `skills/README.md` 与 `docs/zh_CN/role-skills-architecture.md`）：**内容层**（requirement-analysis / technical-design / backend-impl / frontend-impl / test-t1·t2·t3 / verification）；**编排层**（`multica-artifact-*-sync` 六个 + `multica-test-orchestration`，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 五个，唯一允许出现公司基建地址/凭据**占位**的地方，公开仓库只给占位壳）；**评审层**（multica-review-* 六个 + gate-setup）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
+> 所有 Skill 共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间，分四类（详见 `skills/README.md` 与 `docs/zh_CN/role-skills-architecture.md`）：**内容层**（requirement-analysis / technical-design / backend-impl / frontend-impl / test-t1·t2·t3 / verification）；**编排层**（`multica-artifact-*-sync` 六个 + `multica-test-orchestration`，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 五个，唯一允许出现公司基建地址/凭据**占位**的地方，公开仓库只给占位壳）；**评审层**（multica-review-* 六个）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
 
 #### Step 3 — 创建 Squad
 
-创建 Squad，把 `templates/zh_CN/squad/software-development/squad.md` 复制到 Squad Instructions。
+创建 Squad，把 `templates/zh_CN/squad/software-development-reviewed/squad.md` 复制到 Squad Instructions（轻量替代可用 `software-development/squad.md`）。
 
 ### Step 4 — 创建 Issue
 
-把 `templates/zh_CN/squad/software-development/issue.md` 复制到新 Issue：若需求已在 Jira/Tapd，选「外部系统链接」只填链接 + 涉及端即可；否则选「全量自包含」完整填写。
+把 `templates/zh_CN/squad/software-development-reviewed/issue.md` 复制到新 Issue：若需求已在 Jira/Tapd，选「外部系统链接」只填链接 + 涉及端即可；否则选「全量自包含」完整填写。
 
 ### Step 5 — 分配
 

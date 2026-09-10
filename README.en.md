@@ -43,8 +43,8 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
 
    | Starter | Use | Status |
    | --- | --- | --- |
-   | [Software Development](./templates/en_US/squad/software-development/README.md) | Regular feature development (frontend/backend routed by scope; any role can be missing) | Recommended |
-   | [Software Development (Reviewed)](./templates/en_US/squad/software-development-reviewed/README.md) | Extends Software Development with a dedicated Reviewer per regular role and a two-layer gate (generic gate + professional artifact review) | Experimental |
+   | [Software Development (Reviewed)](./templates/en_US/squad/software-development-reviewed/README.md) | Recommended main flow: dedicated Reviewer per regular role and a two-layer gate (generic gate + professional artifact review) | Recommended |
+   | [Software Development](./templates/en_US/squad/software-development/README.md) | Lightweight alternative: frontend/backend routed by scope; any role can be missing, single-layer generic gate (no professional review) | Optional |
    | [Bug Fix](./templates/en_US/squad/bug-fix/README.md) | Root cause / fix / regression (routed by impact, skips Architect) | Experimental |
 
    More starters (Technical Research, etc.) will be added after being validated on real tasks. **Don't pretend best practices are finished.**
@@ -71,7 +71,7 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
 
    ## Full flow at a glance
 
-The complete chain from a requirement coming in as an Issue to tests passing (based on `templates/en_US/squad/software-development`):
+The complete chain from a requirement coming in as an Issue to tests passing (based on `templates/en_US/squad/software-development-reviewed`, the two-layer-gate main flow; `software-development` is the lightweight alternative without professional review):
 
 ```mermaid
 flowchart TB
@@ -98,7 +98,7 @@ flowchart TB
         ARCH["@Architect (optional)<br/>multica-technical-design<br/>+ multica-artifact-architect"]
         DESIGNER["@Designer (optional)<br/>multica-design-ui-impl"]
         T1["@Tester T1 (optional)<br/>multica-test-t1-design<br/>+ multica-test-orchestration"]
-        R1["@Reviewer (optional)<br/>G1 business design review"]
+        R1["@ProductReviewer / @ArchReviewer / @DesignReviewer (optional)<br/>G1 professional artifact review<br/>(requirements / technical design / UI reviewed independently)"]
         V1["@Leader<br/>multica-verification<br/>check design vs AC-"]
         G1{"G1 pass?"}
         FIX1["return to design role<br/>max 2 reworks"]
@@ -117,7 +117,7 @@ flowchart TB
         FDEV["@FrontendDev (optional)<br/>depends on UI + API contract<br/>multica-frontend-impl"]
         APICASE["@Tester (optional)<br/>write API cases in parallel<br/>multica-test-orchestration"]
         SELF["dev self-check<br/>multica-verification"]
-        R2["@Reviewer (optional)<br/>G2 review"]
+        R2["@FrontendReviewer / @BackendReviewer (optional)<br/>G2 professional artifact review<br/>(frontend / backend reviewed independently)"]
         V2["@Leader<br/>multica-verification<br/>rerun impl evidence"]
         G2{"G2 pass?"}
         FIX2["return to dev role<br/>with failure evidence"]
@@ -153,13 +153,14 @@ flowchart TB
     subgraph P3["Phase 3: live automation & G3"]
         direction TB
         T3["@Tester T3 (optional)<br/>in: T1 + API cases + T2 + env URL<br/>multica-test-t3-ui-automation"]
+        RT["@TestReviewer (optional)<br/>G3 test review"]
         REPORT[/"Test report<br/>logs + AC- per item<br/>PASS / FAIL / BLOCKED"/]
         V3["@Leader<br/>multica-verification<br/>review test evidence"]
         G3{"G3 pass?"}
         FAIL3["FAIL: defect & return to dev"]
         BLOCK3["BLOCKED: fix env/data/access"]
 
-        T3 --> REPORT --> V3 --> G3
+        T3 --> RT --> REPORT --> V3 --> G3
         G3 -->|"FAIL"| FAIL3
         G3 -->|"BLOCKED"| BLOCK3
     end
@@ -306,11 +307,11 @@ In Multica, create the Skills below, copying the code block from the matching `S
 
 #### Step 3 — Create the Squad
 
-Create a Squad and copy `templates/en_US/squad/software-development/squad.md` into the Squad Instructions.
+Create a Squad and copy `templates/en_US/squad/software-development-reviewed/squad.md` into the Squad Instructions (for the lightweight alternative use `software-development/squad.md`).
 
 ### Step 4 — Create the Issue
 
-Copy `templates/en_US/squad/software-development/issue.md` into a new Issue: if requirements already live in Jira/Tapd, pick "External link" and fill only the link + affected ends; otherwise pick "Fully self-contained" and fill everything.
+Copy `templates/en_US/squad/software-development-reviewed/issue.md` into a new Issue: if requirements already live in Jira/Tapd, pick "External link" and fill only the link + affected ends; otherwise pick "Fully self-contained" and fill everything.
 
 ### Step 5 — Assign
 
