@@ -3,13 +3,22 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
-## v0.0.15 - 2026-09-10 · 修正 skill 清单计数并补齐 multica-implementation / Fix skill inventory count & document multica-implementation
+## v0.0.15 - 2026-09-10 · 移除已被拆分取代的 multica-implementation（对齐内网）/ Remove multica-implementation (split & superseded; align with internal)
 
-### Fixed / 修复
+### Removed / 移除
 
-- **Skill 清单计数不一致（中英）**：`docs/zh_CN/role-skills-architecture.md` 第 3 节标题写「Skill 清单（29 个）」、`docs/en_US/role-skills-architecture.md` 写「Skill inventory (29)」，而 `templates/zh_CN/skills/` 实际为 **30 个**。两处标题已同步改为 30。
-- **架构文档漏收 `multica-implementation`**：该 skill 未出现在内容层清单与第 4 节挂载矩阵中，但 agent 模板（`frontend-developer.md` / `backend-developer.md`，中英均写「方法细节遵循 `multica-implementation`」）、Starter README Step 2、以及根 README 流程图都在引用它。
-  已补齐内容层条目（挂载 FrontendDev / BackendDev）与挂载矩阵，并加注说明其定位：它是**跨端通用的实现方法论（保留，未被取代）**，端特定细节在 `multica-backend-impl` / `multica-frontend-impl`，三者**共存**；角色模板里的「方法细节遵循 `multica-implementation`」指的正是这套通用规则（先读再改、范围聚焦、补测试、跑验证、报证据）。/ the three coexist; the generic skill was retained, not superseded.
+- **`multica-implementation`**（`templates/zh_CN/skills/` 与 `templates/en_US/skills/`）：内网已将其**拆分取代**为 `multica-frontend-impl`（前端重体验 / 状态）与 `multica-backend-impl`（后端重 TDD / 契约先行）。公开版仍保留该目录，属内部版回流时**漏删的孤儿**；移除后 zh_CN 实际为 **29 个** skill。/ it was split into the two end-specific impl skills; the leftover directory was an orphan from the back-migration.
+- **通用规则未丢失**：原「先读再改」→ `开工前：读上游（必做）`、「添加合适的测试」→ `G2 前：单元测试（硬门禁）`、「运行验证 / 报告实际证据」→ `完成证据`，均已在两个 impl skill 中完整覆盖。
+
+### Changed / 变更
+
+- **引用同步（中英）**：agent 模板（frontend / backend，「方法细节遵循 …」改指各自的 impl skill）、Starter README Step 2（中文版拆为 backend / frontend 两行）、根 README 流程图、技能索引、`scripts/multica-sync/squad-bootstrap.example.json`
+- **架构文档**：`docs/{zh_CN,en_US}/role-skills-architecture.md` 清单计数保持 **29** —— 原先的 29 是对的，多出的 1 个才是问题根因
+- **根 README（中英）** skill 计数 30 → **29**
+
+### 说明 / Note
+
+- 本条目替代此前「把文档改成 30」的临时处理：issue #4 的根因是**该删的没删**，而非文档漏写。
 
 ## v0.0.14 - 2026-09-10 · 修复 apifox skill 内容污染 + 补齐 review-test frontmatter / Fix corrupted apifox skill & missing frontmatter
 

@@ -56,7 +56,7 @@ AGENTS.md     ⭐ Agent 入口：项目约定与改动规范
 templates/  ⭐ 从这里开始：可直接复制的全部配置
 ├── zh_CN/              中文模板（默认；复制整个子目录即用）
 │   ├── agents/           共享 Agent Instructions（15 个角色定义：9 常规 + 6 专属 Reviewer）
-│   ├── skills/           共享 Skill（30 个，统一 multica- 前缀，分四层：内容 / 编排 / 平台 / 评审；详见 skills/README.md）
+│   ├── skills/           共享 Skill（29 个，统一 multica- 前缀，分四层：内容 / 编排 / 平台 / 评审；详见 skills/README.md）
 │   │   └── multica-gate-setup/  CI 硬门禁模板随 Skill 自包含（delivery-gate.yml 等）
 │   └── squad/            小队 Starter
 │       ├── software-development/ 常规开发（squad / issue / README 含工作流）
@@ -114,8 +114,8 @@ flowchart TB
     subgraph P2["阶段 2：契约先行、并行实现与 G2"]
         direction TB
         API["@BackendDev（可选）<br/>先发布 API 契约<br/>multica-artifact-api-sync"]
-        BDEV["@BackendDev（可选）<br/>multica-implementation<br/>Output: 服务端代码 + 单测"]
-        FDEV["@FrontendDev（可选）<br/>依赖 UI + API 契约<br/>multica-implementation"]
+        BDEV["@BackendDev（可选）<br/>multica-backend-impl<br/>Output: 服务端代码 + 单测"]
+        FDEV["@FrontendDev（可选）<br/>依赖 UI + API 契约<br/>multica-frontend-impl"]
         APICASE["@Tester（可选）<br/>与开发并行写接口用例<br/>multica-test-orchestration"]
         SELF["开发自查<br/>multica-verification"]
         R2["@Reviewer（可选）<br/>G2 业务 / 安全 / 兼容性评审"]
@@ -262,7 +262,7 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 
 - 1 个 Squad Leader（编排 + 门禁）
 - 9 个 Agent：Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps（`software-development-reviewed` 另用 6 个专属 `*-reviewer`）
-- 30 个 Skill（按需复制；其中 multica-verification 是必备门禁 Skill，推荐起步集见下表）
+- 29 个 Skill（按需复制；其中 multica-verification 是必备门禁 Skill，推荐起步集见下表）
 - 1 个 Issue 模板（含「涉及端」范围声明；来源支持「链接型 / 全量自包含」二选一）
 - 1 个软件开发工作流（任意角色可缺失的条件路由，含 G2.5 CI/CD）
 
@@ -286,7 +286,7 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 
 #### Step 2 — 创建 Skills
 
-把 `templates/zh_CN/skills/` 下的 Skill 按需复制到 Multica 的 `skills/`（完整清单与分层见 [`skills/README.md`](./templates/zh_CN/skills/README.md)，目前共 30 个，分**内容 / 编排 / 平台 / 评审**四层）。推荐起步最少集：
+把 `templates/zh_CN/skills/` 下的 Skill 按需复制到 Multica 的 `skills/`（完整清单与分层见 [`skills/README.md`](./templates/zh_CN/skills/README.md)，目前共 29 个，分**内容 / 编排 / 平台 / 评审**四层）。推荐起步最少集：
 
 | Skill | 来源 | 挂给谁 |
 | --- | --- | --- |

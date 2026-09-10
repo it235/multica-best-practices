@@ -56,7 +56,7 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
    templates/  ⭐ Start here: all copy-ready config
    ├── zh_CN/              Chinese templates (default; copy the whole subdir)
    │   ├── agents/           Shared Agent Instructions (15 role defs: 9 regular + 6 dedicated Reviewers)
-   │   ├── skills/           Shared Skills (30, unified multica- prefix, four layers: content / orchestration / platform / review; see skills/README.md)
+   │   ├── skills/           Shared Skills (29, unified multica- prefix, four layers: content / orchestration / platform / review; see skills/README.md)
    │   │   └── multica-gate-setup/  CI hard-gate templates ship inside this Skill (delivery-gate.yml, etc.)
    │   └── squad/            Squad starters
    │       ├── software-development/  Regular development (squad / issue / README incl. workflow)
@@ -114,8 +114,8 @@ flowchart TB
     subgraph P2["Phase 2: contract-first, parallel impl & G2"]
         direction TB
         API["@BackendDev (optional)<br/>publish API contract first<br/>multica-artifact-api-sync"]
-        BDEV["@BackendDev (optional)<br/>multica-implementation"]
-        FDEV["@FrontendDev (optional)<br/>depends on UI + API contract<br/>multica-implementation"]
+        BDEV["@BackendDev (optional)<br/>multica-backend-impl"]
+        FDEV["@FrontendDev (optional)<br/>depends on UI + API contract<br/>multica-frontend-impl"]
         APICASE["@Tester (optional)<br/>write API cases in parallel<br/>multica-test-orchestration"]
         SELF["dev self-check<br/>multica-verification"]
         R2["@Reviewer (optional)<br/>G2 review"]
@@ -263,7 +263,7 @@ You get:
 
 - 1 Squad Leader (orchestration + gatekeeping)
 - 9 Agents: Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps (the `software-development-reviewed` Starter additionally uses 6 dedicated `*-reviewer` agents)
-- 30 Skills (copy as needed; `multica-verification` is the mandatory gatekeeping Skill, minimum set in the table below)
+- 29 Skills (copy as needed; `multica-verification` is the mandatory gatekeeping Skill, minimum set in the table below)
 - 1 Issue template (with the "affected ends" scope declaration; source supports "linked / fully self-contained" — pick one)
 - 1 software-development workflow (conditional routing where any role can be missing, incl. G2.5 CI/CD)
 
@@ -295,7 +295,6 @@ In Multica, create the Skills below, copying the code block from the matching `S
 | `multica-gate-setup` | [`templates/en_US/skills/multica-gate-setup/SKILL.md`](./templates/en_US/skills/multica-gate-setup/SKILL.md) | Leader (when integrating CI hard gates) |
 | `multica-requirement-analysis` | [`templates/en_US/skills/multica-requirement-analysis/SKILL.md`](./templates/en_US/skills/multica-requirement-analysis/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`templates/en_US/skills/multica-technical-design/SKILL.md`](./templates/en_US/skills/multica-technical-design/SKILL.md) | Architect |
-| `multica-implementation` | [`templates/en_US/skills/multica-implementation/SKILL.md`](./templates/en_US/skills/multica-implementation/SKILL.md) | FrontendDev / BackendDev |
 | `multica-artifact-req-sync` | [`templates/en_US/skills/multica-artifact-req-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-req-sync/SKILL.md) | ProductManager (lands artifacts to the requirement platform) |
 | `multica-artifact-ui-sync` | [`templates/en_US/skills/multica-artifact-ui-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-ui-sync/SKILL.md) | Designer (lands artifacts to the design platform) |
 | `multica-artifact-design-sync` | [`templates/en_US/skills/multica-artifact-design-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-design-sync/SKILL.md) | Architect (lands artifacts to Git / knowledge platform) |
@@ -305,7 +304,7 @@ In Multica, create the Skills below, copying the code block from the matching `S
 | `multica-platform-jira` | [`templates/en_US/skills/multica-platform-jira/SKILL.md`](./templates/en_US/skills/multica-platform-jira/SKILL.md) | platform-layer shell (Issue system) |
 | `multica-platform-confluence` | [`templates/en_US/skills/multica-platform-confluence/SKILL.md`](./templates/en_US/skills/multica-platform-confluence/SKILL.md) | platform-layer shell (knowledge base / Wiki) |
 
-> The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-requirement-analysis / multica-technical-design / multica-implementation); **artifact-orchestration** (the `multica-artifact-*-sync` set + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 30-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
+> The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-requirement-analysis / multica-technical-design); **artifact-orchestration** (the `multica-artifact-*-sync` set + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 29-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
 
 #### Step 3 — Create the Squad
 

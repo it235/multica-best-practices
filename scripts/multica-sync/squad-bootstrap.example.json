@@ -44,13 +44,13 @@
       "stem": "frontend-developer",
       "name": "FrontendDev",
       "role": "FrontendDev",
-      "skills": ["multica-frontend-impl", "multica-artifact-frontend", "multica-implementation"]
+      "skills": ["multica-frontend-impl", "multica-artifact-frontend"]
     },
     {
       "stem": "backend-developer",
       "name": "BackendDev",
       "role": "BackendDev",
-      "skills": ["multica-backend-impl", "multica-artifact-api-sync", "multica-implementation"]
+      "skills": ["multica-backend-impl", "multica-artifact-api-sync"]
     },
     {
       "stem": "tester",

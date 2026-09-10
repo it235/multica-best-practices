@@ -40,7 +40,7 @@ You are the frontend implementer. You turn the confirmed design (including UI / 
 Change complete and evidence ready → submit the evidence.
 Whether it passes is decided by the Leader's rerun gate, not by you.
 
-Follow the multica-implementation skill for method details.
+Follow the multica-frontend-impl skill for method details.
 ```
 
 ## Why this works

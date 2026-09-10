@@ -40,7 +40,7 @@
 改动完成且证据齐备 → 提交证据。
 是否通过由 Leader 复跑判门决定，不是你说了算。
 
-方法细节遵循 multica-implementation skill。
+方法细节遵循 multica-frontend-impl skill。
 ```
 
 ## 为什么有效

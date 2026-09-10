@@ -63,7 +63,7 @@
 
 ---
 
-## 3. Skill 清单（30 个）
+## 3. Skill 清单（29 个）
 
 ### 内容层
 
@@ -71,7 +71,6 @@
 | --- | --- | --- |
 | `multica-requirement-analysis` | ProductManager | 把需求结构化成编号 PRD |
 | `multica-technical-design` | Architect | 技术设计草稿（含元数据与修订记录） |
-| `multica-implementation` | FrontendDev / BackendDev | 通用实现方法论：先读再改、范围聚焦、补测试、跑验证、报证据 |
 | `multica-backend-impl` | BackendDev | 契约先行 + TDD 的后端实现 |
 | `multica-frontend-impl` | FrontendDev | 体验与状态完整的前端实现 |
 | `multica-test-t1-design` | Tester | T1 用例：追溯矩阵 + 覆盖维度 |
@@ -80,7 +79,6 @@
 | `multica-test-t3-api-automation` | Tester | T3 接口自动化跑批 |
 | `multica-verification` | Leader | 门禁判定：证据齐不齐、AC 对不对 |
 
-> `multica-implementation` 是**跨端通用的实现方法论**（保留，未被取代）：端特定的实现细节在 `multica-backend-impl` / `multica-frontend-impl`，三者**共存**。角色模板里「方法细节遵循 `multica-implementation`」指的就是这套通用规则。
 
 ### 编排层
 
@@ -133,8 +131,8 @@
 | ProductManager | `multica-requirement-analysis` | `multica-artifact-req-sync` | 经编排层 |
 | Architect | `multica-technical-design` | `multica-artifact-design-sync` | 经编排层 |
 | Designer | — | `multica-artifact-ui-sync` | 经编排层 |
-| BackendDev | `multica-backend-impl` + `multica-implementation` | `multica-artifact-api-sync` | 经编排层 |
-| FrontendDev | `multica-frontend-impl` + `multica-implementation` | `multica-artifact-frontend` | 经编排层 |
+| BackendDev | `multica-backend-impl` | `multica-artifact-api-sync` | 经编排层 |
+| FrontendDev | `multica-frontend-impl` | `multica-artifact-frontend` | 经编排层 |
 | Tester | `multica-test-orchestration` → T1/T2/T3 | 用例正文由 T1/T2 自发布 | 经编排层 |
 | DevOps | — | `multica-artifact-cicd-sync` | `multica-platform-jenkins` |
 | Leader | `multica-verification` | — | — |

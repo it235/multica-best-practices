@@ -57,7 +57,6 @@
 |---|---|
 | `multica-gate-setup` | CI 硬门禁模板（分支保护 / delivery gate） |
 | `multica-manage-skills` | 通过 Multica API 管理 Skill |
-| `multica-implementation` | 通用实现阶段方法论 |
 
 ## 六、怎么挂载到 Multica
 

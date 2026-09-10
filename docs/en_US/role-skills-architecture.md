@@ -63,7 +63,7 @@ Layering follows one principle: **things that change at different rates do not b
 
 ---
 
-## 3. Skill inventory (30)
+## 3. Skill inventory (29)
 
 ### Content
 
@@ -71,7 +71,6 @@ Layering follows one principle: **things that change at different rates do not b
 | --- | --- | --- |
 | `multica-requirement-analysis` | ProductManager | Structure a request into a numbered PRD |
 | `multica-technical-design` | Architect | Technical design draft (with metadata and revision log) |
-| `multica-implementation` | FrontendDev / BackendDev | Generic implementation method: read first, stay focused, add tests, run verification, report evidence |
 | `multica-backend-impl` | BackendDev | Contract-first, TDD backend implementation |
 | `multica-frontend-impl` | FrontendDev | Frontend implementation with complete UX states |
 | `multica-test-t1-design` | Tester | T1 cases: traceability matrix + coverage dimensions |
@@ -80,7 +79,6 @@ Layering follows one principle: **things that change at different rates do not b
 | `multica-test-t3-api-automation` | Tester | T3 API automation batch run |
 | `multica-verification` | Leader | Gatekeeping: is the evidence complete, do the ACs line up |
 
-> `multica-implementation` is the **end-agnostic implementation method** (retained, not superseded): end-specific details live in `multica-backend-impl` / `multica-frontend-impl`, and the three **coexist**. When a role template says "follow the `multica-implementation` skill for method details", it means this shared rule set.
 
 ### Orchestration
 
@@ -133,8 +131,8 @@ Layering follows one principle: **things that change at different rates do not b
 | ProductManager | `multica-requirement-analysis` | `multica-artifact-req-sync` | via orchestration |
 | Architect | `multica-technical-design` | `multica-artifact-design-sync` | via orchestration |
 | Designer | — | `multica-artifact-ui-sync` | via orchestration |
-| BackendDev | `multica-backend-impl` + `multica-implementation` | `multica-artifact-api-sync` | via orchestration |
-| FrontendDev | `multica-frontend-impl` + `multica-implementation` | `multica-artifact-frontend` | via orchestration |
+| BackendDev | `multica-backend-impl` | `multica-artifact-api-sync` | via orchestration |
+| FrontendDev | `multica-frontend-impl` | `multica-artifact-frontend` | via orchestration |
 | Tester | `multica-test-orchestration` → T1/T2/T3 | case prose published by T1/T2 itself | via orchestration |
 | DevOps | — | `multica-artifact-cicd-sync` | `multica-platform-jenkins` |
 | Leader | `multica-verification` | — | — |

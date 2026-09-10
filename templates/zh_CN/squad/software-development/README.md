@@ -101,7 +101,8 @@ Reviewer
 | `multica-test-t1-design` | [`../../skills/multica-test-t1-design/SKILL.md`](../../skills/multica-test-t1-design/SKILL.md) | Tester |
 | `multica-requirement-analysis` | [`../../skills/multica-requirement-analysis/SKILL.md`](../../skills/multica-requirement-analysis/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`../../skills/multica-technical-design/SKILL.md`](../../skills/multica-technical-design/SKILL.md) | Architect |
-| `multica-implementation` | [`../../skills/multica-implementation/SKILL.md`](../../skills/multica-implementation/SKILL.md) | FrontendDev / BackendDev |
+| `multica-backend-impl` | [`../../skills/multica-backend-impl/SKILL.md`](../../skills/multica-backend-impl/SKILL.md) | BackendDev |
+| `multica-frontend-impl` | [`../../skills/multica-frontend-impl/SKILL.md`](../../skills/multica-frontend-impl/SKILL.md) | FrontendDev |
 | `multica-artifact-req-sync` | [`../../skills/multica-artifact-req-sync/SKILL.md`](../../skills/multica-artifact-req-sync/SKILL.md) | ProductManager |
 | `multica-artifact-ui-sync` | [`../../skills/multica-artifact-ui-sync/SKILL.md`](../../skills/multica-artifact-ui-sync/SKILL.md) | Designer |
 | `multica-artifact-design-sync` | [`../../skills/multica-artifact-design-sync/SKILL.md`](../../skills/multica-artifact-design-sync/SKILL.md) | Architect |

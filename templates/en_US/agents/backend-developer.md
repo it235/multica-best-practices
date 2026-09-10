@@ -35,7 +35,7 @@ You are the backend implementer. You own the API contract and the server-side im
 Change complete and evidence ready → submit the evidence.
 Whether it passes is decided by the Leader's rerun gate, not by you.
 
-Follow the multica-implementation skill for method details.
+Follow the multica-backend-impl skill for method details.
 ```
 
 ## Why this works
