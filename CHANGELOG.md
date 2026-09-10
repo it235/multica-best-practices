@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.15 - 2026-09-10 · 修正 skill 清单计数并补齐 multica-implementation / Fix skill inventory count & document multica-implementation
+
+### Fixed / 修复
+
+- **Skill 清单计数不一致（中英）**：`docs/zh_CN/role-skills-architecture.md` 第 3 节标题写「Skill 清单（29 个）」、`docs/en_US/role-skills-architecture.md` 写「Skill inventory (29)」，而 `templates/zh_CN/skills/` 实际为 **30 个**。两处标题已同步改为 30。
+- **架构文档漏收 `multica-implementation`**：该 skill 未出现在内容层清单与第 4 节挂载矩阵中，但 agent 模板（`frontend-developer.md` / `backend-developer.md`，中英均写「方法细节遵循 `multica-implementation`」）、Starter README Step 2、以及根 README 流程图都在引用它。
+  已补齐内容层条目（挂载 FrontendDev / BackendDev）与挂载矩阵，并加注说明其定位：它是**跨端通用的实现方法论（保留，未被取代）**，端特定细节在 `multica-backend-impl` / `multica-frontend-impl`，三者**共存**；角色模板里的「方法细节遵循 `multica-implementation`」指的正是这套通用规则（先读再改、范围聚焦、补测试、跑验证、报证据）。/ the three coexist; the generic skill was retained, not superseded.
+
 ## v0.0.14 - 2026-09-10 · 修复 apifox skill 内容污染 + 补齐 review-test frontmatter / Fix corrupted apifox skill & missing frontmatter
 
 ### Fixed / 修复
