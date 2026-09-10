@@ -1,0 +1,106 @@
+{
+  "_comment": "结构示例 ONLY。所有 REPLACE_* 必须按当前任务替换；Token 只能放环境变量；caseSpecs 必须按当前接口证据重写，条数与内容禁止照搬。",
+  "APIFOX_PROJECT_ID": "REPLACE_WITH_PROJECT_ID",
+  "APIFOX_SOURCE_BRANCH": "main",
+  "aiBranch": "REPLACE_WITH_AI_BRANCH_OR_RESOLVE",
+  "APIFOX_ENDPOINT_ID": "REPLACE_WITH_ENDPOINT_ID",
+  "namePrefix": "REPLACE_WITH_ENDPOINT_OR_CASE_PREFIX",
+  "targetEnvironment": {
+    "id": "REPLACE_WITH_ENVIRONMENT_ID",
+    "name": "REPLACE_WITH_ENVIRONMENT_NAME",
+    "type": "non-production"
+  },
+  "endpoint": {
+    "method": "POST",
+    "path": "/REPLACE/with/actual/path"
+  },
+  "successResponseId": "REPLACE_WITH_SUCCESS_RESPONSE_ID",
+  "categoryIds": {
+    "positive": 211,
+    "negative": 212,
+    "boundary": 213
+  },
+  "authPreProcessors": [
+    {
+      "type": "commonScript",
+      "data": ["REPLACE_AFTER_discover-auth"],
+      "defaultEnable": false,
+      "enable": true,
+      "executionTiming": "prerequest"
+    }
+  ],
+  "_authNote": "禁止照搬任何示例脚本 ID。必须对当前 APIFOX_PROJECT_ID + 目标接口 moduleId 运行 discover-auth.js，从同模块场景/用例 with-case-detail 原样拷贝 authPreProcessors，并填写 validatedScripts。",
+  "authDiscovery": {
+    "source": "REPLACE: target-scenario step from same module",
+    "moduleId": "REPLACE_WITH_ENDPOINT_MODULE_ID",
+    "projectId": "REPLACE_WITH_PROJECT_ID",
+    "confidence": "high",
+    "confirmed": true,
+    "validatedScripts": [
+      {
+        "id": "REPLACE_AFTER_discover-auth",
+        "name": "REPLACE_WITH_RESOLVED_SCRIPT_NAME"
+      }
+    ]
+  },
+  "scenarioTarget": {
+    "mode": "append-existing",
+    "folderId": "REPLACE_WITH_HISTORY_SCENARIO_FOLDER_ID",
+    "scenarioId": "REPLACE_WITH_SCENARIO_ID_IF_APPEND",
+    "scenarioName": "REPLACE_WITH_SCENARIO_NAME",
+    "priority": 2,
+    "_comment": "先跑 discover-scenario-target.js。已有同接口场景时必须 append-existing；仅无同接口场景时才 create-in-same-folder 新建一个。folderId 须与历史场景同目录。"
+  },
+  "baseRequest": {
+    "parameters": {
+      "path": [],
+      "query": [],
+      "header": [],
+      "cookie": []
+    },
+    "commonParameters": {},
+    "requestBody": {
+      "type": "application/json",
+      "data": {
+        "_comment": "用当前接口非生产实测/定义中的字段替换；禁止照搬"
+      }
+    }
+  },
+  "caseSpecs": [
+    {
+      "file": "01-positive-main.json",
+      "nameSuffix": "主流程成功",
+      "category": "positive",
+      "request": {},
+      "expected": {
+        "statusCode": 200,
+        "responseValidate": true,
+        "responseId": "REPLACE_WITH_SUCCESS_RESPONSE_ID",
+        "hardEquals": {
+          "$.REPLACE_FIELD": "REPLACE_WITH_OBSERVED_VALUE"
+        },
+        "exists": [
+          "$.REPLACE_FIELD"
+        ]
+      },
+      "evidence": {
+        "scenario": {
+          "type": "combined",
+          "source": "REPLACE: endpoint definition + non-prod probe",
+          "summary": "REPLACE: 说明证据来源"
+        },
+        "probe": {
+          "environmentId": "REPLACE_WITH_ENVIRONMENT_ID",
+          "observedAt": "REPLACE_ISO8601",
+          "statusCode": 200,
+          "responseSummary": "REPLACE: 实测摘要"
+        }
+      },
+      "sideEffect": {
+        "level": "none",
+        "testData": "REPLACE",
+        "cleanup": "REPLACE"
+      }
+    }
+  ]
+}

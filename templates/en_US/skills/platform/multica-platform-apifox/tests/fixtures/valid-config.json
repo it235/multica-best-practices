@@ -1,0 +1,161 @@
+{
+  "_comment": "单测夹具：虚拟项目/模块 ID，不是任何真实 Apifox 项目。",
+  "APIFOX_PROJECT_ID": "900001",
+  "APIFOX_SOURCE_BRANCH": "main",
+  "aiBranch": "ai/fixture-from-main-demo",
+  "APIFOX_ENDPOINT_ID": "900101",
+  "namePrefix": "fixture-demo-api",
+  "targetEnvironment": {
+    "id": "900201",
+    "name": "fixture-non-prod",
+    "type": "non-production"
+  },
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/fixture/demo"
+  },
+  "successResponseId": "900301",
+  "categoryIds": {
+    "positive": 211,
+    "negative": 212,
+    "boundary": 213
+  },
+  "authPreProcessors": [
+    {
+      "type": "commonScript",
+      "data": [900001],
+      "defaultEnable": false,
+      "enable": true,
+      "executionTiming": "prerequest"
+    }
+  ],
+  "authDiscovery": {
+    "source": "target-scenario-same-endpoint step: fixture",
+    "moduleId": "900050",
+    "projectId": "900001",
+    "confidence": "high",
+    "confirmed": true,
+    "validatedScripts": [
+      {
+        "id": 900001,
+        "name": "fixture-module-auth"
+      }
+    ]
+  },
+  "scenarioTarget": {
+    "mode": "create-in-same-folder",
+    "folderId": "900401",
+    "scenarioId": null,
+    "scenarioName": "fixture-demo-api-自动化补充",
+    "priority": 2
+  },
+  "baseRequest": {
+    "parameters": {
+      "path": [],
+      "query": [],
+      "header": [],
+      "cookie": []
+    },
+    "commonParameters": {},
+    "requestBody": {
+      "type": "application/json",
+      "data": {
+        "subjectId": 39,
+        "milestoneId": 209,
+        "userVO": {
+          "username": "test-user",
+          "name": "测试用户"
+        },
+        "fileGroupId": "391e703c29bf442a95ce65fc8a1df1f7",
+        "fileKey": "upload/test/file.pdf",
+        "fileName": "test.pdf",
+        "fileSize": 566880,
+        "contentType": "doc",
+        "remark": ""
+      }
+    }
+  },
+  "caseSpecs": [
+    {
+      "file": "01-positive-main.json",
+      "nameSuffix": "主流程成功",
+      "category": "positive",
+      "request": {},
+      "expected": {
+        "statusCode": 200,
+        "responseValidate": true,
+        "responseId": "900301",
+        "hardEquals": {
+          "$.subjectId": 39,
+          "$.milestoneId": 209,
+          "$.fileGroupId": "391e703c29bf442a95ce65fc8a1df1f7"
+        },
+        "exists": [
+          "$.fileId",
+          "$.versionNo"
+        ]
+      },
+      "evidence": {
+        "scenario": {
+          "type": "combined",
+          "source": "endpoint:900101 + fixture probe record",
+          "summary": "夹具：接口定义提供主路径；非生产实测返回 200 及所列字段"
+        },
+        "probe": {
+          "environmentId": "900201",
+          "observedAt": "2026-07-14T10:00:00+08:00",
+          "statusCode": 200,
+          "responseSummary": "JSON 包含 subjectId、milestoneId、fileId、fileGroupId、versionNo"
+        }
+      },
+      "sideEffect": {
+        "level": "write",
+        "testData": "专用测试课题及文件",
+        "cleanup": "按测试数据清理流程恢复或删除替换记录"
+      }
+    },
+    {
+      "file": "02-negative-missing-subject-id.json",
+      "nameSuffix": "缺少subjectId",
+      "category": "negative",
+      "bodyTransform": {
+        "omit": [
+          "subjectId"
+        ]
+      },
+      "expected": {
+        "statusCode": 400,
+        "responseValidate": false,
+        "responseId": 0,
+        "hardEquals": {
+          "$.success": false,
+          "$.errorCode": "31100004"
+        },
+        "includes": {
+          "$.errorMessage": "subjectId"
+        },
+        "notExists": [
+          "$.fileId"
+        ]
+      },
+      "evidence": {
+        "scenario": {
+          "type": "combined",
+          "source": "endpoint:900101 required field + fixture probe record",
+          "summary": "subjectId 为必填；缺参实测返回 400/31100004"
+        },
+        "probe": {
+          "environmentId": "900201",
+          "observedAt": "2026-07-14T10:02:00+08:00",
+          "statusCode": 400,
+          "responseSummary": "success=false, errorCode=31100004, errorMessage 包含 subjectId"
+        }
+      },
+      "sideEffect": {
+        "level": "none",
+        "testData": "请求在参数校验阶段失败",
+        "cleanup": "无需清理"
+      }
+    }
+  ]
+}

@@ -15,7 +15,7 @@
       "stem": "leader",
       "name": "Leader",
       "role": "Leader",
-      "skills": ["multica-verification", "multica-manage-skills"]
+      "skills": ["multica-verification", "multica-manage-skills", "multica-platform-knowledge-base"]
     },
     {
       "stem": "product-manager",

@@ -38,7 +38,7 @@
 需求或技术设计矛盾 → BLOCKED，返回给调度者并说明缺什么。
 设计稿齐备且覆盖全部状态 → @Reviewer 做业务评审（G1 设计门禁）；通过后 @FrontendDev 才能开始页面实现。前端不得在 UI 设计未通过前启动正式页面实现（允许做与页面无关的只读技术勘察）。
 
-方法细节遵循 multica-ui-design skill（如适用）。
+方法细节遵循 multica-design-ui-impl skill（如适用）。
 ```
 
 ## 为什么有效
