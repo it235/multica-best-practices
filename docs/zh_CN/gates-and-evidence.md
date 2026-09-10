@@ -21,7 +21,7 @@
 
 ## 判门动作：multica-verification skill
 
-验证是一个**功能**，不是一个角色。它被标准化为 `templates/zh_CN/skills/multica-verification/SKILL.md`，由 **Leader** 在门禁点（G1 / G2 / G3）触发执行：
+验证是一个**功能**，不是一个角色。它被标准化为 `templates/zh_CN/skills/leader/multica-verification/SKILL.md`，由 **Leader** 在门禁点（G1 / G2 / G3）触发执行：
 
 - Leader 不产出任何产物 → 判门者与被判门者不同源
 - 判门 = 复跑验证命令 + 逐条对照验收标准，不引用产出者的描述；仓库已配置 CI 时**优先引用 CI 结论**（如 `[G2 PASS · CI #123]`），不重复跑（感知做法见 `multica-gate-setup` skill）
@@ -118,7 +118,7 @@ Tests / Lint / Build / CI / 分支保护 / PR 审批
 ```
 
 - **软门禁**：Leader 在 Squad 内用 multica-verification skill 判门（G1–G3），靠指令和证据约束，适合起步、无 CI 或探索期。
-- **硬门禁**：由 CI 出具、不可伪造的检查（部署模板与做法见 `multica-gate-setup` skill：`templates/zh_CN/skills/multica-gate-setup/`）。当需要比人工检查更可信的结果时，把关键门禁交给 CI——门禁出具方必须和被门禁方不同源。
+- **硬门禁**：由 CI 出具、不可伪造的检查（部署模板与做法见 `multica-gate-setup` skill：`templates/zh_CN/skills/devops/multica-gate-setup/`）。当需要比人工检查更可信的结果时，把关键门禁交给 CI——门禁出具方必须和被门禁方不同源。
 
 软门禁和硬门禁是**同一个验证功能的两种执行环境**：Agent 世界的 Skill 与工程世界的 CI。能上 CI 就上 CI。
 

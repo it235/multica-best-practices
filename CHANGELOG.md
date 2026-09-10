@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.16 - 2026-09-10 · skills 按角色分组（对齐内网目录）/ Group skills by role (align with internal layout)
+
+### Changed / 变更
+
+- **`templates/{zh_CN,en_US}/skills/` 由平铺改为按角色分组**，与内网目录一致：
+  `architect/`(2) · `backend/`(2) · `designer/`(1) · `devops/`(2) · `frontend/`(2) · `leader/`(1) · `platform/`(5) · `product-manager/`(2) · `reviewer/`(6) · `shared/`(1) · `tester/`(5) —— zh_CN 共 **29** 个，en_US **18** 个。
+- **全量路径引用同步**（14 个文件）：Starter README（中英 × 2 个 Starter）、根 README（中英）、`docs/` 中英 6 篇、技能索引。用 `git mv` 移动以保留历史；残留扁平路径引用 **0**。
+- 分组**仅为仓库内收纳方式**，与能力分层无关：挂载仍只认 `SKILL.md` 里的 `name`，同一分组可横跨四层（如 `tester/` 同时含内容层与编排层）。
+
+### 对照内网：多了什么 / 少了什么 / Compared with internal
+
+| 类别 | Skill | 说明 |
+| --- | --- | --- |
+| 公开版**多出** | `multica-gate-setup` | 内网无（CI 硬门禁模板，公开版自有） |
+| 公开版**多出** | `multica-artifact-ui-sync` | 内网无对应（内网 designer 组只有 `multica-design-ui-impl`） |
+| 内网有、**公开无** | `multica-design-ui-impl` | 红线：绑定 BOSS / AngelAlign，明确不迁移 |
+| 内网有、**公开无** | `multica-platform-knowledge-base` | 红线：绑定 138 Bridge，明确不迁移 |
+| **命名差异**（4 组） | `multica-artifact-api-sync` ← `multica-artifact-backend`；`multica-artifact-design-sync` ← `multica-artifact-architect`；`multica-artifact-req-sync` ← `multica-pm-artifact-publish`；`multica-requirement-analysis` ← `multica-pm-requirement-spec` | 公开版采用 v0.0.12 的新命名 |
+
+其余 **23 个同名一致**（含 `multica-review-test`，内网版同样无 frontmatter）。/ the other 23 match by name.
+
 ## v0.0.15 - 2026-09-10 · 移除已被拆分取代的 multica-implementation（对齐内网）/ Remove multica-implementation (split & superseded; align with internal)
 
 ### Removed / 移除
@@ -112,7 +133,7 @@ All notable changes to this project will be documented in this file.
 - `README.md` / `README.en.md`：Issue 模板描述由「含 Git 分支」改为「来源支持链接型 / 全量自包含二选一」（issue.md 已在 v0.0.9 删除 Git 分支章）/ Root READMEs drop the stale "Git branch" claim
 - `en_US/squad/software-development/README.md`：目录表「Shared Skills」数量由遗留的 6 修正为 16，与正文一致 / en starter README fixes the stale "6 Skills" count
 - `software-development/issue.md`（中英）+ `bug-fix/issue.md`（中英）：「为什么这么写」字段列举与模板实际章节（参考资料 / 备注、References / Notes）对齐；bug-fix 补「常见失败」段，与 software-development 体例一致 / Issue "why" sections list the real sections; bug-fix adds a "common failure modes" section
-- `agents/devops.md`（中英）+ `skills/multica-platform-jenkins/SKILL.md`（中英）：移除对已删除的 Issue「Git 分支」区块的引用，deploy branch 改为「由 Issue 来源与涉及端确定，链接型以外部系统分支为准」/ DevOps & Jenkins skill drop the stale reference to the removed Issue "Git Branch" block
+- `agents/devops.md`（中英）+ `skills/platform/multica-platform-jenkins/SKILL.md`（中英）：移除对已删除的 Issue「Git 分支」区块的引用，deploy branch 改为「由 Issue 来源与涉及端确定，链接型以外部系统分支为准」/ DevOps & Jenkins skill drop the stale reference to the removed Issue "Git Branch" block
 - `agents/backend-developer.md`（中英）：「为什么有效」补「契约由后端 owner、架构师只给方案与步骤」的分工说明；并将「自证」改为「自查证据」，明确用 `multica-verification` 跑的是自查、判门权只在 Leader / Backend Dev doc clarifies the contract-owner split and that self-check ≠ Leader gate
 
 ### Why / 背景

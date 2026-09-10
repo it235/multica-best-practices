@@ -55,7 +55,7 @@ python scripts/fetch_file.py --url "https://www.figma.com/design/<KEY>/..." \
 | `multica-test-t1-design` | `fetch_all.py` 编排 → 本 skill `fetch_file.py` |
 | `multica-artifact-ui-sync` | Designer 产出链接；下游通过本 skill 或 Figma UI 读取 |
 
-完整矩阵见 [`docs/platform-collaboration.md`](../../../../docs/platform-collaboration.md)。
+完整矩阵见 [`docs/platform-collaboration.md`](../../../../../docs/zh_CN/platform-collaboration.md)。
 
 ## 为什么有效
 

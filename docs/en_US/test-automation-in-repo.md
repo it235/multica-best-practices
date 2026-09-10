@@ -3,7 +3,7 @@
 > T1/T2 case prose lives in **Confluence**; executable automation lives in **Git**.
 > **Never guess paths** — read **`MULTICA.md`** at the root of the target repo (with split repos, read one copy per repo listed in the Issue matrix).
 
-Template: [`templates/en_US/MULTICA.md`](../templates/en_US/MULTICA.md) (copy it to the root of the product repo).
+Template: [`templates/en_US/MULTICA.md`](../../templates/en_US/MULTICA.md) (copy it to the root of the product repo).
 
 ---
 

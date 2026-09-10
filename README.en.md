@@ -56,7 +56,7 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
    templates/  ⭐ Start here: all copy-ready config
    ├── zh_CN/              Chinese templates (default; copy the whole subdir)
    │   ├── agents/           Shared Agent Instructions (15 role defs: 9 regular + 6 dedicated Reviewers)
-   │   ├── skills/           Shared Skills (29, unified multica- prefix, four layers: content / orchestration / platform / review; see skills/README.md)
+   │   ├── skills/           Shared Skills (29, grouped by role: architect / backend / designer / devops / frontend / leader / platform / product-manager / reviewer / shared / tester; see skills/README.md for the four-layer model)
    │   │   └── multica-gate-setup/  CI hard-gate templates ship inside this Skill (delivery-gate.yml, etc.)
    │   └── squad/            Squad starters
    │       ├── software-development/  Regular development (squad / issue / README incl. workflow)
@@ -291,18 +291,18 @@ In Multica, create the Skills below, copying the code block from the matching `S
 
 | Skill | Source | Mount to |
 | --- | --- | --- |
-| `multica-verification` (gatekeeping, required) | [`templates/en_US/skills/multica-verification/SKILL.md`](./templates/en_US/skills/multica-verification/SKILL.md) | **Leader** |
-| `multica-gate-setup` | [`templates/en_US/skills/multica-gate-setup/SKILL.md`](./templates/en_US/skills/multica-gate-setup/SKILL.md) | Leader (when integrating CI hard gates) |
-| `multica-requirement-analysis` | [`templates/en_US/skills/multica-requirement-analysis/SKILL.md`](./templates/en_US/skills/multica-requirement-analysis/SKILL.md) | Leader / Architect |
-| `multica-technical-design` | [`templates/en_US/skills/multica-technical-design/SKILL.md`](./templates/en_US/skills/multica-technical-design/SKILL.md) | Architect |
-| `multica-artifact-req-sync` | [`templates/en_US/skills/multica-artifact-req-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-req-sync/SKILL.md) | ProductManager (lands artifacts to the requirement platform) |
-| `multica-artifact-ui-sync` | [`templates/en_US/skills/multica-artifact-ui-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-ui-sync/SKILL.md) | Designer (lands artifacts to the design platform) |
-| `multica-artifact-design-sync` | [`templates/en_US/skills/multica-artifact-design-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-design-sync/SKILL.md) | Architect (lands artifacts to Git / knowledge platform) |
-| `multica-artifact-api-sync` | [`templates/en_US/skills/multica-artifact-api-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-api-sync/SKILL.md) | BackendDev (lands artifacts to the API platform) |
-| `multica-artifact-cicd-sync` | [`templates/en_US/skills/multica-artifact-cicd-sync/SKILL.md`](./templates/en_US/skills/multica-artifact-cicd-sync/SKILL.md) | DevOps (triggers CI/CD deploy) |
-| `multica-platform-jenkins` | [`templates/en_US/skills/multica-platform-jenkins/SKILL.md`](./templates/en_US/skills/multica-platform-jenkins/SKILL.md) | platform-layer shell (CI/CD system) |
-| `multica-platform-jira` | [`templates/en_US/skills/multica-platform-jira/SKILL.md`](./templates/en_US/skills/multica-platform-jira/SKILL.md) | platform-layer shell (Issue system) |
-| `multica-platform-confluence` | [`templates/en_US/skills/multica-platform-confluence/SKILL.md`](./templates/en_US/skills/multica-platform-confluence/SKILL.md) | platform-layer shell (knowledge base / Wiki) |
+| `multica-verification` (gatekeeping, required) | [`templates/en_US/skills/leader/multica-verification/SKILL.md`](./templates/en_US/skills/leader/multica-verification/SKILL.md) | **Leader** |
+| `multica-gate-setup` | [`templates/en_US/skills/devops/multica-gate-setup/SKILL.md`](./templates/en_US/skills/devops/multica-gate-setup/SKILL.md) | Leader (when integrating CI hard gates) |
+| `multica-requirement-analysis` | [`templates/en_US/skills/product-manager/multica-requirement-analysis/SKILL.md`](./templates/en_US/skills/product-manager/multica-requirement-analysis/SKILL.md) | Leader / Architect |
+| `multica-technical-design` | [`templates/en_US/skills/architect/multica-technical-design/SKILL.md`](./templates/en_US/skills/architect/multica-technical-design/SKILL.md) | Architect |
+| `multica-artifact-req-sync` | [`templates/en_US/skills/product-manager/multica-artifact-req-sync/SKILL.md`](./templates/en_US/skills/product-manager/multica-artifact-req-sync/SKILL.md) | ProductManager (lands artifacts to the requirement platform) |
+| `multica-artifact-ui-sync` | [`templates/en_US/skills/designer/multica-artifact-ui-sync/SKILL.md`](./templates/en_US/skills/designer/multica-artifact-ui-sync/SKILL.md) | Designer (lands artifacts to the design platform) |
+| `multica-artifact-design-sync` | [`templates/en_US/skills/architect/multica-artifact-design-sync/SKILL.md`](./templates/en_US/skills/architect/multica-artifact-design-sync/SKILL.md) | Architect (lands artifacts to Git / knowledge platform) |
+| `multica-artifact-api-sync` | [`templates/en_US/skills/backend/multica-artifact-api-sync/SKILL.md`](./templates/en_US/skills/backend/multica-artifact-api-sync/SKILL.md) | BackendDev (lands artifacts to the API platform) |
+| `multica-artifact-cicd-sync` | [`templates/en_US/skills/devops/multica-artifact-cicd-sync/SKILL.md`](./templates/en_US/skills/devops/multica-artifact-cicd-sync/SKILL.md) | DevOps (triggers CI/CD deploy) |
+| `multica-platform-jenkins` | [`templates/en_US/skills/platform/multica-platform-jenkins/SKILL.md`](./templates/en_US/skills/platform/multica-platform-jenkins/SKILL.md) | platform-layer shell (CI/CD system) |
+| `multica-platform-jira` | [`templates/en_US/skills/platform/multica-platform-jira/SKILL.md`](./templates/en_US/skills/platform/multica-platform-jira/SKILL.md) | platform-layer shell (Issue system) |
+| `multica-platform-confluence` | [`templates/en_US/skills/platform/multica-platform-confluence/SKILL.md`](./templates/en_US/skills/platform/multica-platform-confluence/SKILL.md) | platform-layer shell (knowledge base / Wiki) |
 
 > The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-gate-setup / multica-requirement-analysis / multica-technical-design); **artifact-orchestration** (the `multica-artifact-*-sync` set + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 29-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
 

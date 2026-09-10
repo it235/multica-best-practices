@@ -54,7 +54,7 @@ This is exactly the repo's core principle:
 ## Setup
 
 1. Create the Agents per [`../../agents/`](../../agents/): Leader / FrontendDev / BackendDev / Tester / Reviewer.
-2. Copy the shared gatekeeping Skill: [`../../skills/multica-verification/SKILL.md`](../../skills/multica-verification/SKILL.md), mounted to the **Leader** (this Starter depends on this one Skill only).
+2. Copy the shared gatekeeping Skill: [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md), mounted to the **Leader** (this Starter depends on this one Skill only).
 3. Copy [`squad.md`](./squad.md) from this directory into the Squad Instructions (overrides the default orchestration).
 4. Create the Bug Issue with [`issue.md`](./issue.md).
 5. Assign it to the Squad.

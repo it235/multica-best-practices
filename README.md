@@ -56,7 +56,7 @@ AGENTS.md     ⭐ Agent 入口：项目约定与改动规范
 templates/  ⭐ 从这里开始：可直接复制的全部配置
 ├── zh_CN/              中文模板（默认；复制整个子目录即用）
 │   ├── agents/           共享 Agent Instructions（15 个角色定义：9 常规 + 6 专属 Reviewer）
-│   ├── skills/           共享 Skill（29 个，统一 multica- 前缀，分四层：内容 / 编排 / 平台 / 评审；详见 skills/README.md）
+│   ├── skills/           共享 Skill（29 个，按角色分组：architect / backend / designer / devops / frontend / leader / platform / product-manager / reviewer / shared / tester；四层模型详见 skills/README.md）
 │   │   └── multica-gate-setup/  CI 硬门禁模板随 Skill 自包含（delivery-gate.yml 等）
 │   └── squad/            小队 Starter
 │       ├── software-development/ 常规开发（squad / issue / README 含工作流）
@@ -290,26 +290,26 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 
 | Skill | 来源 | 挂给谁 |
 | --- | --- | --- |
-| `multica-verification`（门禁，必备） | [`templates/zh_CN/skills/multica-verification/SKILL.md`](./templates/zh_CN/skills/multica-verification/SKILL.md) | **Leader** |
-| `multica-gate-setup` | [`templates/zh_CN/skills/multica-gate-setup/SKILL.md`](./templates/zh_CN/skills/multica-gate-setup/SKILL.md) | Leader（集成 CI 硬门禁时） |
-| `multica-requirement-analysis` | [`templates/zh_CN/skills/multica-requirement-analysis/SKILL.md`](./templates/zh_CN/skills/multica-requirement-analysis/SKILL.md) | Leader / Architect |
-| `multica-technical-design` | [`templates/zh_CN/skills/multica-technical-design/SKILL.md`](./templates/zh_CN/skills/multica-technical-design/SKILL.md) | Architect |
-| `multica-backend-impl` | [`templates/zh_CN/skills/multica-backend-impl/SKILL.md`](./templates/zh_CN/skills/multica-backend-impl/SKILL.md) | BackendDev |
-| `multica-frontend-impl` | [`templates/zh_CN/skills/multica-frontend-impl/SKILL.md`](./templates/zh_CN/skills/multica-frontend-impl/SKILL.md) | FrontendDev |
-| `multica-test-orchestration` | [`templates/zh_CN/skills/multica-test-orchestration/SKILL.md`](./templates/zh_CN/skills/multica-test-orchestration/SKILL.md) | Tester |
-| `multica-test-t1-design` | [`templates/zh_CN/skills/multica-test-t1-design/SKILL.md`](./templates/zh_CN/skills/multica-test-t1-design/SKILL.md) | Tester |
-| `multica-artifact-req-sync` | [`templates/zh_CN/skills/multica-artifact-req-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-req-sync/SKILL.md) | ProductManager |
-| `multica-artifact-design-sync` | [`templates/zh_CN/skills/multica-artifact-design-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-design-sync/SKILL.md) | Architect |
-| `multica-artifact-api-sync` | [`templates/zh_CN/skills/multica-artifact-api-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-api-sync/SKILL.md) | BackendDev |
-| `multica-artifact-ui-sync` | [`templates/zh_CN/skills/multica-artifact-ui-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-ui-sync/SKILL.md) | Designer |
-| `multica-artifact-frontend` | [`templates/zh_CN/skills/multica-artifact-frontend/SKILL.md`](./templates/zh_CN/skills/multica-artifact-frontend/SKILL.md) | FrontendDev |
-| `multica-artifact-cicd-sync` | [`templates/zh_CN/skills/multica-artifact-cicd-sync/SKILL.md`](./templates/zh_CN/skills/multica-artifact-cicd-sync/SKILL.md) | DevOps |
-| `multica-platform-jenkins` | [`templates/zh_CN/skills/multica-platform-jenkins/SKILL.md`](./templates/zh_CN/skills/multica-platform-jenkins/SKILL.md) | 平台层占位壳（CI/CD） |
-| `multica-platform-jira` | [`templates/zh_CN/skills/multica-platform-jira/SKILL.md`](./templates/zh_CN/skills/multica-platform-jira/SKILL.md) | 平台层占位壳（Issue） |
-| `multica-platform-confluence` | [`templates/zh_CN/skills/multica-platform-confluence/SKILL.md`](./templates/zh_CN/skills/multica-platform-confluence/SKILL.md) | 平台层占位壳（Wiki） |
-| `multica-platform-apifox` | [`templates/zh_CN/skills/multica-platform-apifox/SKILL.md`](./templates/zh_CN/skills/multica-platform-apifox/SKILL.md) | 平台层占位壳（API 平台） |
-| `multica-platform-figma` | [`templates/zh_CN/skills/multica-platform-figma/SKILL.md`](./templates/zh_CN/skills/multica-platform-figma/SKILL.md) | 平台层占位壳（设计平台） |
-| `multica-review-*`（×6） | [`templates/zh_CN/skills/multica-review-product/SKILL.md`](./templates/zh_CN/skills/multica-review-product/SKILL.md) 等 | 对应 Reviewer |
+| `multica-verification`（门禁，必备） | [`templates/zh_CN/skills/leader/multica-verification/SKILL.md`](./templates/zh_CN/skills/leader/multica-verification/SKILL.md) | **Leader** |
+| `multica-gate-setup` | [`templates/zh_CN/skills/devops/multica-gate-setup/SKILL.md`](./templates/zh_CN/skills/devops/multica-gate-setup/SKILL.md) | Leader（集成 CI 硬门禁时） |
+| `multica-requirement-analysis` | [`templates/zh_CN/skills/product-manager/multica-requirement-analysis/SKILL.md`](./templates/zh_CN/skills/product-manager/multica-requirement-analysis/SKILL.md) | Leader / Architect |
+| `multica-technical-design` | [`templates/zh_CN/skills/architect/multica-technical-design/SKILL.md`](./templates/zh_CN/skills/architect/multica-technical-design/SKILL.md) | Architect |
+| `multica-backend-impl` | [`templates/zh_CN/skills/backend/multica-backend-impl/SKILL.md`](./templates/zh_CN/skills/backend/multica-backend-impl/SKILL.md) | BackendDev |
+| `multica-frontend-impl` | [`templates/zh_CN/skills/frontend/multica-frontend-impl/SKILL.md`](./templates/zh_CN/skills/frontend/multica-frontend-impl/SKILL.md) | FrontendDev |
+| `multica-test-orchestration` | [`templates/zh_CN/skills/tester/multica-test-orchestration/SKILL.md`](./templates/zh_CN/skills/tester/multica-test-orchestration/SKILL.md) | Tester |
+| `multica-test-t1-design` | [`templates/zh_CN/skills/tester/multica-test-t1-design/SKILL.md`](./templates/zh_CN/skills/tester/multica-test-t1-design/SKILL.md) | Tester |
+| `multica-artifact-req-sync` | [`templates/zh_CN/skills/product-manager/multica-artifact-req-sync/SKILL.md`](./templates/zh_CN/skills/product-manager/multica-artifact-req-sync/SKILL.md) | ProductManager |
+| `multica-artifact-design-sync` | [`templates/zh_CN/skills/architect/multica-artifact-design-sync/SKILL.md`](./templates/zh_CN/skills/architect/multica-artifact-design-sync/SKILL.md) | Architect |
+| `multica-artifact-api-sync` | [`templates/zh_CN/skills/backend/multica-artifact-api-sync/SKILL.md`](./templates/zh_CN/skills/backend/multica-artifact-api-sync/SKILL.md) | BackendDev |
+| `multica-artifact-ui-sync` | [`templates/zh_CN/skills/designer/multica-artifact-ui-sync/SKILL.md`](./templates/zh_CN/skills/designer/multica-artifact-ui-sync/SKILL.md) | Designer |
+| `multica-artifact-frontend` | [`templates/zh_CN/skills/frontend/multica-artifact-frontend/SKILL.md`](./templates/zh_CN/skills/frontend/multica-artifact-frontend/SKILL.md) | FrontendDev |
+| `multica-artifact-cicd-sync` | [`templates/zh_CN/skills/devops/multica-artifact-cicd-sync/SKILL.md`](./templates/zh_CN/skills/devops/multica-artifact-cicd-sync/SKILL.md) | DevOps |
+| `multica-platform-jenkins` | [`templates/zh_CN/skills/platform/multica-platform-jenkins/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-jenkins/SKILL.md) | 平台层占位壳（CI/CD） |
+| `multica-platform-jira` | [`templates/zh_CN/skills/platform/multica-platform-jira/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-jira/SKILL.md) | 平台层占位壳（Issue） |
+| `multica-platform-confluence` | [`templates/zh_CN/skills/platform/multica-platform-confluence/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-confluence/SKILL.md) | 平台层占位壳（Wiki） |
+| `multica-platform-apifox` | [`templates/zh_CN/skills/platform/multica-platform-apifox/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-apifox/SKILL.md) | 平台层占位壳（API 平台） |
+| `multica-platform-figma` | [`templates/zh_CN/skills/platform/multica-platform-figma/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-figma/SKILL.md) | 平台层占位壳（设计平台） |
+| `multica-review-*`（×6） | [`templates/zh_CN/skills/reviewer/multica-review-product/SKILL.md`](./templates/zh_CN/skills/reviewer/multica-review-product/SKILL.md) 等 | 对应 Reviewer |
 
 > 所有 Skill 共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间，分四类（详见 `skills/README.md` 与 `docs/zh_CN/role-skills-architecture.md`）：**内容层**（requirement-analysis / technical-design / backend-impl / frontend-impl / test-t1·t2·t3 / verification）；**编排层**（`multica-artifact-*-sync` 六个 + `multica-test-orchestration`，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 五个，唯一允许出现公司基建地址/凭据**占位**的地方，公开仓库只给占位壳）；**评审层**（multica-review-* 六个 + gate-setup）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
 

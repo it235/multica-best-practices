@@ -1,6 +1,6 @@
 # Software Development (Reviewed) — full flow
 
-> **Demo-facing** — the body explains **deliverable-driven tailoring** and **Leader orchestration**; the S0–S6 / skill details of [`software-development-reviewed`](../templates/en_US/squad/software-development-reviewed/squad.md) live in **Appendix A**.
+> **Demo-facing** — the body explains **deliverable-driven tailoring** and **Leader orchestration**; the S0–S6 / skill details of [`software-development-reviewed`](../../templates/en_US/squad/software-development-reviewed/squad.md) live in **Appendix A**.
 > Companions: [`gates-and-evidence.md`](gates-and-evidence.md) · [`cicd-and-test-pipeline.md`](cicd-and-test-pipeline.md) · [`artifact-conventions.md`](artifact-conventions.md)
 
 ---
@@ -343,7 +343,7 @@ There are more steps because the **risk is higher**, not because the role roster
 
 ## Appendix A. Reviewed Starter full reference path (not the default route)
 
-> The "full-house" orchestration for a complete product feature where **every work package is Required**; it maps to the S0–S6 labels in [`squad.md`](../templates/en_US/squad/software-development-reviewed/squad.md). **Most Issues should trim the §6 table rather than run this appendix by default.**
+> The "full-house" orchestration for a complete product feature where **every work package is Required**; it maps to the S0–S6 labels in [`squad.md`](../../templates/en_US/squad/software-development-reviewed/squad.md). **Most Issues should trim the §6 table rather than run this appendix by default.**
 
 ```mermaid
 flowchart TB
@@ -402,7 +402,7 @@ Product review FAIL → Workflow B updates in place (do not create a duplicate s
 
 **T1 import:** case prose is maintained on the team platform (Confluence by default); only after a **human go-ahead** is it exported / imported into the test management platform, once per batch.
 
-**Verification skill:** [`multica-verification`](../templates/en_US/skills/multica-verification/SKILL.md) · **Review skills:** `templates/en_US/skills/multica-review-*/`
+**Verification skill:** [`multica-verification`](../../templates/en_US/skills/leader/multica-verification/SKILL.md) · **Review skills:** `templates/en_US/skills/multica-review-*/`
 
 ---
 
@@ -410,8 +410,8 @@ Product review FAIL → Workflow B updates in place (do not create a duplicate s
 
 | Document | Content |
 | --- | --- |
-| `[software-development-reviewed/squad.md](../templates/en_US/squad/software-development-reviewed/squad.md)` | The Squad Instructions themselves |
+| `[software-development-reviewed/squad.md](../../templates/en_US/squad/software-development-reviewed/squad.md)` | The Squad Instructions themselves |
 | `[gates-and-evidence.md](gates-and-evidence.md)` | Gates and evidence |
 | `[cicd-and-test-pipeline.md](cicd-and-test-pipeline.md)` | G2 / G2.5 / T1–T3 |
 | `[role-skills-architecture.md](role-skills-architecture.md)` | The four skill layers |
-| `[templates/en_US/skills/README.md](../templates/en_US/skills/README.md)` | Skill index |
+| `[templates/en_US/skills/README.md](../../templates/en_US/skills/)` | Skill index |

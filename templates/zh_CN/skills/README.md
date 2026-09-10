@@ -1,6 +1,8 @@
 # Skills 索引（zh_CN）
 
-本目录收录可直接挂载到 [Multica](https://github.com/multica-ai/multica) 的共享 Skill。每个子目录即一个 Skill，`SKILL.md` 是给 Agent 读的技能说明；带脚本的 Skill 另附 `README.md` 给出人类视角的快速上手。
+本目录收录可直接挂载到 [Multica](https://github.com/multica-ai/multica) 的共享 Skill，**按角色分组**（`architect/` / `backend/` / `designer/` / `devops/` / `frontend/` / `leader/` / `platform/` / `product-manager/` / `reviewer/` / `shared/` / `tester/`）；**每个 Skill 是组下的一个子目录**，`SKILL.md` 是给 Agent 读的技能说明；带脚本的 Skill 另附 `README.md` 给出人类视角的快速上手。
+
+分组只是**仓库内的收纳方式**，与能力分层无关：挂载只认 `SKILL.md` 里的 `name`，同一分组内可能横跨内容 / 编排 / 平台 / 评审四层（如 `platform/` 全是平台层，`tester/` 则含内容 + 编排）。
 
 分层模型（详见 `docs/zh_CN/role-skills-architecture.md`）：**内容**（怎么写好）+ **编排**（落地到团队平台）+ **平台**（唯一连外部系统）+ **评审**（由非产出者执行）。
 

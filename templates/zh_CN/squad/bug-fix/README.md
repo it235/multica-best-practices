@@ -54,7 +54,7 @@ Bug 的目标是「恢复正确行为」，不是「引入新能力」。多一�
 ## 上手
 
 1. 按 [`../../agents/`](../../agents/) 创建 Agents：Leader / FrontendDev / BackendDev / Tester / Reviewer。
-2. 复制共享判门 Skill：[`../../skills/multica-verification/SKILL.md`](../../skills/multica-verification/SKILL.md) 挂给 **Leader**（本 Starter 只依赖这一个 Skill）。
+2. 复制共享判门 Skill：[`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md) 挂给 **Leader**（本 Starter 只依赖这一个 Skill）。
 3. 把本目录 [`squad.md`](./squad.md) 复制到 Squad Instructions（覆盖默认编排）。
 4. 用 [`issue.md`](./issue.md) 创建 Bug Issue。
 5. 分配给 Squad。

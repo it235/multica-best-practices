@@ -109,7 +109,7 @@ Unix：`bash scripts/confluence.sh create-page ...`
 | `multica-artifact-design-sync` / `-backend` / `-frontend` | `publish_design.py` |
 | `multica-test-t1-design` | `fetch_page_by_url.py`（`fetch_all` 编排） |
 
-完整矩阵见 [`docs/platform-collaboration.md`](../../../../docs/platform-collaboration.md)。
+完整矩阵见 [`docs/platform-collaboration.md`](../../../../../docs/zh_CN/platform-collaboration.md)。
 
 ## Agent Compatibility
 

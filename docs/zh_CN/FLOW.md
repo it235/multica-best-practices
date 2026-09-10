@@ -1,6 +1,6 @@
 # Software Development (Reviewed) 全流程图
 
-> **演示用** — 主文讲**交付物驱动裁剪**与 **Leader 编排**；[`software-development-reviewed`](../templates/zh_CN/squad/software-development-reviewed/squad.md) 的 S0–S6 / Skill 细节见 **附录 A**。  
+> **演示用** — 主文讲**交付物驱动裁剪**与 **Leader 编排**；[`software-development-reviewed`](../../templates/zh_CN/squad/software-development-reviewed/squad.md) 的 S0–S6 / Skill 细节见 **附录 A**。  
 > 配套：[`gates-and-evidence.md`](gates-and-evidence.md) · [`cicd-and-test-pipeline.md`](cicd-and-test-pipeline.md) · [`artifact-conventions.md`](artifact-conventions.md)
 
 ---
@@ -359,7 +359,7 @@ G0 → 按需 UI/API 方案 → 并行实现 → 集成验证 → 有 URL 则 T3
 
 ## 附录 A. Reviewed Starter 全量参考路径（非默认必经）
 
-> 完整产品功能、**所有工作包均 Required** 时的「满配」编排；与 [`squad.md`](../templates/zh_CN/squad/software-development-reviewed/squad.md) S0–S6 标签对应。**多数 Issue 应裁剪 §6 表，而非默认跑满本附录。**
+> 完整产品功能、**所有工作包均 Required** 时的「满配」编排；与 [`squad.md`](../../templates/zh_CN/squad/software-development-reviewed/squad.md) S0–S6 标签对应。**多数 Issue 应裁剪 §6 表，而非默认跑满本附录。**
 
 ```mermaid
 flowchart TB
@@ -422,7 +422,7 @@ PM Review FAIL → Workflow B 更新（不重复建 Story），同样遵循 §4.
 
 **T1 导入：** 用例正文维护在团队平台（默认 Confluence）；**人工口令** 后才导出 / 导入到测试管理平台，且每批只导入一次。
 
-**验证 Skill：** [`multica-verification`](../templates/zh_CN/skills/multica-verification/SKILL.md) · **评审 Skill：** `templates/zh_CN/skills/multica-review-*/`
+**验证 Skill：** [`multica-verification`](../../templates/zh_CN/skills/leader/multica-verification/SKILL.md) · **评审 Skill：** `templates/zh_CN/skills/multica-review-*/`
 
 ---
 
@@ -431,10 +431,10 @@ PM Review FAIL → Workflow B 更新（不重复建 Story），同样遵循 §4.
 
 | 文档                                                                                                    | 内容                    |
 | ----------------------------------------------------------------------------------------------------- | --------------------- |
-| `[software-development-reviewed/squad.md](../templates/zh_CN/squad/software-development-reviewed/squad.md)` | Squad Instructions 原文 |
+| `[software-development-reviewed/squad.md](../../templates/zh_CN/squad/software-development-reviewed/squad.md)` | Squad Instructions 原文 |
 | `[gates-and-evidence.md](gates-and-evidence.md)`                                                      | 门禁与证据                 |
 | `[cicd-and-test-pipeline.md](cicd-and-test-pipeline.md)`                                              | G2 / G2.5 / T1–T3     |
 | `[role-skills-architecture.md](role-skills-architecture.md)`                                          | Skill 四层架构            |
-| `[templates/zh_CN/skills/README.md](../templates/zh_CN/skills/README.md)`                                         | Skill 索引              |
+| `[templates/zh_CN/skills/README.md](../../templates/zh_CN/skills/README.md)`                                         | Skill 索引              |
 
 

@@ -25,7 +25,7 @@ metadata:
 | `multica-platform-jira` | 解析父 pageId；`append-artifact-link` 回写契约链接 |
 | `multica-platform-apifox` | `sync_openapi.js` 同步 OpenAPI + Issue tag |
 
-凭据与 CLI 细节**只查 platform skill**；矩阵见 [`docs/platform-collaboration.md`](../../../../docs/platform-collaboration.md)。
+凭据与 CLI 细节**只查 platform skill**；矩阵见 [`docs/platform-collaboration.md`](../../../../../docs/zh_CN/platform-collaboration.md)。
 
 ## @BackendDev 标准流程
 

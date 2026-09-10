@@ -91,7 +91,7 @@ python scripts/jira_cli.py append-artifact-link <ISSUE-KEY> \
 | `multica-artifact-api-sync` / `-frontend` | append-artifact-link |
 | `multica-test-t1-design` | `get_issue.py` / `get-issue`；`import_to_tracker.py` 仍在本 skill | 读已迁入 platform |
 
-完整矩阵见 [`docs/platform-collaboration.md`](../../../../docs/platform-collaboration.md)。
+完整矩阵见 [`docs/platform-collaboration.md`](../../../../../docs/zh_CN/platform-collaboration.md)。
 
 ## Adapting To A New Team
 

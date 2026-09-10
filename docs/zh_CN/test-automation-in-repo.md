@@ -2,7 +2,7 @@
 
 > T1/T2 用例正文在 **Confluence**；可执行自动化入 **Git**。**路径不猜**——读目标仓库根目录 **`MULTICA.md`**（分仓则读 Issue 矩阵中 **每个相关 repo** 各一份）。
 
-模板：[`templates/zh_CN/MULTICA.md`](../templates/zh_CN/MULTICA.md)（复制到产品仓库根目录）。
+模板：[`templates/zh_CN/MULTICA.md`](../../templates/zh_CN/MULTICA.md)（复制到产品仓库根目录）。
 
 ---
 
@@ -55,7 +55,7 @@
 
 ## 4. manifest.json 示例
 
-见 [`multica-test-orchestration/references/automation-assets-lifecycle.md`](../templates/zh_CN/skills/multica-test-orchestration/references/automation-assets-lifecycle.md)。
+见 [`multica-test-orchestration/references/automation-assets-lifecycle.md`](../../templates/zh_CN/skills/tester/multica-test-orchestration/references/automation-assets-lifecycle.md)。
 
 ---
 

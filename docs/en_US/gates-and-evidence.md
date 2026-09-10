@@ -21,7 +21,7 @@ The key property of a gate is **decidability**: every gate maps to a question th
 
 ## The gatekeeping action: the multica-verification skill
 
-Verification is a **function**, not a role. It is standardized as `templates/en_US/skills/multica-verification/` and triggered by the **Leader** at the gate points (G1 / G2 / G3):
+Verification is a **function**, not a role. It is standardized as `templates/en_US/skills/leader/multica-verification/` and triggered by the **Leader** at the gate points (G1 / G2 / G3):
 
 - The Leader produces no artifacts → the gatekeeper and the gated are different parties
 - Gatekeeping = rerun the verification commands + map each acceptance criterion item by item, without citing the producer's description; when the repo has CI configured, **prefer the CI verdict** (e.g. `[G2 PASS · CI #123]`) and don't rerun (how to read CI: the `multica-gate-setup` skill)
@@ -118,7 +118,7 @@ Tests / Lint / Build / CI / branch protection / PR approval
 ```
 
 - **Soft gate**: the Leader gatekeeps inside the Squad with the multica-verification skill (G1–G3), constrained by instructions and evidence — good for getting started, no CI, or an exploration phase.
-- **Hard gate**: unforgeable checks produced by CI (deployment templates and practices live in the `multica-gate-setup` skill: `templates/en_US/skills/multica-gate-setup/`). When you need results more trustworthy than manual checks, hand the critical gates to CI — the gate issuer must be a different party from the gated.
+- **Hard gate**: unforgeable checks produced by CI (deployment templates and practices live in the `multica-gate-setup` skill: `templates/en_US/skills/devops/multica-gate-setup/`). When you need results more trustworthy than manual checks, hand the critical gates to CI — the gate issuer must be a different party from the gated.
 
 Soft and hard gates are **two execution environments of the same verification function**: the Skill in the agent world and CI in the engineering world. If it can run in CI, run it in CI.
 
