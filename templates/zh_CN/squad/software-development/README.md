@@ -97,16 +97,15 @@ Reviewer
 | Skill | 来源 | 挂给谁 |
 | --- | --- | --- |
 | `multica-verification`（判门，必备） | [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md) | **Leader** |
-| `multica-gate-setup` | [`../../skills/devops/multica-gate-setup/SKILL.md`](../../skills/devops/multica-gate-setup/SKILL.md) | Leader（集成 CI 硬门禁时） |
 | `multica-test-t1-design` | [`../../skills/tester/multica-test-t1-design/SKILL.md`](../../skills/tester/multica-test-t1-design/SKILL.md) | Tester |
-| `multica-requirement-analysis` | [`../../skills/product-manager/multica-requirement-analysis/SKILL.md`](../../skills/product-manager/multica-requirement-analysis/SKILL.md) | Leader / Architect |
+| `multica-pm-requirement-spec` | [`../../skills/product-manager/multica-pm-requirement-spec/SKILL.md`](../../skills/product-manager/multica-pm-requirement-spec/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`../../skills/architect/multica-technical-design/SKILL.md`](../../skills/architect/multica-technical-design/SKILL.md) | Architect |
 | `multica-backend-impl` | [`../../skills/backend/multica-backend-impl/SKILL.md`](../../skills/backend/multica-backend-impl/SKILL.md) | BackendDev |
 | `multica-frontend-impl` | [`../../skills/frontend/multica-frontend-impl/SKILL.md`](../../skills/frontend/multica-frontend-impl/SKILL.md) | FrontendDev |
-| `multica-artifact-req-sync` | [`../../skills/product-manager/multica-artifact-req-sync/SKILL.md`](../../skills/product-manager/multica-artifact-req-sync/SKILL.md) | ProductManager |
-| `multica-artifact-ui-sync` | [`../../skills/designer/multica-artifact-ui-sync/SKILL.md`](../../skills/designer/multica-artifact-ui-sync/SKILL.md) | Designer |
-| `multica-artifact-design-sync` | [`../../skills/architect/multica-artifact-design-sync/SKILL.md`](../../skills/architect/multica-artifact-design-sync/SKILL.md) | Architect |
-| `multica-artifact-api-sync` | [`../../skills/backend/multica-artifact-api-sync/SKILL.md`](../../skills/backend/multica-artifact-api-sync/SKILL.md) | BackendDev |
+| `multica-pm-artifact-publish` | [`../../skills/product-manager/multica-pm-artifact-publish/SKILL.md`](../../skills/product-manager/multica-pm-artifact-publish/SKILL.md) | ProductManager |
+| `multica-design-ui-impl` | [`../../skills/designer/multica-design-ui-impl/SKILL.md`](../../skills/designer/multica-design-ui-impl/SKILL.md) | Designer |
+| `multica-artifact-architect` | [`../../skills/architect/multica-artifact-architect/SKILL.md`](../../skills/architect/multica-artifact-architect/SKILL.md) | Architect |
+| `multica-artifact-backend` | [`../../skills/backend/multica-artifact-backend/SKILL.md`](../../skills/backend/multica-artifact-backend/SKILL.md) | BackendDev |
 | `multica-test-orchestration` | [`../../skills/tester/multica-test-orchestration/SKILL.md`](../../skills/tester/multica-test-orchestration/SKILL.md) | Tester |
 | `multica-artifact-cicd-sync` | [`../../skills/devops/multica-artifact-cicd-sync/SKILL.md`](../../skills/devops/multica-artifact-cicd-sync/SKILL.md) | DevOps |
 | `multica-test-t3-ui-automation` | [`../../skills/tester/multica-test-t3-ui-automation/SKILL.md`](../../skills/tester/multica-test-t3-ui-automation/SKILL.md) | Tester（T3） |
@@ -143,7 +142,7 @@ Issue → [设计] → [并行产物] → [实现] → [测试] → Human
 
 这个流程是**协调指引**，不是硬性约束。它不能替代：
 
-- CI 硬门禁（见 [`../../skills/devops/multica-gate-setup/`](../../skills/devops/multica-gate-setup/)）
+- CI 硬门禁（见 [`../../skills/devops/multica-artifact-cicd-sync/`](../../skills/devops/multica-artifact-cicd-sync/)）
 - 分支保护 / PR Review
 - 人类审批
 
@@ -162,7 +161,7 @@ multica-verification skill 是 Agent 世界的**软门禁**（由 Leader 执行�
 ## 为什么有效
 
 这个 Starter 有 9 个角色：Leader 负责编排与判门，ProductManager（产品需求 / PRD）把想法变可评审交付物，Architect（技术架构）/ Designer（UI）/ FrontendDev / BackendDev / Tester（T1/T2/T3 三阶段）/ DevOps（G2.5 触发 CI/CD）各管一段产物，**Reviewer 做业务评审**。
-判门动作标准化为 [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md)，由不产出的 Leader 执行（执行者与判门者不同源）；客观验证能机器化就升级到 CI 硬门禁（见 [`../../skills/devops/multica-gate-setup/`](../../skills/devops/multica-gate-setup/)）。
+判门动作标准化为 [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md)，由不产出的 Leader 执行（执行者与判门者不同源）；客观验证能机器化就升级到 CI 硬门禁（见 [`../../skills/devops/multica-artifact-cicd-sync/`](../../skills/devops/multica-artifact-cicd-sync/)）。
 **门禁锚定产物而不是角色**：Issue 的「涉及端」决定路由，缺失角色对应产物跳过、门禁链不断——无设计 / 无前端 / 无后端 / 全栈都是同一套指令的排列组合。
 路由逻辑只写一次（Squad），不复制进每个 Agent；每个 Agent 职责很窄，可以原样照搬。
 

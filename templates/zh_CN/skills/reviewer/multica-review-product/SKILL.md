@@ -1,12 +1,12 @@
 ---
 name: multica-review-product
-description: 需求/PRD 专属评审框架。ProductReviewer 对 multica-artifact-req-sync 提交的 PRD 做价值/逻辑/清晰度三阶段评审，输出 PASS/FAIL/BLOCKED 与 Must Fix/Suggest/Nit，汇报 Leader；FAIL 后 PM Workflow B 复审。
+description: 需求/PRD 专属评审框架。ProductReviewer 对 multica-pm-artifact-publish 提交的 PRD 做价值/逻辑/清晰度三阶段评审，输出 PASS/FAIL/BLOCKED 与 Must Fix/Suggest/Nit，汇报 Leader；FAIL 后 PM Workflow B 复审。
 version: 1.1.0
 ---
 
 # 需求（PRD）专业评审（ProductReviewer）
 
-本 skill 提供对 **PRD / 需求产物** 的结构化专业评审。调用方为 `ProductReviewer`，评审对象为 `ProductManager` 经 `multica-artifact-req-sync` 回传的 Confluence / JIRA 链接。
+本 skill 提供对 **PRD / 需求产物** 的结构化专业评审。调用方为 `ProductReviewer`，评审对象为 `ProductManager` 经 `multica-pm-artifact-publish` 回传的 Confluence / JIRA 链接。
 
 智能体指令见 [`references/agent-instructions.md`](references/agent-instructions.md)。  
 执行顺序见 [`references/review-workflow.md`](references/review-workflow.md)。  
@@ -84,7 +84,7 @@ version: 1.1.0
 | 结论 | 含义 | 对 Leader |
 | --- | --- | --- |
 | **PASS** | 无 Must Fix；可有 Suggest/Nit | 专业评审通过；仍须 verification；OP- 未关不得开发 |
-| **FAIL** | 存在 Must Fix（含价值硬伤、逻辑缺口、清晰度阻断） | 指派 PM：`multica-requirement-analysis` 修订 → `multica-artifact-req-sync` Workflow B → 复审 |
+| **FAIL** | 存在 Must Fix（含价值硬伤、逻辑缺口、清晰度阻断） | 指派 PM：`multica-pm-requirement-spec` 修订 → `multica-pm-artifact-publish` Workflow B → 复审 |
 | **BLOCKED** | 材料不足或上下文冲突，无法可靠审查 | 补材料后再派；**不计** 3 轮 FAIL |
 
 BLOCKED 条件见 [`references/review-workflow.md`](references/review-workflow.md#blocked)。

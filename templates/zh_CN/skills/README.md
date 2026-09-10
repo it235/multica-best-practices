@@ -15,15 +15,16 @@
 | `multica-platform-jenkins` | 触发 Jenkins 构建 / 发布 / 晋级 | `scripts/trigger_env.py`、`scripts/build_sit.py`、`scripts/promote_prod.py` |
 | `multica-platform-apifox` | 同步 OpenAPI、补场景、跑批 | `lib/apifox.js`、`scripts/run_apifox.py` |
 | `multica-platform-figma` | 读取 Figma 文件元数据 / 设计摘要 | `scripts/fetch_file.py` |
+| `multica-platform-knowledge-base` | 通过 Bridge HTTP 查询团队 Wiki 知识库（问答 / 入口路径 / 术语） | `scripts/kb_ask.py` |
 
 ## 二、编排层（Orchestration，调用平台层把产物落地并回传稳定链接）
 
 | Skill | 用途 | 主要入口 |
 |---|---|---|
-| `multica-artifact-req-sync` | PRD / 需求 → 团队需求平台（默认 Confluence + JIRA） | `scripts/publish-prd.sh` |
-| `multica-artifact-design-sync` | 技术设计 → 文档平台 / Git | （纯编排） |
-| `multica-artifact-api-sync` | API 契约 → 团队 API 平台（默认 Apifox） | （纯编排） |
-| `multica-artifact-ui-sync` | UI 规范 → 团队设计平台（默认 Figma） | （纯编排） |
+| `multica-pm-artifact-publish` | PRD / 需求 → 团队需求平台（默认 Confluence + JIRA） | `scripts/publish-prd.sh` |
+| `multica-artifact-architect` | 技术设计 → 文档平台 / Git | （纯编排） |
+| `multica-artifact-backend` | API 契约 → 团队 API 平台（默认 Apifox） | （纯编排） |
+| `multica-design-ui-impl` | UI 规范 → 团队设计平台（默认 Figma） | （纯编排） |
 | `multica-artifact-frontend` | 前端实现说明 → 文档平台 | （纯编排） |
 | `multica-artifact-cicd-sync` | 代码评审结论 → 触发 CI（默认 Jenkins），回传部署 URL | `scripts/trigger_cicd.py` |
 
@@ -31,7 +32,7 @@
 
 | Skill | 用途 |
 |---|---|
-| `multica-requirement-analysis` | 需求分析：把需求结构化为编号 PRD |
+| `multica-pm-requirement-spec` | 需求分析：把需求结构化为编号 PRD |
 | `multica-technical-design` | 技术设计草稿（含元数据与修订记录） |
 | `multica-backend-impl` | 后端实现：契约先行 + TDD |
 | `multica-frontend-impl` | 前端实现：体验与状态完整 |
@@ -57,7 +58,6 @@
 
 | Skill | 用途 |
 |---|---|
-| `multica-gate-setup` | CI 硬门禁模板（分支保护 / delivery gate） |
 | `multica-manage-skills` | 通过 Multica API 管理 Skill |
 
 ## 六、怎么挂载到 Multica

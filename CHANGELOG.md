@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 本文件记录本项目的所有重要变更。新条目采用中英结合写法（Chinese-first, English alongside）。
 
+## v0.0.17 - 2026-09-10 · 命名对齐内网 + 删除 gate-setup + 公开 knowledge-base / Rename to internal names, drop gate-setup, publish knowledge-base
+
+### Changed / 变更
+
+- **5 个 skill 改名对齐内网当前命名**（内网在回流前已主动改名，公开版此前停留在旧名）：
+  `multica-requirement-analysis` → `multica-pm-requirement-spec`；`multica-artifact-req-sync` → `multica-pm-artifact-publish`；`multica-artifact-design-sync` → `multica-artifact-architect`；`multica-artifact-api-sync` → `multica-artifact-backend`；`multica-artifact-ui-sync` → `multica-design-ui-impl`（内网 v0.0.47）。两语言树同步，`name:` 与全库引用（docs / README / squad / agents / 配置）一并更新。
+- **删除 `multica-gate-setup`**（内网从无此 skill，CI 硬门禁概念由 `multica-artifact-cicd-sync` + `multica-verification` 承载）。G2「CI 硬门禁」叙事在 `squad.md`、`gates-and-evidence.md`、`adapt-and-scale.md`、`README`、`AGENTS.md`、技能索引、配置中全部改挂 `multica-artifact-cicd-sync`；squad-bootstrap 的 DevOps 技能组移除该条目。删除后全仓断链 **0**。
+- **公开 `multica-platform-knowledge-base`**（从内网迁移并脱敏）：`http://192.168.34.138:3910` → `http://kb-bridge.example.com:3910`；`KB138_*` → `KB_*`；「138 Cursor Bridge / 团队知识库」等内网表述全部泛化。已加入 `platform/` 层表格（技能索引 + 中英架构文档）。脱敏后校验：**0 处 `138` / `192.168`**。
+- **补 en_US 缺失的 5 个测试类 skill**（`tester/` 组，从 zh_CN 复制）：`multica-test-orchestration` / `multica-test-t1-design` / `multica-test-t2-coverage` / `multica-test-t3-api-automation` / `multica-test-t3-ui-automation`。至此 en_US 由 18 → **22** 个，原 3 处断链消除。
+
+### 对照内网（收敛后）/ Compared with internal after convergence
+
+| 类别 | 说明 |
+| --- | --- |
+| 命名已对齐 | 5 个改名后的 skill 名称现已与内网一致 |
+| 删除 | `multica-gate-setup`（内网本无，公开版自有 → 移除） |
+| 新增（脱敏公开） | `multica-platform-knowledge-base`（内网红线 skill，已泛化 Bridge 地址与变量后公开） |
+| 仍不迁移（红线） | `multica-design-ui-impl`（绑定 BOSS / AngelAlign）——公开版以内容层 `multica-frontend-impl` 承载，未引入该实现 |
+| 净数量 | zh_CN **29**（删 1 增 1，持平）、en_US **22**；全仓相对链接 **0 断链** |
+
 ## v0.0.16 - 2026-09-10 · skills 按角色分组（对齐内网目录）/ Group skills by role (align with internal layout)
 
 ### Changed / 变更
@@ -17,10 +37,10 @@ All notable changes to this project will be documented in this file.
 | 类别 | Skill | 说明 |
 | --- | --- | --- |
 | 公开版**多出** | `multica-gate-setup` | 内网无（CI 硬门禁模板，公开版自有） |
-| 公开版**多出** | `multica-artifact-ui-sync` | 内网无对应（内网 designer 组只有 `multica-design-ui-impl`） |
+| 公开版**多出** | `multica-design-ui-impl` | 内网无对应（内网 designer 组只有 `multica-design-ui-impl`） |
 | 内网有、**公开无** | `multica-design-ui-impl` | 红线：绑定 BOSS / AngelAlign，明确不迁移 |
 | 内网有、**公开无** | `multica-platform-knowledge-base` | 红线：绑定 138 Bridge，明确不迁移 |
-| **命名差异**（4 组） | `multica-artifact-api-sync` ← `multica-artifact-backend`；`multica-artifact-design-sync` ← `multica-artifact-architect`；`multica-artifact-req-sync` ← `multica-pm-artifact-publish`；`multica-requirement-analysis` ← `multica-pm-requirement-spec` | 公开版采用 v0.0.12 的新命名 |
+| **命名差异**（4 组） | `multica-artifact-backend` ← `multica-artifact-backend`；`multica-artifact-architect` ← `multica-artifact-architect`；`multica-pm-artifact-publish` ← `multica-pm-artifact-publish`；`multica-pm-requirement-spec` ← `multica-pm-requirement-spec` | 公开版采用 v0.0.12 的新命名 |
 
 其余 **23 个同名一致**（含 `multica-review-test`，内网版同样无 frontmatter）。/ the other 23 match by name.
 
@@ -82,7 +102,7 @@ All notable changes to this project will be documented in this file.
 ### Added / 新增（回流自内部版，已脱敏）
 
 - **新增 10 个 skill（zh_CN）**：`multica-backend-impl`、`multica-frontend-impl`、`multica-artifact-frontend`、`multica-test-orchestration`、`multica-test-t1-design`、`multica-test-t2-coverage`、`multica-test-t3-ui-automation`、`multica-test-t3-api-automation`、`multica-platform-apifox`、`multica-platform-figma`
-- **升级 15 个现有 skill（zh_CN，就地覆盖为内部版更成熟内容）**：`multica-review-*`（×6）、`multica-technical-design`、`multica-verification`、`multica-artifact-cicd-sync`、`multica-platform-jira`、`multica-platform-confluence`，以及内部版已重命名的 4 个：`multica-pm-requirement-spec`→`multica-requirement-analysis`、`multica-pm-artifact-publish`→`multica-artifact-req-sync`、`multica-artifact-architect`→`multica-artifact-design-sync`、`multica-artifact-backend`→`multica-artifact-api-sync`
+- **升级 15 个现有 skill（zh_CN，就地覆盖为内部版更成熟内容）**：`multica-review-*`（×6）、`multica-technical-design`、`multica-verification`、`multica-artifact-cicd-sync`、`multica-platform-jira`、`multica-platform-confluence`，以及内部版已重命名的 4 个：`multica-pm-requirement-spec`→`multica-pm-requirement-spec`、`multica-pm-artifact-publish`→`multica-pm-artifact-publish`、`multica-artifact-architect`→`multica-artifact-architect`、`multica-artifact-backend`→`multica-artifact-backend`
 - **`MULTICA.md` 机制落地**：产品仓库根目录上下文模板（layout / 测试自动化路径 / 构建验证命令 / 分支约定），分仓各一份，缺失即 BLOCKED
 
 ### Changed / 变更
@@ -170,7 +190,7 @@ All notable changes to this project will be documented in this file.
 - `gates-and-evidence.md`（中英）门禁表新增 **G2.5（CI/CD 部署）** 行 + 走查示例 / `gates-and-evidence.md` (zh/en) adds **G2.5** row + walkthrough
 - `tester.md`（中英）升级为 **T1/T2/T3 三阶段**（T1 用例、T2 覆盖率、T3 部署后自动化），移除具体平台绑定 / `tester.md` (zh/en) upgraded to T1/T2/T3 three-phase
 - `leader.md`（中英）路由新增 PM 首派、Tester 三阶段路由、DevOps/G2.5 路由 / `leader.md` (zh/en) routing adds PM-first, Tester three-phase, DevOps/G2.5
-- `product-manager.md`（中英）增加「先 `multica-requirement-analysis` 结构化，再 `multica-artifact-req-sync` 落地」双 skill 句式 / `product-manager.md` (zh/en) gains dual-skill pattern
+- `product-manager.md`（中英）增加「先 `multica-pm-requirement-spec` 结构化，再 `multica-pm-artifact-publish` 落地」双 skill 句式 / `product-manager.md` (zh/en) gains dual-skill pattern
 - `software-development/squad.md` 与 `issue.md`（中英）阶段表加入 G2.5 与 deploy branch 声明；issue 模板新增「Git 分支」区块 / Squad & issue add G2.5 + deploy branch
 - AGENTS.md 结构图更新为 9 角色 + 平台层占位壳 + 三层模型说明 / AGENTS.md structure updated to 9 roles + platform shells + three-layer model
 
@@ -182,7 +202,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added / 新增
 
-- 新增 5 个产物对接 skill（中英，每个默认平台可替换）：`multica-artifact-req-sync`（PRD→Confluence）、`multica-artifact-ui-sync`（UI→Figma）、`multica-artifact-design-sync`（技术设计→Git/Confluence）、`multica-artifact-api-sync`（API 契约→Apifox）、`multica-artifact-test-sync`（用例→本地 XMind 转 Jira）/ Added 5 artifact-sync skills (zh/en, swappable default platform each)
+- 新增 5 个产物对接 skill（中英，每个默认平台可替换）：`multica-pm-artifact-publish`（PRD→Confluence）、`multica-design-ui-impl`（UI→Figma）、`multica-artifact-architect`（技术设计→Git/Confluence）、`multica-artifact-backend`（API 契约→Apifox）、`multica-artifact-test-sync`（用例→本地 XMind 转 Jira）/ Added 5 artifact-sync skills (zh/en, swappable default platform each)
 - 新增 `artifact-conventions.md`（中英）重写为「产物内容规范 + 对接 skill」：内容归角色、平台归 skill，角色提示词不写平台名；换公司只换 skill / Rewrote `artifact-conventions.md` (zh/en) into "content spec + sync skill": content belongs to role, platform to skill; no platform name in prompts
 - `README.md` / `README.en.md` Skill 表加 5 个 `multica-artifact-*-sync` 条目，计数 6→11 / README skill tables add the 5 artifact-sync skills, count 6→11
 
@@ -274,7 +294,7 @@ Historical iterations (0.1.0–0.14.0) are condensed into this release: a copy-p
 ### Added / 新增
 
 - **Agent 模板 / Agent templates**：6 个共享角色（Leader / Architect / FrontendDev / BackendDev / Tester / Reviewer），位于 `templates/zh_CN/agents/` 与 `templates/en_US/agents/`
-- **Skill 模板 / Skill templates**：6 个共享 Skill（`multica-verification` 判门 / `multica-gate-setup` CI 硬门禁 / `multica-test-design` / `multica-requirement-analysis` / `multica-technical-design` / `multica-implementation`），统一 `multica-` 前缀，按名称挂载
+- **Skill 模板 / Skill templates**：6 个共享 Skill（`multica-verification` 判门 / `multica-gate-setup` CI 硬门禁 / `multica-test-design` / `multica-pm-requirement-spec` / `multica-technical-design` / `multica-implementation`），统一 `multica-` 前缀，按名称挂载
 - **Squad Starter / Squad starters**：`software-development`（推荐）与 `bug-fix`（实验性），各含 README / squad / issue 三件套
 - **方法论 / Methodology**：`docs/` 5 篇（指令归属 / 门禁与证据 / 常见错误 / 裁剪扩展 / 命名规范）
 - **CI 硬门禁 / CI hard gates**：`delivery-gate.yml` / `branch-protection.json` / `apply-branch-protection.sh` 随 `multica-gate-setup` skill 自包含

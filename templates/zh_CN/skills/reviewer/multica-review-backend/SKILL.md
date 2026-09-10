@@ -5,7 +5,7 @@ description: 后端实现专属评审框架。由 BackendReviewer 调用，对 B
 
 # 后端实现专业评审（BackendReviewer）
 
-本 skill 提供对 **后端实现产物（API 契约 + 实现）**的结构化专业评审框架。调用方为 `BackendReviewer`，评审对象为 `BackendDev` 经 `multica-artifact-api-sync` 回传的链接与变更文件列表，以及 Leader 派活时给的架构设计引用。
+本 skill 提供对 **后端实现产物（API 契约 + 实现）**的结构化专业评审框架。调用方为 `BackendReviewer`，评审对象为 `BackendDev` 经 `multica-artifact-backend` 回传的链接与变更文件列表，以及 Leader 派活时给的架构设计引用。
 
 ## 什么时候用
 

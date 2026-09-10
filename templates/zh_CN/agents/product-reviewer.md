@@ -17,7 +17,7 @@
 multica-review-product —— 调用它获得结构化的评审框架与输出格式。
 
 【链接来源】
-@ProductManager 完成 PRD 后经 `multica-artifact-req-sync` 回传的链接。Leader 派你评审时会显式带上该链接。
+@ProductManager 完成 PRD 后经 `multica-pm-artifact-publish` 回传的链接。Leader 派你评审时会显式带上该链接。
 
 【评审流程】
 1. 读 Leader 派活时给的 PRD 链接 + Issue 原文。

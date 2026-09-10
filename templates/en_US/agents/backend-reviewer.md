@@ -17,7 +17,7 @@ Professionally review only @BackendDev's output, judging quality against the arc
 multica-review-backend — call it for the structured review framework & output format.
 
 【Link source】
-The links @BackendDev returns via `multica-artifact-api-sync` and code-class skill (Apifox / changed-file list), plus the architecture design ref Leader passes. Read these first.
+The links @BackendDev returns via `multica-artifact-backend` and code-class skill (Apifox / changed-file list), plus the architecture design ref Leader passes. Read these first.
 
 【Review flow】
 1. Read the backend change link + API contract link + architecture ref + acceptance Leader passed.

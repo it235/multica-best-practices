@@ -5,7 +5,7 @@ description: Backend-implementation dedicated review framework. Called by Backen
 
 # Backend Implementation Professional Review (BackendReviewer)
 
-Structured professional review framework for **backend implementation artifacts (API contract + implementation)**. Called by `BackendReviewer`; reviews the links `BackendDev` returns via `multica-artifact-api-sync` and code-class skill (Apifox / changed-file list), plus the architecture design ref Leader passes.
+Structured professional review framework for **backend implementation artifacts (API contract + implementation)**. Called by `BackendReviewer`; reviews the links `BackendDev` returns via `multica-artifact-backend` and code-class skill (Apifox / changed-file list), plus the architecture design ref Leader passes.
 
 ## When to use
 - BackendReviewer receives a "review backend implementation" dispatch from Leader.

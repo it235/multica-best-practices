@@ -5,7 +5,7 @@ description: Requirements/PRD dedicated review framework. Called by ProductRevie
 
 # Requirements (PRD) Professional Review (ProductReviewer)
 
-Structured professional review framework for **PRD / requirement artifacts**. Called by `ProductReviewer`; reviews the PRD link `ProductManager` returns via `multica-artifact-req-sync`.
+Structured professional review framework for **PRD / requirement artifacts**. Called by `ProductReviewer`; reviews the PRD link `ProductManager` returns via `multica-pm-artifact-publish`.
 
 ## When to use
 - ProductReviewer receives a "review PRD" dispatch from Leader.

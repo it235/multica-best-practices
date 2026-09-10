@@ -17,7 +17,7 @@
 multica-review-backend —— 调用它获得结构化的评审框架与输出格式。
 
 【链接来源】
-@BackendDev 完成契约 / 实现后经 `multica-artifact-api-sync` 与代码类 skill 回传的链接（Apifox / 变更文件列表）。Leader 派活时显式带上这些链接 + 架构设计引用。
+@BackendDev 完成契约 / 实现后经 `multica-artifact-backend` 与代码类 skill 回传的链接（Apifox / 变更文件列表）。Leader 派活时显式带上这些链接 + 架构设计引用。
 
 【评审流程】
 1. 读 Leader 派活时给的后端变更链接 + API 契约链接 + 架构设计引用 + 验收标准。

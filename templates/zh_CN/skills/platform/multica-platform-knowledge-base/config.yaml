@@ -1,0 +1,9 @@
+# multica-platform-knowledge-base
+version: "1.0"
+
+bridge:
+  default_url: "http://kb-bridge.example.com:3910"  # 团队内网；用 KB_BRIDGE 覆盖
+
+query:
+  min_task_id: 500000000
+  default_timeout_sec: 120

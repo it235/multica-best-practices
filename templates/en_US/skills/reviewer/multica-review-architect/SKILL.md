@@ -5,7 +5,7 @@ description: Architecture-design dedicated review framework. Called by ArchRevie
 
 # Architecture Design Professional Review (ArchReviewer)
 
-Structured professional review framework for **technical architecture design artifacts**. Called by `ArchReviewer`; reviews the design link `Architect` returns via `multica-artifact-design-sync`.
+Structured professional review framework for **technical architecture design artifacts**. Called by `ArchReviewer`; reviews the design link `Architect` returns via `multica-artifact-architect`.
 
 ## When to use
 - ArchReviewer receives a "review architecture design" dispatch from Leader.

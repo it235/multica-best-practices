@@ -28,8 +28,8 @@ description: 前端实现：读 JIRA/Confluence/架构/UI/API，注重交互与�
 | 1 | Issue / 验收标准 | `multica-platform-jira` → `jira_cli.py get-issue <KEY>` |
 | 2 | PRD | JIRA → Confluence `fetch_page.py` |
 | 3 | 架构设计 | Leader 派活或 JIRA 设计链接 → `fetch_page.py` |
-| 4 | UI 设计 | @Designer `multica-artifact-ui-sync` 链接 |
-| 5 | API 契约 | @BackendDev `multica-artifact-api-sync` Confluence 链接 |
+| 4 | UI 设计 | @Designer `multica-design-ui-impl` 链接 |
+| 5 | API 契约 | @BackendDev `multica-artifact-backend` Confluence 链接 |
 | 6 | 现有前端代码 | 局部阅读 / codegraph |
 
 契约或 UI 缺失 → **mock 先行**并记录 Mock 策略；接口语义不明 → **BLOCKED**，不发明 API。

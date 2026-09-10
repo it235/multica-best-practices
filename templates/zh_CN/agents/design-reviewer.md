@@ -17,7 +17,7 @@
 multica-review-designer —— 调用它获得结构化的评审框架与输出格式。
 
 【链接来源】
-@Designer 完成设计后经 `multica-artifact-ui-sync` 回传的链接（Figma / 设计平台）。Leader 派你评审时会显式带上该链接；你先读链接再评审。
+@Designer 完成设计后经 `multica-design-ui-impl` 回传的链接（Figma / 设计平台）。Leader 派你评审时会显式带上该链接；你先读链接再评审。
 
 【评审流程】
 1. 读 Leader 派活时给的 UI 链接 + 上游需求链接。

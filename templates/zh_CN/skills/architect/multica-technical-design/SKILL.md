@@ -1,6 +1,6 @@
 ---
 name: multica-technical-design
-description: 基于 PRD 与现有代码产出最小技术方案。用于 @Architect 架构分析、影响评估、实现方案设计；含文档元数据与复审修订规范；草稿就绪后交 multica-artifact-design-sync 落地。
+description: 基于 PRD 与现有代码产出最小技术方案。用于 @Architect 架构分析、影响评估、实现方案设计；含文档元数据与复审修订规范；草稿就绪后交 multica-artifact-architect 落地。
 ---
 
 # Technical Design
@@ -9,14 +9,14 @@ description: 基于 PRD 与现有代码产出最小技术方案。用于 @Archit
 
 基于 PRD（或 Issue）与现有代码库，产出**最小可行**的技术设计（只管「写什么」，不管「落到哪个平台」）。
 
-> 与 `multica-artifact-design-sync` 分工：**technical-design 产出结构与内容；artifact-architect 校验产物并调用 Confluence/JIRA platform skills 落地**。  
+> 与 `multica-artifact-architect` 分工：**technical-design 产出结构与内容；artifact-architect 校验产物并调用 Confluence/JIRA platform skills 落地**。  
 > 与 `multica-review-architect` 配合：**初稿 → 评审 → 修订 → 复审**（最多 3 轮），每轮修订须递增版本并填写「评审回应」。
 
 ## Platform 协作
 
 | Platform skill | 本 skill 用途 |
 | --- | --- |
-| `multica-platform-jira` / `multica-platform-confluence` | 读 PRD / Issue（开工前）；**写**由 `multica-artifact-design-sync` 编排 |
+| `multica-platform-jira` / `multica-platform-confluence` | 读 PRD / Issue（开工前）；**写**由 `multica-artifact-architect` 编排 |
 
 本 skill 只产出本地 `design.md`；凭据与发布 CLI 见 platform skill。
 
@@ -121,7 +121,7 @@ docs/design/<ISSUE-KEY>/design.md
 2. **版本 +1**（如 v0.1 → v0.2），状态改 `评审中`。
 3. 在 **评审回应** 表逐条填写：已修改 / 不采纳（须写理由）。
 4. 更新受影响章节；**修订记录**追加一行。
-5. 重新自检 → `multica-artifact-design-sync` → platform 发布（Confluence upsert 同 title 会更新版本）。
+5. 重新自检 → `multica-artifact-architect` → platform 发布（Confluence upsert 同 title 会更新版本）。
 6. 通知 Leader 已修订，进入下一轮 ArchReviewer 复审（最多 3 轮）。
 
 不采纳阻断项须 Leader 裁决，Architect 不得自行关闭评审。
@@ -130,7 +130,7 @@ docs/design/<ISSUE-KEY>/design.md
 
 ```text
 先用 multica-technical-design 写 docs/design/<ISSUE-KEY>/design.md（含头部元数据），
-再用 multica-artifact-design-sync 自检后按 platform skill 发布并回传链接。
+再用 multica-artifact-architect 自检后按 platform skill 发布并回传链接。
 ```
 
 发布命令见 `multica-platform-confluence`（`publish_design.py --append-jira`）。

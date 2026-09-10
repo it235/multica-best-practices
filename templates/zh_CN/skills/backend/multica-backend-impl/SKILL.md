@@ -9,7 +9,7 @@ description: 后端实现：读 JIRA/Confluence/架构设计，TDD 驱动 API �
 
 在已批准的技术设计与 Issue 范围内，**契约先行 + TDD** 完成后端实现。
 
-> 与 `multica-artifact-api-sync` 分工：**backend-impl 管怎么读上游、怎么写代码与测试；artifact-backend 管 API 契约文档规范与 Confluence 落地**。
+> 与 `multica-artifact-backend` 分工：**backend-impl 管怎么读上游、怎么写代码与测试；artifact-backend 管 API 契约文档规范与 Confluence 落地**。
 
 ## Platform 协作
 
@@ -18,7 +18,7 @@ description: 后端实现：读 JIRA/Confluence/架构设计，TDD 驱动 API �
 | `multica-platform-jira` | 读 Issue / AC（经 Issue Hub 或 JIRA URL） |
 | `multica-platform-confluence` | 读 PRD / 架构设计（`fetch_page.py`） |
 
-发布契约走 `multica-artifact-api-sync` → platform skill；本 skill 不直接写 REST。
+发布契约走 `multica-artifact-backend` → platform skill；本 skill 不直接写 REST。
 
 ## 开工前：读上游（必做）
 
@@ -52,7 +52,7 @@ CI 是 **二次确认**，不是第一次跑单测的地方。
 
 ```text
 1. 读 AC- / 架构「实现步骤（后端）」→ 列出 API-ID 与行为
-2. 写/更新 api-contract.md（交 multica-artifact-api-sync 发布，供前端并行）
+2. 写/更新 api-contract.md（交 multica-artifact-backend 发布，供前端并行）
 3. Red   — 写失败单元测试（业务逻辑、边界、异常）
 4. Green — 最小实现使测试通过
 5. Refactor — 保持测试绿，不扩 scope
@@ -74,7 +74,7 @@ CI 是 **二次确认**，不是第一次跑单测的地方。
 
 ## 完成证据
 
-- API 契约 Confluence 链接（`multica-artifact-api-sync`）
+- API 契约 Confluence 链接（`multica-artifact-backend`）
 - 变更文件列表
 - **单元测试**：命令 + **全绿**结果（merge deploy branch **前**已跑通；0 failure、无测试退步）
 - 集成测试（若项目要求）命令 + 结果
@@ -84,7 +84,7 @@ CI 是 **二次确认**，不是第一次跑单测的地方。
 ## 挂载顺序（@BackendDev）
 
 ```text
-multica-backend-impl → multica-artifact-api-sync
+multica-backend-impl → multica-artifact-backend
 ```
 
 ## 为什么有效

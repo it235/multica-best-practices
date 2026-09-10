@@ -97,14 +97,13 @@ Create 16 Skills in Multica:
 | Skill | Source | Mount to |
 | --- | --- | --- |
 | `multica-verification` (gatekeeping, required) | [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md) | **Leader** |
-| `multica-gate-setup` | [`../../skills/devops/multica-gate-setup/SKILL.md`](../../skills/devops/multica-gate-setup/SKILL.md) | Leader (when integrating CI hard gates) |
 | `multica-test-t1-design` | [`../../skills/tester/multica-test-t1-design/SKILL.md`](../../skills/tester/multica-test-t1-design/SKILL.md) | Tester |
-| `multica-requirement-analysis` | [`../../skills/product-manager/multica-requirement-analysis/SKILL.md`](../../skills/product-manager/multica-requirement-analysis/SKILL.md) | Leader / Architect |
+| `multica-pm-requirement-spec` | [`../../skills/product-manager/multica-pm-requirement-spec/SKILL.md`](../../skills/product-manager/multica-pm-requirement-spec/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`../../skills/architect/multica-technical-design/SKILL.md`](../../skills/architect/multica-technical-design/SKILL.md) | Architect |
-| `multica-artifact-req-sync` | [`../../skills/product-manager/multica-artifact-req-sync/SKILL.md`](../../skills/product-manager/multica-artifact-req-sync/SKILL.md) | ProductManager |
-| `multica-artifact-ui-sync` | [`../../skills/designer/multica-artifact-ui-sync/SKILL.md`](../../skills/designer/multica-artifact-ui-sync/SKILL.md) | Designer |
-| `multica-artifact-design-sync` | [`../../skills/architect/multica-artifact-design-sync/SKILL.md`](../../skills/architect/multica-artifact-design-sync/SKILL.md) | Architect |
-| `multica-artifact-api-sync` | [`../../skills/backend/multica-artifact-api-sync/SKILL.md`](../../skills/backend/multica-artifact-api-sync/SKILL.md) | BackendDev |
+| `multica-pm-artifact-publish` | [`../../skills/product-manager/multica-pm-artifact-publish/SKILL.md`](../../skills/product-manager/multica-pm-artifact-publish/SKILL.md) | ProductManager |
+| `multica-design-ui-impl` | [`../../skills/designer/multica-design-ui-impl/SKILL.md`](../../skills/designer/multica-design-ui-impl/SKILL.md) | Designer |
+| `multica-artifact-architect` | [`../../skills/architect/multica-artifact-architect/SKILL.md`](../../skills/architect/multica-artifact-architect/SKILL.md) | Architect |
+| `multica-artifact-backend` | [`../../skills/backend/multica-artifact-backend/SKILL.md`](../../skills/backend/multica-artifact-backend/SKILL.md) | BackendDev |
 | `multica-test-orchestration` | [`../../skills/tester/multica-test-orchestration/SKILL.md`](../../skills/tester/multica-test-orchestration/SKILL.md) | Tester |
 | `multica-artifact-cicd-sync` | [`../../skills/devops/multica-artifact-cicd-sync/SKILL.md`](../../skills/devops/multica-artifact-cicd-sync/SKILL.md) | DevOps |
 | `multica-test-t3-ui-automation` | [`../../skills/tester/multica-test-t3-ui-automation/SKILL.md`](../../skills/tester/multica-test-t3-ui-automation/SKILL.md) | Tester (T3) |
@@ -141,7 +140,7 @@ That's it. Run one real requirement, then tune it to your team.
 
 This flow is a **coordination guide, not a hard constraint.** It doesn't replace:
 
-- CI hard gates (see [`../../skills/devops/multica-gate-setup/`](../../skills/devops/multica-gate-setup/))
+- CI hard gates (see [`../../skills/devops/multica-artifact-cicd-sync/`](../../skills/devops/multica-artifact-cicd-sync/))
 - Branch protection / PR review
 - Human approval
 
@@ -159,8 +158,8 @@ The multica-verification skill is a **soft gate** in the agent world (executed b
 
 ## Why this works
 
-This Starter has 9 roles: the Leader owns orchestration and gatekeeping; ProductManager (product requirement / PRD) turns ideas into reviewable deliverables; Architect (technical) / Designer (UI, platform via `multica-artifact-ui-sync`) / FrontendDev / BackendDev / Tester (T1/T2/T3 three-phase) / DevOps (G2.5 triggers CI/CD) each own a piece of the artifacts, and the **Reviewer does the business review**.
-Gatekeeping is standardized as [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md), executed by the non-producing Leader (executor and gatekeeper are different parties); objective verification that can be machine-run is upgraded to CI hard gates (see [`../../skills/devops/multica-gate-setup/`](../../skills/devops/multica-gate-setup/)).
+This Starter has 9 roles: the Leader owns orchestration and gatekeeping; ProductManager (product requirement / PRD) turns ideas into reviewable deliverables; Architect (technical) / Designer (UI, platform via `multica-design-ui-impl`) / FrontendDev / BackendDev / Tester (T1/T2/T3 three-phase) / DevOps (G2.5 triggers CI/CD) each own a piece of the artifacts, and the **Reviewer does the business review**.
+Gatekeeping is standardized as [`../../skills/leader/multica-verification/SKILL.md`](../../skills/leader/multica-verification/SKILL.md), executed by the non-producing Leader (executor and gatekeeper are different parties); objective verification that can be machine-run is upgraded to CI hard gates (see [`../../skills/devops/multica-artifact-cicd-sync/`](../../skills/devops/multica-artifact-cicd-sync/)).
 **Gates anchor to artifacts, not roles**: the Issue's "affected ends" decides routing; artifacts for missing roles are skipped and the gate chain stays intact — no design / no frontend / no backend / full-stack are all permutations of the same instructions.
 Routing logic is written once (Squad), not copied into every Agent; each Agent has a narrow responsibility and can be copied as-is.
 

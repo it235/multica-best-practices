@@ -57,7 +57,6 @@ templates/  ⭐ 从这里开始：可直接复制的全部配置
 ├── zh_CN/              中文模板（默认；复制整个子目录即用）
 │   ├── agents/           共享 Agent Instructions（15 个角色定义：9 常规 + 6 专属 Reviewer）
 │   ├── skills/           共享 Skill（29 个，按角色分组：architect / backend / designer / devops / frontend / leader / platform / product-manager / reviewer / shared / tester；四层模型详见 skills/README.md）
-│   │   └── multica-gate-setup/  CI 硬门禁模板随 Skill 自包含（delivery-gate.yml 等）
 │   └── squad/            小队 Starter
 │       ├── software-development/ 常规开发（squad / issue / README 含工作流）
 │       ├── software-development-reviewed/ 加强版：每角色专属 Reviewer + 两层门禁
@@ -81,7 +80,7 @@ flowchart TB
     subgraph P0["阶段 0：需求收敛与 G0"]
         direction TB
         L0["@Leader<br/>读取 Issue，判断事实源"]
-        PM["@ProductManager（可选）<br/>multica-requirement-analysis<br/>+ multica-artifact-req-sync<br/>落地平台由 sync skill 决定"]
+        PM["@ProductManager（可选）<br/>multica-pm-requirement-spec<br/>+ multica-pm-artifact-publish<br/>落地平台由 sync skill 决定"]
         REQ[/"需求事实源<br/>PRD 或已有 Issue<br/>G- FR- BR- AC- OP- RISK-"/]
         SCOPE["@Leader<br/>确定范围、在场角色、路由图<br/>声明 deploy branch"]
         OP{"OP- 关闭且范围明确？"}
@@ -96,8 +95,8 @@ flowchart TB
 
     subgraph P1["阶段 1：设计、测试左移与 G1"]
         direction TB
-        ARCH["@Architect（可选）<br/>multica-technical-design<br/>+ multica-artifact-design-sync<br/>Output: 技术设计稳定引用"]
-        DESIGNER["@Designer（可选）<br/>multica-artifact-ui-sync<br/>Output: UI、全状态、Token、标注"]
+        ARCH["@Architect（可选）<br/>multica-technical-design<br/>+ multica-artifact-architect<br/>Output: 技术设计稳定引用"]
+        DESIGNER["@Designer（可选）<br/>multica-design-ui-impl<br/>Output: UI、全状态、Token、标注"]
         T1["@Tester T1（可选）<br/>multica-test-t1-design<br/>+ multica-test-orchestration<br/>Output: 功能用例 + AC- 追溯"]
         R1["@Reviewer（可选）<br/>G1 业务设计评审"]
         V1["@Leader<br/>multica-verification<br/>检查设计与 AC- 对齐"]
@@ -113,7 +112,7 @@ flowchart TB
 
     subgraph P2["阶段 2：契约先行、并行实现与 G2"]
         direction TB
-        API["@BackendDev（可选）<br/>先发布 API 契约<br/>multica-artifact-api-sync"]
+        API["@BackendDev（可选）<br/>先发布 API 契约<br/>multica-artifact-backend"]
         BDEV["@BackendDev（可选）<br/>multica-backend-impl<br/>Output: 服务端代码 + 单测"]
         FDEV["@FrontendDev（可选）<br/>依赖 UI + API 契约<br/>multica-frontend-impl"]
         APICASE["@Tester（可选）<br/>与开发并行写接口用例<br/>multica-test-orchestration"]
@@ -291,17 +290,16 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 | Skill | 来源 | 挂给谁 |
 | --- | --- | --- |
 | `multica-verification`（门禁，必备） | [`templates/zh_CN/skills/leader/multica-verification/SKILL.md`](./templates/zh_CN/skills/leader/multica-verification/SKILL.md) | **Leader** |
-| `multica-gate-setup` | [`templates/zh_CN/skills/devops/multica-gate-setup/SKILL.md`](./templates/zh_CN/skills/devops/multica-gate-setup/SKILL.md) | Leader（集成 CI 硬门禁时） |
-| `multica-requirement-analysis` | [`templates/zh_CN/skills/product-manager/multica-requirement-analysis/SKILL.md`](./templates/zh_CN/skills/product-manager/multica-requirement-analysis/SKILL.md) | Leader / Architect |
+| `multica-pm-requirement-spec` | [`templates/zh_CN/skills/product-manager/multica-pm-requirement-spec/SKILL.md`](./templates/zh_CN/skills/product-manager/multica-pm-requirement-spec/SKILL.md) | Leader / Architect |
 | `multica-technical-design` | [`templates/zh_CN/skills/architect/multica-technical-design/SKILL.md`](./templates/zh_CN/skills/architect/multica-technical-design/SKILL.md) | Architect |
 | `multica-backend-impl` | [`templates/zh_CN/skills/backend/multica-backend-impl/SKILL.md`](./templates/zh_CN/skills/backend/multica-backend-impl/SKILL.md) | BackendDev |
 | `multica-frontend-impl` | [`templates/zh_CN/skills/frontend/multica-frontend-impl/SKILL.md`](./templates/zh_CN/skills/frontend/multica-frontend-impl/SKILL.md) | FrontendDev |
 | `multica-test-orchestration` | [`templates/zh_CN/skills/tester/multica-test-orchestration/SKILL.md`](./templates/zh_CN/skills/tester/multica-test-orchestration/SKILL.md) | Tester |
 | `multica-test-t1-design` | [`templates/zh_CN/skills/tester/multica-test-t1-design/SKILL.md`](./templates/zh_CN/skills/tester/multica-test-t1-design/SKILL.md) | Tester |
-| `multica-artifact-req-sync` | [`templates/zh_CN/skills/product-manager/multica-artifact-req-sync/SKILL.md`](./templates/zh_CN/skills/product-manager/multica-artifact-req-sync/SKILL.md) | ProductManager |
-| `multica-artifact-design-sync` | [`templates/zh_CN/skills/architect/multica-artifact-design-sync/SKILL.md`](./templates/zh_CN/skills/architect/multica-artifact-design-sync/SKILL.md) | Architect |
-| `multica-artifact-api-sync` | [`templates/zh_CN/skills/backend/multica-artifact-api-sync/SKILL.md`](./templates/zh_CN/skills/backend/multica-artifact-api-sync/SKILL.md) | BackendDev |
-| `multica-artifact-ui-sync` | [`templates/zh_CN/skills/designer/multica-artifact-ui-sync/SKILL.md`](./templates/zh_CN/skills/designer/multica-artifact-ui-sync/SKILL.md) | Designer |
+| `multica-pm-artifact-publish` | [`templates/zh_CN/skills/product-manager/multica-pm-artifact-publish/SKILL.md`](./templates/zh_CN/skills/product-manager/multica-pm-artifact-publish/SKILL.md) | ProductManager |
+| `multica-artifact-architect` | [`templates/zh_CN/skills/architect/multica-artifact-architect/SKILL.md`](./templates/zh_CN/skills/architect/multica-artifact-architect/SKILL.md) | Architect |
+| `multica-artifact-backend` | [`templates/zh_CN/skills/backend/multica-artifact-backend/SKILL.md`](./templates/zh_CN/skills/backend/multica-artifact-backend/SKILL.md) | BackendDev |
+| `multica-design-ui-impl` | [`templates/zh_CN/skills/designer/multica-design-ui-impl/SKILL.md`](./templates/zh_CN/skills/designer/multica-design-ui-impl/SKILL.md) | Designer |
 | `multica-artifact-frontend` | [`templates/zh_CN/skills/frontend/multica-artifact-frontend/SKILL.md`](./templates/zh_CN/skills/frontend/multica-artifact-frontend/SKILL.md) | FrontendDev |
 | `multica-artifact-cicd-sync` | [`templates/zh_CN/skills/devops/multica-artifact-cicd-sync/SKILL.md`](./templates/zh_CN/skills/devops/multica-artifact-cicd-sync/SKILL.md) | DevOps |
 | `multica-platform-jenkins` | [`templates/zh_CN/skills/platform/multica-platform-jenkins/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-jenkins/SKILL.md) | 平台层占位壳（CI/CD） |

@@ -17,7 +17,7 @@ Professionally review only @ProductManager's PRD, judging the requirement's own 
 multica-review-product — call it for the structured review framework & output format.
 
 【Link source】
-The link @ProductManager returns via `multica-artifact-req-sync`. Leader passes it explicitly.
+The link @ProductManager returns via `multica-pm-artifact-publish`. Leader passes it explicitly.
 
 【Review flow】
 1. Read the PRD link + Issue original Leader passed.

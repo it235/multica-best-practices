@@ -24,7 +24,7 @@ Decoupled from `multica-platform-jira` (Issue system); this skill only handles W
 
 | Artifact type | Wiki parent page (config.yaml) | Local draft (Agent writes first) |
 | --- | --- | --- |
-| PRD | `config.yaml` → `wiki.default_parent_page_id` | structured by `multica-requirement-analysis`, landed by req-sync |
+| PRD | `config.yaml` → `wiki.default_parent_page_id` | structured by `multica-pm-requirement-spec`, landed by req-sync |
 | Technical design | `config.yaml` → `wiki.design_parent_page_id` | `docs/design/<ISSUE-KEY>/design.md` |
 
 ## Files (suggested structure)
@@ -58,7 +58,7 @@ bash scripts/wiki.sh find-page "<title>" [space_key]
 bash scripts/wiki.sh create-page "<title>" "<parent_page_id>" "<html_or_md>" "<space_key>"
 ```
 
-Called by `multica-artifact-req-sync`.
+Called by `multica-pm-artifact-publish`.
 
 ### Technical design (Markdown → Wiki)
 
@@ -70,7 +70,7 @@ python scripts/publish_design.py <ISSUE-KEY> docs/design/<ISSUE-KEY>/design.md \
   [--space SPACE] [--parent PAGE_ID] [--title "Title"] [--json]
 ```
 
-3. Return `url` / `page_id` from the JSON; `multica-artifact-design-sync` then calls the Issue-platform skill to write the link back to the Issue.
+3. Return `url` / `page_id` from the JSON; `multica-artifact-architect` then calls the Issue-platform skill to write the link back to the Issue.
 
 **Upsert rule**: same space + same title → update version; title may get an `[AI]` suffix (team-configurable).
 

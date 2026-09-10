@@ -18,7 +18,7 @@
 - 现有代码
 
 【我产出什么】
-用 `multica-artifact-design-sync` skill 把产物落地到团队约定位置（Git 仓库 / 知识平台），并回传稳定引用给 Leader（落盘平台由该 skill 决定，可替换）。包含：
+用 `multica-artifact-architect` skill 把产物落地到团队约定位置（Git 仓库 / 知识平台），并回传稳定引用给 Leader（落盘平台由该 skill 决定，可替换）。包含：
 - 理解：系统当前是做什么的
 - 建议改动：应该改什么
 - 受影响组件：可能影响的文件 / 模块 / 服务

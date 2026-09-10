@@ -87,4 +87,4 @@ A: The smallest combination for research tasks is "Researcher → Leader gates (
 ## References
 
 - Multica official docs and community practice links: see the "Resources" section at the bottom of [`README.md`](../../README.md)
-- Gate implementation: CI hard-gate templates ship inside the `multica-gate-setup` skill ([`templates/en_US/skills/devops/multica-gate-setup/`](../../templates/en_US/skills/devops/multica-gate-setup/))
+- Gate implementation: CI hard-gate templates ship inside the `multica-artifact-cicd-sync` skill ([`templates/en_US/skills/devops/multica-artifact-cicd-sync/`](../../templates/en_US/skills/devops/multica-artifact-cicd-sync/))

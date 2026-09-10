@@ -30,14 +30,14 @@
 
 ```text
 ┌─ 内容层  content ──────────── 写什么、怎么算好 ────────────┐
-│  multica-requirement-analysis / multica-technical-design   │
+│  multica-pm-requirement-spec / multica-technical-design   │
 │  multica-backend-impl / multica-frontend-impl              │
 │  multica-test-t1-design / -t2-coverage / -t3-*             │
 └────────────────────────┬──────────────────────────────────┘
                          │ 按 skill 名调用
 ┌─ 编排层  orchestration ─┴── 产物落到团队平台并回传稳定链接 ─┐
-│  multica-artifact-req-sync / -design-sync / -api-sync      │
-│  multica-artifact-ui-sync / -frontend / -cicd-sync         │
+│  multica-pm-artifact-publish / -design-sync / -api-sync      │
+│  multica-design-ui-impl / -frontend / -cicd-sync         │
 │  multica-test-orchestration（测试跨阶段路由）               │
 └────────────────────────┬──────────────────────────────────┘
                          │ 按 skill 名调用
@@ -69,7 +69,7 @@
 
 | Skill | 挂载角色 | 职责 |
 | --- | --- | --- |
-| `multica-requirement-analysis` | ProductManager | 把需求结构化成编号 PRD |
+| `multica-pm-requirement-spec` | ProductManager | 把需求结构化成编号 PRD |
 | `multica-technical-design` | Architect | 技术设计草稿（含元数据与修订记录） |
 | `multica-backend-impl` | BackendDev | 契约先行 + TDD 的后端实现 |
 | `multica-frontend-impl` | FrontendDev | 体验与状态完整的前端实现 |
@@ -84,10 +84,10 @@
 
 | Skill | 挂载角色 | 落地目标（可替换） |
 | --- | --- | --- |
-| `multica-artifact-req-sync` | ProductManager | 需求平台（默认 Confluence + Issue） |
-| `multica-artifact-design-sync` | Architect | 文档平台 / Git |
-| `multica-artifact-api-sync` | BackendDev | API 平台（默认 Apifox） |
-| `multica-artifact-ui-sync` | Designer | 设计平台（默认 Figma） |
+| `multica-pm-artifact-publish` | ProductManager | 需求平台（默认 Confluence + Issue） |
+| `multica-artifact-architect` | Architect | 文档平台 / Git |
+| `multica-artifact-backend` | BackendDev | API 平台（默认 Apifox） |
+| `multica-design-ui-impl` | Designer | 设计平台（默认 Figma） |
 | `multica-artifact-frontend` | FrontendDev | 文档平台 |
 | `multica-artifact-cicd-sync` | DevOps | CI（默认 Jenkins）→ 回传部署 URL |
 | `multica-test-orchestration` | Tester | 跨 T1/T2/T3 的路由与裁决 |
@@ -101,6 +101,7 @@
 | `multica-platform-figma` | 文件元数据、设计摘要 | — |
 | `multica-platform-apifox` | 场景 / 契约 | OpenAPI 同步、场景补充、跑批 |
 | `multica-platform-jenkins` | 构建状态、日志 | 触发构建 / 发布 / 晋级 |
+| `multica-platform-knowledge-base` | 知识库问答 | — |
 
 > 平台层**只放占位外壳**：`config.yaml` 与 `.env.example` 里全是 `<JIRA_URL>`、`<JENKINS_URL>` 这类占位符，团队填自己的值即可。详见 [platform-collaboration](./platform-collaboration.md)。
 
@@ -119,7 +120,6 @@
 
 | Skill | 用途 |
 | --- | --- |
-| `multica-gate-setup` | CI 硬门禁模板（分支保护 / delivery gate），一次性接入 |
 | `multica-manage-skills` | 通过 Multica API 做运营统计 |
 
 ---
@@ -128,10 +128,10 @@
 
 | 角色 | 内容 | 编排 | 平台（仅编排层调用） |
 | --- | --- | --- | --- |
-| ProductManager | `multica-requirement-analysis` | `multica-artifact-req-sync` | 经编排层 |
-| Architect | `multica-technical-design` | `multica-artifact-design-sync` | 经编排层 |
-| Designer | — | `multica-artifact-ui-sync` | 经编排层 |
-| BackendDev | `multica-backend-impl` | `multica-artifact-api-sync` | 经编排层 |
+| ProductManager | `multica-pm-requirement-spec` | `multica-pm-artifact-publish` | 经编排层 |
+| Architect | `multica-technical-design` | `multica-artifact-architect` | 经编排层 |
+| Designer | — | `multica-design-ui-impl` | 经编排层 |
+| BackendDev | `multica-backend-impl` | `multica-artifact-backend` | 经编排层 |
 | FrontendDev | `multica-frontend-impl` | `multica-artifact-frontend` | 经编排层 |
 | Tester | `multica-test-orchestration` → T1/T2/T3 | 用例正文由 T1/T2 自发布 | 经编排层 |
 | DevOps | — | `multica-artifact-cicd-sync` | `multica-platform-jenkins` |
@@ -145,7 +145,7 @@
 ## 5. 挂载约定
 
 1. **按名挂载，不写路径**：Agent Instructions 里只写 `` `multica-xxx` ``，不写 `templates/...`。
-2. **平台名不进角色提示词**：写「用 `multica-artifact-api-sync` 落地并回传稳定链接」，不写「发布到 Apifox」。
+2. **平台名不进角色提示词**：写「用 `multica-artifact-backend` 落地并回传稳定链接」，不写「发布到 Apifox」。
 3. **凭据不进任何提示词**：一律走环境变量或平台 skill 的 `.env`，见 [SECURITY](../../SECURITY.md)。
 4. **编排层不重复平台实现**：平台有的 REST 脚本，编排层只调不抄。
 
@@ -155,7 +155,7 @@
 
 | Bad | Better |
 | --- | --- |
-| 在 Agent Instructions 里写「把设计文档发到 `<空间名>` 的 `<页面>` 下」 | 写「用 `multica-artifact-design-sync` 落地并回传链接」，父页配置留在平台 skill |
+| 在 Agent Instructions 里写「把设计文档发到 `<空间名>` 的 `<页面>` 下」 | 写「用 `multica-artifact-architect` 落地并回传链接」，父页配置留在平台 skill |
 | 角色 skill 里自带一份 JIRA Basic 认证代码 | 删掉，改声明 `metadata.orchestrates: multica-platform-jira` |
 | 让完成者自己评审自己的产物 | 评审由 `multica-review-*` + 非产出者执行，见 [gates-and-evidence](./gates-and-evidence.md) |
 | 一个 skill 又写「用例该怎么写」又写「怎么连 JIRA 导入」 | 拆开：内容留 T1，连接留 platform；绑定具体测试工具的导入脚本留在团队自己的 T1 里 |

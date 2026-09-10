@@ -99,14 +99,14 @@ python scripts/publish_design.py <ISSUE-KEY> docs/design/<ISSUE-KEY>/design.md \
 ## Write · PRD 页面（HTML）
 
 Unix：`bash scripts/confluence.sh create-page ...`  
-或由 `multica-artifact-req-sync` 编排调用。
+或由 `multica-pm-artifact-publish` 编排调用。
 
 ## 与产物 / 阶段 skill 的关系
 
 | 调用方 | 实际调用 |
 | --- | --- |
-| `multica-artifact-req-sync` | PRD HTML create-page |
-| `multica-artifact-design-sync` / `-backend` / `-frontend` | `publish_design.py` |
+| `multica-pm-artifact-publish` | PRD HTML create-page |
+| `multica-artifact-architect` / `-backend` / `-frontend` | `publish_design.py` |
 | `multica-test-t1-design` | `fetch_page_by_url.py`（`fetch_all` 编排） |
 
 完整矩阵见 [`docs/platform-collaboration.md`](../../../../../docs/zh_CN/platform-collaboration.md)。

@@ -17,7 +17,7 @@ Professionally review only @Architect's technical architecture design, judging t
 multica-review-architect — call it for the structured review framework & output format.
 
 【Link source】
-The link @Architect returns via `multica-artifact-design-sync` after design (design platform / doc ref). Leader passes this link explicitly when dispatching; read it first, don't search.
+The link @Architect returns via `multica-artifact-architect` after design (design platform / doc ref). Leader passes this link explicitly when dispatching; read it first, don't search.
 
 【Review flow】
 1. Read the design link + upstream requirement link Leader passed.

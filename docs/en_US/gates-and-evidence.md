@@ -12,7 +12,6 @@ A gate is a checkpoint that can clearly answer "pass / fail". In the software-de
 | --- | --- | --- |
 | G0 | Requirements ready: goal + testable acceptance criteria | Leader / Human |
 | G1 | Design approved: design aligns with acceptance criteria + acceptable from a business standpoint | Leader (multica-verification skill) + Reviewer (default software-development does business review at G1 only; the reviewed variant gives every artifact a dedicated Reviewer) |
-| G2 | Implementation accepted: prefer the CI verdict; only rerun verification when CI is missing | Leader (multica-verification / multica-gate-setup) |
 | G2.5 | CI/CD deploy: after G2 PASS and code push, build & deploy to the test env and return the env URL | Leader (checks CI evidence, triggered by @DevOps) |
 | G3 | Tests pass: the T3 automation report maps every acceptance criterion (depends on the G2.5 deploy env) | Leader (reviews the report) |
 | G4 | Human acceptance: delivery decision | Human |
@@ -24,7 +23,7 @@ The key property of a gate is **decidability**: every gate maps to a question th
 Verification is a **function**, not a role. It is standardized as `templates/en_US/skills/leader/multica-verification/` and triggered by the **Leader** at the gate points (G1 / G2 / G3):
 
 - The Leader produces no artifacts → the gatekeeper and the gated are different parties
-- Gatekeeping = rerun the verification commands + map each acceptance criterion item by item, without citing the producer's description; when the repo has CI configured, **prefer the CI verdict** (e.g. `[G2 PASS · CI #123]`) and don't rerun (how to read CI: the `multica-gate-setup` skill)
+- Gatekeeping = rerun the verification commands + map each acceptance criterion item by item, without citing the producer's description; when the repo has CI configured, **prefer the CI verdict** (e.g. `[G2 PASS · CI #123]`) and don't rerun (how to read CI: the `multica-artifact-cicd-sync` skill)
 - Producer self-certification (running it yourself) doesn't count; key commands must be rerun
 
 ## Verification and review are two different kinds of checks
@@ -118,7 +117,7 @@ Tests / Lint / Build / CI / branch protection / PR approval
 ```
 
 - **Soft gate**: the Leader gatekeeps inside the Squad with the multica-verification skill (G1–G3), constrained by instructions and evidence — good for getting started, no CI, or an exploration phase.
-- **Hard gate**: unforgeable checks produced by CI (deployment templates and practices live in the `multica-gate-setup` skill: `templates/en_US/skills/devops/multica-gate-setup/`). When you need results more trustworthy than manual checks, hand the critical gates to CI — the gate issuer must be a different party from the gated.
+- **Hard gate**: unforgeable checks produced by CI (deployment templates and practices live in the `multica-artifact-cicd-sync` skill: `templates/en_US/skills/devops/multica-artifact-cicd-sync/`). When you need results more trustworthy than manual checks, hand the critical gates to CI — the gate issuer must be a different party from the gated.
 
 Soft and hard gates are **two execution environments of the same verification function**: the Skill in the agent world and CI in the engineering world. If it can run in CI, run it in CI.
 

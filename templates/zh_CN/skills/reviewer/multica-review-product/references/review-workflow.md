@@ -4,7 +4,7 @@ ProductReviewer 接到 Leader 派活后按本顺序执行。勾选项见 [`check
 
 ## 1. 锁定材料
 
-- 读 Leader 派活的 PRD 链接（`multica-artifact-req-sync` 回传）+ Issue 原文
+- 读 Leader 派活的 PRD 链接（`multica-pm-artifact-publish` 回传）+ Issue 原文
 - 可选读：原型、数据口径、依赖说明
 - 必要时只读调用 `multica-platform-confluence` / `multica-platform-jira` 拉全文
 - 可选调用 `团队知识库（可选）` 核对术语（**禁止规则扩写**）

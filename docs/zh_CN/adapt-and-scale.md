@@ -87,4 +87,4 @@ A：研究类任务的最小组合是「Researcher → Leader 判门（multica-v
 ## 参考
 
 - Multica 官方文档与社区实践链接见 [`README.md`](../../README.md) 底部的「资源」
-- 门禁实现：CI 硬门禁模板随 `multica-gate-setup` skill 自包含（[`templates/zh_CN/skills/devops/multica-gate-setup/`](../../templates/zh_CN/skills/devops/multica-gate-setup/)）
+- 门禁实现：CI 硬门禁模板随 `multica-artifact-cicd-sync` skill 自包含（[`templates/zh_CN/skills/devops/multica-artifact-cicd-sync/`](../../templates/zh_CN/skills/devops/multica-artifact-cicd-sync/)）

@@ -39,9 +39,9 @@ Squad 指令只写上面的「角色前缀」。一个 workspace 里常驻多个
 - 不在范围的角色不解析、不派活。完整规则见《命名规范：角色 + 项目 + 成员标识》。
 
 【阶段-门禁对照表】（流水线一览；缺层即跳过对应行。每项产物由对应角色经 `multica-artifact-*-sync` skill 落地并回传稳定链接，详见 docs/zh_CN/artifact-conventions.md）
-S0 需求产出 @ProductManager（PRD，用 `multica-artifact-req-sync`）→ G0 范围确定（基于 PRD，声明 deploy branch）
-→ S1a 技术设计 @Architect（用 `multica-artifact-design-sync`）/ S1b UI 设计 @Designer（用 `multica-artifact-ui-sync`，并行，均产出）→ G1 设计门禁（含 UI 评审）
-→ 并行：S2a API 契约 @BackendDev（用 `multica-artifact-api-sync`）/ S2b 功能用例 @Tester（用 `multica-test-orchestration`）→ G2 汇合门禁（两者均 PASS）
+S0 需求产出 @ProductManager（PRD，用 `multica-pm-artifact-publish`）→ G0 范围确定（基于 PRD，声明 deploy branch）
+→ S1a 技术设计 @Architect（用 `multica-artifact-architect`）/ S1b UI 设计 @Designer（用 `multica-design-ui-impl`，并行，均产出）→ G1 设计门禁（含 UI 评审）
+→ 并行：S2a API 契约 @BackendDev（用 `multica-artifact-backend`）/ S2b 功能用例 @Tester（用 `multica-test-orchestration`）→ G2 汇合门禁（两者均 PASS）
 → 并行：S3a 前端 @FrontendDev（依赖 UI 链接 + API 契约链接）/ S3b 后端 @BackendDev / S3c 接口用例 @Tester（用 `multica-test-orchestration`）→ G2 汇合门禁（三者均 PASS）
 → G2.5 CI/CD @DevOps（范围含 CI/CD；G2 PASS 且代码已 push 到 deploy branch，用 `multica-artifact-cicd-sync` 部署到测试环境并回传 URL）→ G2.5 部署门禁
 → S4 测试报告 @Tester（T3；G2.5 PASS 后用 `multica-test-t3-ui-automation` + `multica-test-orchestration`）→ G3 测试门禁 → 人类验收 Done
@@ -64,11 +64,11 @@ S0 需求产出 @ProductManager（PRD，用 `multica-artifact-req-sync`）→ G0
 - 范围没有的角色不派活，对应产物直接跳过，其余流程不变。
 
 【产物流水线】（逐行推进：产物完成 → 你判门 PASS → 才进下一行）
-0. 需求产出（范围含 @ProductManager）→ @ProductManager 用 `multica-artifact-req-sync` 出 PRD（含 OP- 待确认清单）并回传链接 → 你判门：OP- 未关闭不得进开发；PRD 即 G0 事实来源
+0. 需求产出（范围含 @ProductManager）→ @ProductManager 用 `multica-pm-artifact-publish` 出 PRD（含 OP- 待确认清单）并回传链接 → 你判门：OP- 未关闭不得进开发；PRD 即 G0 事实来源
 1. 需求就绪（G0，基于 PRD 或 Issue）→ 人类确认
-2. 设计（范围含设计）→ @Architect 用 `multica-artifact-design-sync` 出设计并回传引用 → G1：你用 multica-verification skill 检查与验收标准对齐，再请 @Reviewer 业务评审
+2. 设计（范围含设计）→ @Architect 用 `multica-artifact-architect` 出设计并回传引用 → G1：你用 multica-verification skill 检查与验收标准对齐，再请 @Reviewer 业务评审
 3. 并行产物（设计定稿后同时派，下游读上游回传链接）：
-   a. API 契约（范围含后端）→ @BackendDev 用 `multica-artifact-api-sync` 出契约并回传链接 → 你判门（前端与测试的并行输入）
+   a. API 契约（范围含后端）→ @BackendDev 用 `multica-artifact-backend` 出契约并回传链接 → 你判门（前端与测试的并行输入）
    b. 功能用例（@Tester 在场）→ @Tester 用 `multica-test-t1-design` + `multica-test-orchestration` 出用例并回传链接 → 你判门
 4. 实现（并行互不等待，各判各的 G2，均读上游回传链接）：
    a. 前端实现（范围含前端）→ @FrontendDev 读 UI 链接 + API 契约链接 → G2：优先引用 CI 结论（如 [G2 PASS · CI #123]），核对 diff 范围；CI 缺失才复跑验证命令
@@ -102,7 +102,7 @@ S0 需求产出 @ProductManager（PRD，用 `multica-artifact-req-sync`）→ G0
 - 变更文件列表
 - 与验收标准的逐条对照
 - 已知限制 / 风险
-- 验证证据：仓库已配 CI → 引用 CI 结论（[G2 PASS · CI #123]，用 multica-gate-setup skill）；未配 CI → 贴实际执行的命令 + 完整输出（关键命令你亲自复跑）
+- 验证证据：仓库已配 CI → 引用 CI 结论（[G2 PASS · CI #123]，用 multica-artifact-cicd-sync skill）；未配 CI → 贴实际执行的命令 + 完整输出（关键命令你亲自复跑）
 
 【失败处理】
 - 临时故障（网络超时、依赖安装失败、服务不可用）→ 重试当前任务。
@@ -140,5 +140,5 @@ Agent 完成任务 ≠ Issue 完成。只有按产物流水线走完（含人类
 - **验证与评审分开**：multica-verification skill 管「对不对」（客观复跑），@Reviewer 管「好不好」（业务判断）。两类检查标准不同，混在一个角色里必然顾此失彼。
 - **证据要求单独成节**：这是防止「Agent 说做完了就完事」的最有效手段。
 - **失败处理分类**：临时故障与方向错误是两类完全不同的应对，混在一起 Agent 会乱。
-- **G2 引用 CI 而非复跑**：验证是同一功能的两种执行环境——CI 存在时 Leader 判门=核对 CI 结论 + diff 范围（硬门禁，机器出具不可伪造）；CI 缺失时降级为 multica-verification skill 复跑（软门禁）。部署与感知 CI 的具体做法见 `multica-gate-setup` skill。
+- **G2 引用 CI 而非复跑**：验证是同一功能的两种执行环境——CI 存在时 Leader 判门=核对 CI 结论 + diff 范围（硬门禁，机器出具不可伪造）；CI 缺失时降级为 multica-verification skill 复跑（软门禁）。部署与感知 CI 的具体做法见 `multica-artifact-cicd-sync` skill。
 - **Squad 级与 Leader 角色分开**：开场先定义「Squad 是什么、目标、事实来源、编号、沟通风格、禁止项」，对所有角色成立；`【Leader 角色】` 单独说明 Leader 只是编排者、推进权与判门权在 Leader。这样 Squad 指令无论只注入 Leader 还是未来全队注入都不会让成员误以为自己是 Leader。借鉴了「事实来源 / 待确认项 / 编号规范 / 禁止事项」的通用写法，但去掉了任何具体项目、工具链与智能体人名的绑定，保持可复制。

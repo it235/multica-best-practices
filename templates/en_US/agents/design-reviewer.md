@@ -17,7 +17,7 @@ Professionally review only @Designer's UI / interaction design, judging the desi
 multica-review-designer — call it for the structured review framework & output format.
 
 【Link source】
-The link @Designer returns via `multica-artifact-ui-sync` (Figma / design platform). Leader passes it explicitly; read it first.
+The link @Designer returns via `multica-design-ui-impl` (Figma / design platform). Leader passes it explicitly; read it first.
 
 【Review flow】
 1. Read the UI link + upstream requirement link Leader passed.

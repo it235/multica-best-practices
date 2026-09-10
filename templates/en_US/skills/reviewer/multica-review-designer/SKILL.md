@@ -5,7 +5,7 @@ description: UI-design dedicated review framework. Called by DesignReviewer to p
 
 # UI Design Professional Review (DesignReviewer)
 
-Structured professional review framework for **UI / interaction design artifacts**. Called by `DesignReviewer`; reviews the Figma/design-platform link `Designer` returns via `multica-artifact-ui-sync`.
+Structured professional review framework for **UI / interaction design artifacts**. Called by `DesignReviewer`; reviews the Figma/design-platform link `Designer` returns via `multica-design-ui-impl`.
 
 ## When to use
 - DesignReviewer receives a "review UI design" dispatch from Leader.

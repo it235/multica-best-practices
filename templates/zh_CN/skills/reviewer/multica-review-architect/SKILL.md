@@ -5,7 +5,7 @@ description: 架构设计专属评审框架。由 ArchReviewer 调用，对 Arch
 
 # 架构设计专业评审（ArchReviewer）
 
-本 skill 提供对**技术架构设计产物**的结构化专业评审框架。调用方为 `ArchReviewer`，评审对象为 `Architect` 经 `multica-artifact-design-sync` 回传的设计链接。
+本 skill 提供对**技术架构设计产物**的结构化专业评审框架。调用方为 `ArchReviewer`，评审对象为 `Architect` 经 `multica-artifact-architect` 回传的设计链接。
 
 ## 什么时候用
 

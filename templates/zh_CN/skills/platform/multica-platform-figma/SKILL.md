@@ -11,7 +11,7 @@ metadata:
 
 ## Platform 协作
 
-本 skill 为 **platform 层**；供 `multica-test-t1-design`（fetch_all）、`multica-artifact-ui-sync`、前端 impl 等按名调用。凭据：`FIGMA_TOKEN`。
+本 skill 为 **platform 层**；供 `multica-test-t1-design`（fetch_all）、`multica-design-ui-impl`、前端 impl 等按名调用。凭据：`FIGMA_TOKEN`。
 
 ## Purpose
 
@@ -53,7 +53,7 @@ python scripts/fetch_file.py --url "https://www.figma.com/design/<KEY>/..." \
 | 调用方 | 实际调用 |
 | --- | --- |
 | `multica-test-t1-design` | `fetch_all.py` 编排 → 本 skill `fetch_file.py` |
-| `multica-artifact-ui-sync` | Designer 产出链接；下游通过本 skill 或 Figma UI 读取 |
+| `multica-design-ui-impl` | Designer 产出链接；下游通过本 skill 或 Figma UI 读取 |
 
 完整矩阵见 [`docs/platform-collaboration.md`](../../../../../docs/zh_CN/platform-collaboration.md)。
 

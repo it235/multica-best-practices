@@ -28,8 +28,8 @@
 
 ### 标准用法（PM / Architect 双 skill 句式）
 
-- **@ProductManager**：先用 `multica-requirement-analysis` 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-artifact-req-sync` 编排落地（内部调用平台层）。
-- **@Architect**：先用 `multica-technical-design` 写本地设计文档，再用 `multica-artifact-design-sync` 发布（内部调用平台层）。
+- **@ProductManager**：先用 `multica-pm-requirement-spec` 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-pm-artifact-publish` 编排落地（内部调用平台层）。
+- **@Architect**：先用 `multica-technical-design` 写本地设计文档，再用 `multica-artifact-architect` 发布（内部调用平台层）。
 - **@Tester**：先用 `multica-test-t1-design` 产出用例内容，再用 `multica-test-orchestration` 落地；T3 自动化用 `multica-test-t3-ui-automation`。
 
 「分析 / 设计」类 skill 负责**内容**，「artifact-sync」类 skill 负责**落地与回传引用**——两者分离，内容可复用、平台可替换。
@@ -38,10 +38,10 @@
 
 | 产物 | 责任人 | 内容规范（角色侧） | 对接 skill（平台侧，可替换） |
 | --- | --- | --- | --- |
-| UI 设计 | @Designer | 页面结构、状态、交互、标注（对齐 PRD 信息架构） | `multica-artifact-ui-sync`（默认 Figma） |
-| 产品需求 PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- 编号化需求 | `multica-artifact-req-sync`（默认 Wiki 平台） |
-| 开发设计文档 | @Architect | 当前架构、最小改动、受影响组件、实现步骤、风险 | `multica-artifact-design-sync`（默认 Git 仓库 / Wiki 平台） |
-| API 接口文档 | @BackendDev | 端点、入参 / 出参、错误码、鉴权、BR- 对应 | `multica-artifact-api-sync`（默认 API 工具） |
+| UI 设计 | @Designer | 页面结构、状态、交互、标注（对齐 PRD 信息架构） | `multica-design-ui-impl`（默认 Figma） |
+| 产品需求 PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- 编号化需求 | `multica-pm-artifact-publish`（默认 Wiki 平台） |
+| 开发设计文档 | @Architect | 当前架构、最小改动、受影响组件、实现步骤、风险 | `multica-artifact-architect`（默认 Git 仓库 / Wiki 平台） |
+| API 接口文档 | @BackendDev | 端点、入参 / 出参、错误码、鉴权、BR- 对应 | `multica-artifact-backend`（默认 API 工具） |
 | 测试用例 / 报告 | @Tester | 功能 / 接口用例、覆盖 AC-、测试报告 | `multica-test-orchestration`（默认 用例平台） |
 | CI/CD 部署 | @DevOps | 构建 / 部署记录、环境 URL、日志摘要 | `multica-artifact-cicd-sync`（默认 CI 系统） |
 
@@ -78,4 +78,4 @@
 
 Bad: "@Designer 把设计传到 Figma，链接发我。"（平台名固化进提示词，换公司就失效）
 
-Better: "@Designer 产出 UI 设计，用 `multica-artifact-ui-sync` skill 落地并回传链接。"（平台在 skill 内，提示词可复制）
+Better: "@Designer 产出 UI 设计，用 `multica-design-ui-impl` skill 落地并回传链接。"（平台在 skill 内，提示词可复制）

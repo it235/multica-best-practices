@@ -19,7 +19,7 @@ Software Development Starter
 | --- | --- | --- |
 | **B1** | 5 篇方法论文档（`FLOW` / `role-skills-architecture` / `test-automation-in-repo` / `multi-repo-and-issue-links` / `platform-collaboration`）+ `templates/MULTICA.md` | 双语同步 |
 | **B2** | 新增 9 个 skill：`multica-backend-impl`、`multica-frontend-impl`、`multica-test-orchestration`、`multica-test-t1-design`、`multica-test-t2-coverage`、`multica-test-t3-ui-automation`、`multica-test-t3-api-automation`、`multica-platform-apifox`、`multica-platform-figma` | zh_CN 先行 |
-| **B3** | 升级现有 skill（6 个 `multica-review-*`、`multica-technical-design`、`multica-requirement-analysis`、3 个 `multica-artifact-*-sync`、`multica-platform-jira` / `-confluence` 脚本增强、`multica-manage-skills`） | zh_CN 先行 |
+| **B3** | 升级现有 skill（6 个 `multica-review-*`、`multica-technical-design`、`multica-pm-requirement-spec`、3 个 `multica-artifact-*-sync`、`multica-platform-jira` / `-confluence` 脚本增强、`multica-manage-skills`） | zh_CN 先行 |
 | **B4** | agents / squad 同步；移除被取代的 `multica-test-design` / `multica-test-automation` / `multica-artifact-test-sync`；README / AGENTS / CHANGELOG 收尾 | 双语同步 |
 
 ### 迁移红线 / Migration red lines

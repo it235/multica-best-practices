@@ -28,8 +28,8 @@ So: the public repo ships only content + orchestration + **platform-layer placeh
 
 ### Standard usage (PM / Architect dual-skill phrasing)
 
-- **@ProductManager**: first structure the Issue into a numbered PRD with `multica-requirement-analysis`, then land it via `multica-artifact-req-sync` (which calls the platform layer internally).
-- **@Architect**: first write the local design doc with `multica-technical-design`, then publish via `multica-artifact-design-sync`.
+- **@ProductManager**: first structure the Issue into a numbered PRD with `multica-pm-requirement-spec`, then land it via `multica-pm-artifact-publish` (which calls the platform layer internally).
+- **@Architect**: first write the local design doc with `multica-technical-design`, then publish via `multica-artifact-architect`.
 - **@Tester**: first produce cases with `multica-test-t1-design`, then land via `multica-test-orchestration`; T3 automation uses `multica-test-t3-ui-automation`.
 
 The "analysis / design" skills own **content**; the "artifact-sync" skills own **landing & reference return** — separation makes content reusable and platform swappable.
@@ -38,10 +38,10 @@ The "analysis / design" skills own **content**; the "artifact-sync" skills own *
 
 | Artifact | Owner | Content spec (role side) | Sync skill (platform side, swappable) |
 | --- | --- | --- | --- |
-| UI design | @Designer | page structure, states, interaction, annotations (aligned to PRD IA) | `multica-artifact-ui-sync` (default Figma) |
-| Product requirement PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- numbered requirements | `multica-artifact-req-sync` (default Wiki platform) |
-| Technical design doc | @Architect | current arch, minimal change, affected components, steps, risks | `multica-artifact-design-sync` (default Git repo / Wiki platform) |
-| API contract | @BackendDev | endpoints, in/out params, error codes, auth, BR- mapping | `multica-artifact-api-sync` (default API tool) |
+| UI design | @Designer | page structure, states, interaction, annotations (aligned to PRD IA) | `multica-design-ui-impl` (default Figma) |
+| Product requirement PRD | @ProductManager | G-/FR-/BR-/AC-/KPI-/RISK-/OP- numbered requirements | `multica-pm-artifact-publish` (default Wiki platform) |
+| Technical design doc | @Architect | current arch, minimal change, affected components, steps, risks | `multica-artifact-architect` (default Git repo / Wiki platform) |
+| API contract | @BackendDev | endpoints, in/out params, error codes, auth, BR- mapping | `multica-artifact-backend` (default API tool) |
 | Test cases / report | @Tester | feature/api cases, AC- coverage, test report | `multica-test-orchestration` (default case platform) |
 | CI/CD deployment | @DevOps | build/deploy records, env URL, log summary | `multica-artifact-cicd-sync` (default CI system) |
 
@@ -78,4 +78,4 @@ When a team changes platforms, only edit the "default platform" section of the c
 
 Bad: "@Designer upload the design to Figma and send me the link." (platform name hard-coded into the prompt; breaks on platform change)
 
-Better: "@Designer produce UI design, land it via `multica-artifact-ui-sync` skill and return the link." (platform lives in the skill; prompt stays copy-pasteable)
+Better: "@Designer produce UI design, land it via `multica-design-ui-impl` skill and return the link." (platform lives in the skill; prompt stays copy-pasteable)

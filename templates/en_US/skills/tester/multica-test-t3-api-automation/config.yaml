@@ -1,0 +1,3 @@
+# multica-test-t3-api-automation — 薄编排；场景/环境映射见 multica-platform-apifox/config.yaml
+version: "1.0"
+delegates_to: multica-platform-apifox

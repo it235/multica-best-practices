@@ -22,8 +22,8 @@
       "name": "ProductManager",
       "role": "ProductManager",
       "skills": [
-        "multica-requirement-analysis",
-        "multica-artifact-req-sync",
+        "multica-pm-requirement-spec",
+        "multica-pm-artifact-publish",
         "multica-platform-confluence",
         "multica-platform-jira"
       ]
@@ -32,13 +32,13 @@
       "stem": "architect",
       "name": "Architect",
       "role": "Architect",
-      "skills": ["multica-technical-design", "multica-artifact-design-sync"]
+      "skills": ["multica-technical-design", "multica-artifact-architect"]
     },
     {
       "stem": "designer",
       "name": "Designer",
       "role": "Designer",
-      "skills": ["multica-artifact-ui-sync", "multica-platform-figma"]
+      "skills": ["multica-design-ui-impl", "multica-platform-figma"]
     },
     {
       "stem": "frontend-developer",
@@ -50,7 +50,7 @@
       "stem": "backend-developer",
       "name": "BackendDev",
       "role": "BackendDev",
-      "skills": ["multica-backend-impl", "multica-artifact-api-sync"]
+      "skills": ["multica-backend-impl", "multica-artifact-backend"]
     },
     {
       "stem": "tester",
@@ -69,7 +69,7 @@
       "stem": "devops",
       "name": "DevOps",
       "role": "DevOps",
-      "skills": ["multica-artifact-cicd-sync", "multica-platform-jenkins", "multica-gate-setup"]
+      "skills": ["multica-artifact-cicd-sync", "multica-platform-jenkins"]
     },
     {
       "stem": "reviewer",

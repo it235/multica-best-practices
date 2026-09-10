@@ -17,7 +17,7 @@
 multica-review-architect —— 调用它获得结构化的评审框架与输出格式。
 
 【链接来源】
-@Architect 完成设计后经 `multica-artifact-design-sync` 回传的链接（设计平台 / 文档引用）。Leader 派你评审时会显式带上该链接；你先读链接再评审，不靠搜索。
+@Architect 完成设计后经 `multica-artifact-architect` 回传的链接（设计平台 / 文档引用）。Leader 派你评审时会显式带上该链接；你先读链接再评审，不靠搜索。
 
 【评审流程】
 1. 读 Leader 派活时给的设计链接 + 上游需求链接。

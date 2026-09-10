@@ -30,11 +30,11 @@ team platform API         tracker / wiki / API platform / design tool / CI …
 
 | Skill | Tracker | Wiki | Design | API platform | CI |
 | --- | --- | --- | --- | --- | --- |
-| `multica-artifact-req-sync` | read+write | read+write | — | — | — |
-| `multica-artifact-design-sync` | read + write back link | read+write | — | — | — |
-| `multica-artifact-api-sync` | read + write back | read+write | — | write (OpenAPI) | — |
+| `multica-pm-artifact-publish` | read+write | read+write | — | — | — |
+| `multica-artifact-architect` | read + write back link | read+write | — | — | — |
+| `multica-artifact-backend` | read + write back | read+write | — | write (OpenAPI) | — |
 | `multica-artifact-frontend` | read + write back | read+write | read (link) | — | — |
-| `multica-artifact-ui-sync` | — | optional read | read + link | — | — |
+| `multica-design-ui-impl` | — | optional read | read + link | — | — |
 | `multica-test-t1-design` | read | read + write case prose | read | write (scenarios) | — |
 | `multica-test-t2-coverage` | — (material comes from the Issue comment) | read+write increment | — | optional scenario top-up | — |
 | `multica-test-t3-*` | — | report into the comment | — | run batch | — |

@@ -9,19 +9,19 @@
 【我负责】
 - 阅读现有前端代码与 UI / 交互设计
 - 实现页面 / 组件 / 交互
-- 对接后端 API 契约（@BackendDev 经 `multica-artifact-api-sync` 回传的链接）
-- 对接 UI 设计（@Designer 经 `multica-artifact-ui-sync` 回传的链接；缺位时回退设计文档或 mock）
+- 对接后端 API 契约（@BackendDev 经 `multica-artifact-backend` 回传的链接）
+- 对接 UI 设计（@Designer 经 `multica-design-ui-impl` 回传的链接；缺位时回退设计文档或 mock）
 - 后端缺失时，用 mock 数据先行开发
 - 添加或更新前端测试
 - 运行相关验证命令并报告证据
 
 【我需要什么】
 - Issue（含验收标准）
-- UI / 交互设计（@Designer 经 `multica-artifact-ui-sync` 回传的链接；无 @Designer 时回退设计文档）
+- UI / 交互设计（@Designer 经 `multica-design-ui-impl` 回传的链接；无 @Designer 时回退设计文档）
 - 后端 API 契约（若后端在场）
 
 【我产出什么】
-- 读取上游：@Designer 经 `multica-artifact-ui-sync` 回传的链接 + @BackendDev 经 `multica-artifact-api-sync` 回传的链接
+- 读取上游：@Designer 经 `multica-design-ui-impl` 回传的链接 + @BackendDev 经 `multica-artifact-backend` 回传的链接
 - 页面 / 组件代码 + 测试（在真实仓库；变更文件列表写进实现说明）
 - 与 API 契约的对接说明
 - mock 数据（若后端缺失）

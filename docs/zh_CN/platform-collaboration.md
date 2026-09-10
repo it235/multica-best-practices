@@ -30,11 +30,11 @@ platform skill          怎么读 / 怎么写 JIRA、Confluence、Apifox、Figma
 
 | Skill | JIRA | Confluence | Figma | Apifox | Jenkins |
 | --- | --- | --- | --- | --- | --- |
-| `multica-artifact-req-sync` | 读写 | 读写 | — | — | — |
-| `multica-artifact-design-sync` | 读 + 回写链接 | 读写 | — | — | — |
-| `multica-artifact-api-sync` | 读 + 回写 | 读写 | — | 写（OpenAPI） | — |
+| `multica-pm-artifact-publish` | 读写 | 读写 | — | — | — |
+| `multica-artifact-architect` | 读 + 回写链接 | 读写 | — | — | — |
+| `multica-artifact-backend` | 读 + 回写 | 读写 | — | 写（OpenAPI） | — |
 | `multica-artifact-frontend` | 读 + 回写 | 读写 | 读（链接） | — | — |
-| `multica-artifact-ui-sync` | — | 可选读 | 读 + 链接 | — | — |
+| `multica-design-ui-impl` | — | 可选读 | 读 + 链接 | — | — |
 | `multica-test-t1-design` | 读 | 读 + 写用例正文 | 读 | 写（场景） | — |
 | `multica-test-t2-coverage` | —（材料来自 Issue 评论） | 读写增量 | — | 可选补场景 | — |
 | `multica-test-t3-*` | — | 报告贴评论 | — | 跑批 | — |

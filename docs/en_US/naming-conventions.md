@@ -9,7 +9,7 @@
 3. `<project>` = service / domain / project name (lowercase hyphenated), e.g. `user-service`, `web`, `order`.
 4. `<member-id>` = the member's unique ID within "this project + this role", using an **employee number or nickname** (e.g. `u1024`, `ajie`). Do NOT use a full real name (avoids PII and cross-project ambiguity for the same person).
 5. The name only distinguishes instances; it carries no responsibility. Responsibilities always come from Agent Instructions / Squad Instructions.
-6. `Architect` is technical architecture design (change plan / files / verification); `Designer` is UI / interaction design (design platform decided by the `multica-artifact-ui-sync` skill). Different expertise and artifacts — don't merge them.
+6. `Architect` is technical architecture design (change plan / files / verification); `Designer` is UI / interaction design (design platform decided by the `multica-design-ui-impl` skill). Different expertise and artifacts — don't merge them.
 
 ## Examples
 

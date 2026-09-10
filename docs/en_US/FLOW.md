@@ -379,13 +379,13 @@ flowchart TB
 
 | Reference phase | Producing role | Skills (in order) | Reviewer | Review skill |
 | --- | --- | --- | --- | --- |
-| Requirements | @ProductManager | `multica-requirement-analysis` → `multica-artifact-req-sync` | ProductReviewer | `multica-review-product` |
-| Technical design | @Architect | `multica-technical-design` → `multica-artifact-design-sync` | ArchReviewer | `multica-review-architect` |
-| UI | @Designer | `multica-artifact-ui-sync` | DesignReviewer | `multica-review-designer` |
-| API contract | @BackendDev | `multica-artifact-api-sync` | BackendReviewer | `multica-review-backend` |
+| Requirements | @ProductManager | `multica-pm-requirement-spec` → `multica-pm-artifact-publish` | ProductReviewer | `multica-review-product` |
+| Technical design | @Architect | `multica-technical-design` → `multica-artifact-architect` | ArchReviewer | `multica-review-architect` |
+| UI | @Designer | `multica-design-ui-impl` | DesignReviewer | `multica-review-designer` |
+| API contract | @BackendDev | `multica-artifact-backend` | BackendReviewer | `multica-review-backend` |
 | T1 cases | @Tester | `multica-test-orchestration` → `multica-test-t1-design` | TestReviewer | `multica-review-test` |
 | Frontend implementation | @FrontendDev | `multica-frontend-impl` → `multica-artifact-frontend` | FrontendReviewer | `multica-review-frontend` |
-| Backend implementation | @BackendDev | `multica-backend-impl` → `multica-artifact-api-sync` | BackendReviewer | `multica-review-backend` |
+| Backend implementation | @BackendDev | `multica-backend-impl` → `multica-artifact-backend` | BackendReviewer | `multica-review-backend` |
 | DevOps | @DevOps | `multica-platform-jenkins` → `multica-artifact-cicd-sync` | **none** | — |
 | T2 | @Tester | `multica-test-t2-coverage` | TestReviewer | `multica-review-test` |
 | T3 | @Tester | `multica-test-t3-ui-automation` + `multica-test-t3-api-automation` | TestReviewer | `multica-review-test` |

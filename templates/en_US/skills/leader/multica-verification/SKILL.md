@@ -40,7 +40,7 @@ It doesn't rely on anyone's character — it relies on the evidence itself. Whoe
 ## Relationship to CI hard gates
 
 This Skill is the verification function's form in the agent world (soft gate), suitable for getting started, no CI, or an exploration phase.
-The same function's machine form is the CI hard-gate template carried by the `multica-gate-setup` skill. If it can run in CI, run it in CI; the soft gate is transitional.
+The same function's machine form is the CI hard-gate template carried by the `multica-artifact-cicd-sync` skill. If it can run in CI, run it in CI; the soft gate is transitional.
 
 ## Why this works
 

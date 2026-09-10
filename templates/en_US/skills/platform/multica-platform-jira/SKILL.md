@@ -60,14 +60,14 @@ The markup syntax for the appended block depends on the target system (Jira Wiki
 
 ## Workflow: Wiki-blocked degradation (PRD)
 
-When Wiki creation fails, `multica-artifact-req-sync` may write the full PRD into the Issue description (this skill's `create-story` / `append-description`), flagged "Wiki degraded"; after recovery, create the Wiki page and update the description link.
+When Wiki creation fails, `multica-pm-artifact-publish` may write the full PRD into the Issue description (this skill's `create-story` / `append-description`), flagged "Wiki degraded"; after recovery, create the Wiki page and update the description link.
 
 ## Relationship to artifact skills
 
 | Orchestration skill | Calls this skill |
 | --- | --- |
-| `multica-artifact-req-sync` | create-story / transition / schedule / notify / get-issue |
-| `multica-artifact-design-sync` | append-description (write back design Wiki link) |
+| `multica-pm-artifact-publish` | create-story / transition / schedule / notify / get-issue |
+| `multica-artifact-architect` | append-description (write back design Wiki link) |
 
 ## Adapting To A New Team
 

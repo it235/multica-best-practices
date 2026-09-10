@@ -49,9 +49,9 @@ Squad instructions only name the "role prefix" above. A workspace often has mult
 - Roles out of scope are not resolved or dispatched. Full rules in 《Naming: Role + Project + Member》.
 
 【Stage-Gate map】(pipeline at a glance; drop a row when a layer is absent. Each artifact is produced via its `multica-artifact-*-sync` skill and returns a stable link—see docs/en_US/artifact-conventions.md)
-S0 Requirements @ProductManager (PRD, `multica-artifact-req-sync`) → G0 Scope set (based on PRD, declare deploy branch)
-→ S1a Design @Architect (`multica-artifact-design-sync`) / S1b UI @Designer (`multica-artifact-ui-sync`, parallel) → G1 Design gate (incl. UI review)
-→ parallel: S2a API contract @BackendDev (`multica-artifact-api-sync`) / S2b Functional cases @Tester (`multica-test-orchestration`) → G2 Merge gate (both PASS)
+S0 Requirements @ProductManager (PRD, `multica-pm-artifact-publish`) → G0 Scope set (based on PRD, declare deploy branch)
+→ S1a Design @Architect (`multica-artifact-architect`) / S1b UI @Designer (`multica-design-ui-impl`, parallel) → G1 Design gate (incl. UI review)
+→ parallel: S2a API contract @BackendDev (`multica-artifact-backend`) / S2b Functional cases @Tester (`multica-test-orchestration`) → G2 Merge gate (both PASS)
 → parallel: S3a Frontend @FrontendDev (needs UI link + API contract link) / S3b Backend @BackendDev / S3c API cases @Tester (`multica-test-orchestration`) → G2 Merge gate (all three PASS)
 → G2.5 CI/CD @DevOps (scope has CI/CD; G2 PASS & code pushed to deploy branch, `multica-artifact-cicd-sync` deploys to test env & returns URL) → G2.5 Deploy gate
 → S4 Test report @Tester (T3; after G2.5 PASS, `multica-test-t3-ui-automation` + `multica-test-orchestration`) → G3 Test gate → Human acceptance Done
@@ -81,15 +81,15 @@ From (PRD or Issue)【Scope】confirm: need design? need frontend? need backend?
 - Roles not in scope aren't dispatched; their artifacts skipped; rest unchanged.
 
 【Artifact pipeline】(advance line by line: artifact done → Leader generic gate PASS → dedicated Reviewer professional review PASS → next line)
-0. Requirements (scope has @ProductManager) → @ProductManager `multica-artifact-req-sync` PRD (with OP- list) returns link
+0. Requirements (scope has @ProductManager) → @ProductManager `multica-pm-artifact-publish` PRD (with OP- list) returns link
    → your generic gate (multica-verification skill): unclosed OP- blocks dev; PRD is G0 fact source
    → dispatch @ProductReviewer `multica-review-product` to review PRD (scope/goal/acceptance clear & testable) → FAIL returns to @ProductManager
 1. Requirements ready (G0, from PRD or Issue) → human confirm
-2. Design (scope has design) → @Architect `multica-artifact-design-sync` design returns ref
+2. Design (scope has design) → @Architect `multica-artifact-architect` design returns ref
    → your generic gate (multica-verification skill) aligns acceptance
    → dispatch @ArchReviewer `multica-review-architect` to review design soundness; if scope has UI, also dispatch @DesignReviewer `multica-review-designer` to review UI
 3. Parallel artifacts (after design finalized, dispatch together; downstream reads upstream links):
-   a. API contract (scope has backend) → @BackendDev `multica-artifact-api-sync` contract returns link → your generic gate → dispatch @BackendReviewer `multica-review-backend` to review contract quality
+   a. API contract (scope has backend) → @BackendDev `multica-artifact-backend` contract returns link → your generic gate → dispatch @BackendReviewer `multica-review-backend` to review contract quality
    b. Functional cases (@Tester present) → @Tester `multica-test-t1-design` + `multica-test-orchestration` cases return link → your generic gate → dispatch @TestReviewer `multica-review-test` to review case coverage
 4. Implementation (parallel, independent gating, all read upstream links):
    a. Frontend (scope has frontend) → @FrontendDev reads UI link + API contract link → your generic gate (prefer CI conclusion [G2 PASS · CI #123], check diff scope; re-run verify commands only if CI missing) → dispatch @FrontendReviewer `multica-review-frontend` to review implementation & unit tests
@@ -130,7 +130,7 @@ API test cases are a parallel branch of the implementation stage: dispatched imm
 - Changed-file list
 - Line-by-line mapping to acceptance criteria
 - Known limits / risks
-- Verification evidence: repo has CI → cite CI conclusion ([G2 PASS · CI #123], via multica-gate-setup skill); no CI → paste actual commands + full output (key commands you re-run yourself)
+- Verification evidence: repo has CI → cite CI conclusion ([G2 PASS · CI #123], via multica-artifact-cicd-sync skill); no CI → paste actual commands + full output (key commands you re-run yourself)
 - Professional review conclusion: the `multica-review-*` skill report from the dedicated Reviewer (blocking items must include rationale, involved points, fix direction)
 
 【Failure handling】

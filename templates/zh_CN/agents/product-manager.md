@@ -18,7 +18,7 @@
 - 已有产品 / 设计文档（优先编辑补充，不轻易重写整份）
 
 【我产出什么】
-先用 `multica-requirement-analysis` skill 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-artifact-req-sync` skill 编排落地（具体平台由该 skill 决定，可替换；详见 docs/zh_CN/artifact-conventions.md），并回传稳定链接给 Leader。一份正式需求至少包含（能用表格就表格、能编号就编号）：
+先用 `multica-pm-requirement-spec` skill 把 Issue 结构化为带编号的 PRD 内容，再用 `multica-pm-artifact-publish` skill 编排落地（具体平台由该 skill 决定，可替换；详见 docs/zh_CN/artifact-conventions.md），并回传稳定链接给 Leader。一份正式需求至少包含（能用表格就表格、能编号就编号）：
 - 一句话定义
 - 背景与问题
 - 目标与成功标准（G- + KPI-）
