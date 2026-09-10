@@ -83,11 +83,50 @@ $env:MULTICA_API_URL = "https://multica.example.com"
 
 ⚠️ 勿将 token / cookie / 内网地址提交 Git。`config.local.json`、`squad-bootstrap.json`、`agent-mapping.json` 已在 `.gitignore` 中。
 
+## 跨 workspace 复制小队 / Clone a squad across workspaces
+
+已有小队在某 workspace，想原样复制到另一个 workspace（agent / skill 不存在则创建，存在则复用并绑定）：
+
+```powershell
+cd scripts/multica-sync
+
+# 预览
+python clone_squad.py `
+  --from-workspace 100 `
+  --from-squad <source-squad-uuid> `
+  --to-workspace 200 `
+  --dry-run
+
+# 执行
+python clone_squad.py `
+  --from-workspace 100 `
+  --from-squad <source-squad-uuid> `
+  --to-workspace 200
+
+# 目标 workspace 无 runtime 时
+python clone_squad.py ... --to-workspace 200 --runtime <runtime-id>
+
+# 强制覆盖目标已有同名 skill / agent / squad 内容
+python clone_squad.py ... --update-skills --update-agents --update-squad
+```
+
+| 参数 | 说明 |
+| --- | --- |
+| `--from-workspace` / `--from-squad` | 源 workspace slug/UUID + 源小队 UUID（小队页 URL 里 `/squads/<uuid>`） |
+| `--to-workspace` | 目标 workspace slug/UUID |
+| `--to-squad-name` | 目标小队名（默认与源同名） |
+| `--runtime` | 目标新建 agent 用的 runtime_id；默认自动探测 |
+| `--update-skills` / `--update-agents` / `--update-squad` | 同名已存在时覆盖内容（默认只复用不覆盖） |
+
+> 复制按**名称**对齐（与 bootstrap 一致），因此重跑幂等；`--dry-run` 可先预览。
+> Base URL 通过 `--url` / `MULTICA_API_URL` / `config.local.json` 提供，脚本不内置任何地址。
+
 ## 脚本说明 / Scripts
 
 | 脚本 | 作用 |
 | --- | --- |
 | `bootstrap_squad.py` | **一键建队**：skills → agents → squad → members → bindings（幂等，按名称对齐） |
+| `clone_squad.py` | **跨 workspace 复制小队**：从源 API 拉取 agents/skills/bindings，在目标 workspace 创建/复用/绑定（幂等，按名称对齐） |
 | `sync_skills.py` | `templates/zh_CN/skills/**/SKILL.md` → workspace 创建 / 覆盖 |
 | `sync_agents.py` | `templates/zh_CN/agents/*.md` → `PUT /api/agents/{id}`；`--squad` 按 role 自动映射 |
 | `list_squad_skills.py` | 列出小队 agent 及其已绑定 skills |

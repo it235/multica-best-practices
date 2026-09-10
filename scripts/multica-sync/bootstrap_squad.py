@@ -70,6 +70,13 @@ def as_list(data) -> list:
     return []
 
 
+def roles_match(existing: str, desired: str) -> bool:
+    """Treat role labels case-insensitively (server may use leader vs Leader)."""
+    if existing == desired:
+        return True
+    return existing.lower() == desired.lower()
+
+
 def load_config(path: Path) -> dict:
     if not path.is_file():
         raise MulticaError(
