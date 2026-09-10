@@ -5,7 +5,7 @@
 ## 1. 核心原则：内容归角色，平台归 skill
 
 - **角色提示词只描述"产出什么内容"**（如 PRD 含哪些段落、API 契约含哪些字段），**不出现任何具体平台名**（Figma / Confluence / Apifox / Jira 等）。
-- **落盘 / 上传 / 取回由 `multica-artifact-*-sync` 系列 skill 负责**。每个角色在提示词里只写一句"用 `multica-artifact-xxx-sync` skill 落地"，具体平台在该 skill 内实现，可替换。
+- **落盘 / 上传 / 取回由 `multica-artifact-*` 系列 skill 负责**。每个角色在提示词里只写一句"用 `multica-artifact-*` skill 落地"，具体平台在该 skill 内实现，可替换。
 - **稳定引用 = 链接或路径**：下游通过 skill 回传的链接 / 路径定位上游产物，而不是靠"你应该知道上游产了啥"。
 
 ## 1.1 三层架构：内容 / 编排 / 平台
@@ -15,13 +15,13 @@
 | 层 | 是谁 | 写什么 | 是否含内网细节 |
 | --- | --- | --- | --- |
 | **内容层** | 角色提示词（agents/*.md） | 产出什么内容（段落、字段、编号） | 否——永远不含平台名 |
-| **编排层** | `multica-artifact-*-sync` skill | 把内容落地到某类产物（PRD / 设计 / API / 用例），并回传稳定引用 | 否——只声明"调哪个平台 skill"，不写地址 |
+| **编排层** | `multica-artifact-*` skill | 把内容落地到某类产物（PRD / 设计 / API / 用例），并回传稳定引用 | 否——只声明"调哪个平台 skill"，不写地址 |
 | **平台层** | `multica-platform-*` skill | 真正连系统：Wiki / Issue / CI / 测试工具 的读写 | **是——地址、空间、Job 名、凭据都在这里** |
 
 **关键约束**：
 
-1. 内容层（角色）绝不出现平台名；它只说"用 `multica-artifact-xxx-sync` skill 落地"。
-2. 编排层（`multica-artifact-*-sync`）只调用平台层 skill，不写死任何 URL / pageId / Job 名。
+1. 内容层（角色）绝不出现平台名；它只说"用 `multica-artifact-*` skill 落地"。
+2. 编排层（`multica-artifact-*`）只调用平台层 skill，不写死任何 URL / pageId / Job 名。
 3. 平台层（`multica-platform-*`）是**唯一允许**出现内网地址、空间 ID、凭据变量的地方；且凭据只走运行时 env，不写进任何提示词。
 
 这样：公开仓库只放内容层 + 编排层 + 平台层**占位壳**；团队接入自己内网时，只填平台层壳子里的 `config.yaml` 与 `scripts/`，上层零改动。
@@ -72,7 +72,7 @@
 
 ## 6. 平台替换（不改角色提示词）
 
-团队换平台时，只改对应的 `multica-artifact-*-sync` skill 的「默认平台」段，把 Figma / Confluence / Apifox / Jira 换成你们的工具（蓝湖 / 语雀 / Swagger / TestRail 等），保持「上传 + 回传稳定引用」接口不变。全部角色提示词与 squad 指令**无需改动**。
+团队换平台时，只改对应的 `multica-artifact-*` skill 的「默认平台」段，把 Figma / Confluence / Apifox / Jira 换成你们的工具（蓝湖 / 语雀 / Swagger / TestRail 等），保持「上传 + 回传稳定引用」接口不变。全部角色提示词与 squad 指令**无需改动**。
 
 ## 7. 常见错误
 

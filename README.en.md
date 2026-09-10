@@ -205,7 +205,7 @@ flowchart TB
     class FIX1,FIX2,PUSH,DISCOVER,CICD,FIX25,FAIL3,BLOCK3,REJECT action;
 ```
 
-> Key constraints: ① every gate is independently rerun by the Leader via `multica-verification` (never trust member self-reports); ② T3 **must** dispatch only after G2.5 PASS; ③ external tools (Confluence / JIRA / Jenkins / Figma / test-case platforms) are plugged in replaceably through `multica-artifact-*-sync` and `multica-platform-*` shells — the public repo ships placeholders only; ④ once any artifact changes, its downstream gates go stale and must be re-run.
+> Key constraints: ① every gate is independently rerun by the Leader via `multica-verification` (never trust member self-reports); ② T3 **must** dispatch only after G2.5 PASS; ③ external tools (Confluence / JIRA / Jenkins / Figma / test-case platforms) are plugged in replaceably through the orchestration-layer skills (`multica-artifact-*` series, etc.) and `multica-platform-*` shells — the public repo ships placeholders only; ④ once any artifact changes, its downstream gates go stale and must be re-run.
 
 ## 5-minute quick start
 
@@ -303,7 +303,7 @@ In Multica, create the Skills below, copying the code block from the matching `S
 | `multica-platform-jira` | [`templates/en_US/skills/platform/multica-platform-jira/SKILL.md`](./templates/en_US/skills/platform/multica-platform-jira/SKILL.md) | platform-layer shell (Issue system) |
 | `multica-platform-confluence` | [`templates/en_US/skills/platform/multica-platform-confluence/SKILL.md`](./templates/en_US/skills/platform/multica-platform-confluence/SKILL.md) | platform-layer shell (knowledge base / Wiki) |
 
-> The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-artifact-cicd-sync / multica-pm-requirement-spec / multica-technical-design); **artifact-orchestration** (the `multica-artifact-*-sync` set + cicd-sync, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 29-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
+> The 13 Skills above are shared under `templates/en_US/skills/` with the unified `multica-` prefix, in three classes: **gatekeeping/design** (multica-verification / multica-artifact-cicd-sync / multica-pm-requirement-spec / multica-technical-design); **artifact-orchestration** (`multica-artifact-architect` / `multica-artifact-backend` / `multica-artifact-frontend` / `multica-artifact-cicd-sync` + `multica-pm-artifact-publish` + `multica-design-ui-impl` + `multica-test-orchestration`, landing artifacts to team platforms — the platform is implemented inside the skill and is swappable); **platform-layer shell** (multica-platform-* three, the only place allowed to hold company-internal URL/credential *placeholders* — the public repo ships placeholder shells only). The expanded 29-skill set (incl. test/impl/platform additions and the `multica-review-*` set) lives in `templates/zh_CN/skills/` — see `skills/README.md`. Role prompts only say "which skill to use", never a platform name; switch companies by filling the platform shell. See `docs/en_US/role-skills-architecture.md` for the four-layer model. Skills mount **by name**.
 
 #### Step 3 — Create the Squad
 
@@ -384,7 +384,7 @@ Details:
 | [where-to-put-things](docs/en_US/where-to-put-things.md) | Where instructions belong — cheat sheet (most worth reading) |
 | [FLOW](docs/en_US/FLOW.md) | Deliverable-driven end-to-end flow and gate trimming (5 diagrams + work-package table + three trims) |
 | [role-skills-architecture](docs/en_US/role-skills-architecture.md) | The four skill layers (content / orchestration / platform / review) and the inventory |
-| [artifact-conventions](docs/en_US/artifact-conventions.md) | Collaboration artifact conventions: content spec + sync skill (platforms are not written into role prompts; they sink into `multica-artifact-*-sync` and are swappable per company) |
+| [artifact-conventions](docs/en_US/artifact-conventions.md) | Collaboration artifact conventions: content spec + sync skill (platforms are not written into role prompts; they sink into the orchestration-layer skills, e.g. `multica-artifact-*`, and are swappable per company) |
 | [platform-collaboration](docs/en_US/platform-collaboration.md) | Platform capability written once: URLs / credentials / REST details exist only in `multica-platform-*` |
 | [gates-and-evidence](docs/en_US/gates-and-evidence.md) | Gates G0–G4 (+G2.5 CI/CD) and evidence requirements |
 | [cicd-and-test-pipeline](docs/en_US/cicd-and-test-pipeline.md) | CI/CD and test-pipeline methodology (G2.5, Tester three-phase, deploy branch) |

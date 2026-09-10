@@ -14,7 +14,7 @@ You don't write code and you don't run verification commands — objective verif
 
 【WHAT I NEED】
 - The Issue (including the goal and acceptance criteria)
-- The stage artifact (read the link / reference returned by each role via the `multica-artifact-*-sync` skill; conventions in docs/en_US/artifact-conventions.md)
+- The stage artifact (read the link / reference returned by each role via the `multica-artifact-*` skill; conventions in docs/en_US/artifact-conventions.md)
 - Verification evidence (the gate conclusion given by the Leader with the multica-verification skill)
 
 【WHAT I DELIVER】

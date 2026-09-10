@@ -1,6 +1,6 @@
 # CI/CD and Test Pipeline (methodology)
 
-> This document describes the methodology behind **G2.5 (CI/CD deploy)** and **Tester three-phase (T1 / T2 / T3)** in the Squad pipeline. No concrete platform URL, Job name, or credential appears here — they live inside the `multica-platform-*` and `multica-artifact-*-sync` placeholder shells; each team fills in its own internal network.
+> This document describes the methodology behind **G2.5 (CI/CD deploy)** and **Tester three-phase (T1 / T2 / T3)** in the Squad pipeline. No concrete platform URL, Job name, or credential appears here — they live inside the `multica-platform-*` and `multica-artifact-*` placeholder shells; each team fills in its own internal network.
 
 ## 1. Stage overview
 

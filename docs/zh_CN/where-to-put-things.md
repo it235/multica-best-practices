@@ -10,7 +10,7 @@
 | 「这个项目有哪些背景」 | Project Instructions |
 | 「你是什么角色」 | Agent Instructions |
 | 「谁负责什么」 | Squad Instructions |
-| 「各阶段产物放哪 / 下游怎么读」 | 由 `multica-artifact-*-sync` skill 落地到团队平台并回传稳定链接（见 [artifact-conventions](./artifact-conventions.md)） |
+| 「各阶段产物放哪 / 下游怎么读」 | 由 `multica-artifact-*` skill 落地到团队平台并回传稳定链接（见 [artifact-conventions](./artifact-conventions.md)） |
 | 「某条能力该写成 Skill / 角色提示词 / 平台脚本」 | [role-skills-architecture](./role-skills-architecture.md)（四层模型） |
 | 「平台 URL / 凭据 / REST 细节放哪」 | 只放 `multica-platform-*` 一层（见 [platform-collaboration](./platform-collaboration.md)） |
 | 「完整流程怎么裁剪、谁先谁后」 | [FLOW](./FLOW.md)（交付物驱动，非角色流水线） |

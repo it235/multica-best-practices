@@ -17,7 +17,7 @@
 multica-review-frontend —— 调用它获得结构化的评审框架与输出格式。
 
 【链接来源】
-@FrontendDev 完成实现后经 `multica-artifact-*-sync`（代码类）回传的变更文件列表 / 仓库引用，以及 Leader 派活时给的 UI 链接 + API 契约链接。先读这些链接与变更，再评审。
+@FrontendDev 完成实现后经 `multica-artifact-*`（代码类）回传的变更文件列表 / 仓库引用，以及 Leader 派活时给的 UI 链接 + API 契约链接。先读这些链接与变更，再评审。
 
 【评审流程】
 1. 读 Leader 派活时给的前端变更链接 + UI 链接 + API 契约链接 + 验收标准。

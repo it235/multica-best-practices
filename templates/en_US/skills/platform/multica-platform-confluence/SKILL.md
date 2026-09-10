@@ -88,4 +88,4 @@ python scripts/publish_design.py <ISSUE-KEY> docs/design/<ISSUE-KEY>/design.md \
 
 ## Why it works
 
-Wiki auth, spaces, and parent pages differ per team; isolating them in a platform skill means Issue-system / notification / Git-change scripts don't affect Wiki scripts, and PRD + design share one read/write capability. A swappable platform layer is the core of "copy-paste-run": role prompts only ever say `multica-artifact-*-sync`, and the real internal details stay in this layer.
+Wiki auth, spaces, and parent pages differ per team; isolating them in a platform skill means Issue-system / notification / Git-change scripts don't affect Wiki scripts, and PRD + design share one read/write capability. A swappable platform layer is the core of "copy-paste-run": role prompts only ever say `multica-artifact-*`, and the real internal details stay in this layer.

@@ -111,7 +111,7 @@ Create 16 Skills in Multica:
 | `multica-platform-jira` | [`../../skills/platform/multica-platform-jira/SKILL.md`](../../skills/platform/multica-platform-jira/SKILL.md) | platform shell (Issue) |
 | `multica-platform-confluence` | [`../../skills/platform/multica-platform-confluence/SKILL.md`](../../skills/platform/multica-platform-confluence/SKILL.md) | platform shell (Wiki) |
 
-> All 16 Skills are shared under [`../../skills/`](../../skills/) with the unified `multica-` prefix namespace, in three classes: gatekeeping/design, artifact-orchestration (`multica-artifact-*-sync`), and platform-layer shells (only place holding internal URLs/credentials; public repo ships placeholder shells). Skills mount **by name** — whoever needs one writes "use the xxx skill" in their Instructions, independent of repo paths.
+> All 16 Skills are shared under [`../../skills/`](../../skills/) with the unified `multica-` prefix namespace, in three classes: gatekeeping/design, artifact-orchestration (`multica-artifact-*` series: architect / backend / frontend / cicd-sync + `multica-pm-artifact-publish` + `multica-design-ui-impl` + `multica-test-orchestration`), and platform-layer shells (only place holding internal URLs/credentials; public repo ships placeholder shells). Skills mount **by name** — whoever needs one writes "use the xxx skill" in their Instructions, independent of repo paths.
 
 ### Step 3 — Create the Squad
 

@@ -205,7 +205,7 @@ flowchart TB
     class FIX1,FIX2,PUSH,DISCOVER,CICD,FIX25,FAIL3,BLOCK3,REJECT action;
 ```
 
-> 关键约束：① 所有门禁由 Leader 用 `multica-verification` 独立复跑，不采信成员自述；② T3 **必须**等 G2.5 PASS 后才派发；③ 外部工具（Confluence / JIRA / Jenkins / Figma / 用例平台）经 `multica-artifact-*-sync` 与 `multica-platform-*` 壳层可替换接入，公开仓库只保留占位壳；④ 任一产物被修改后，其下游门禁立即失效、必须重新门禁。
+> 关键约束：① 所有门禁由 Leader 用 `multica-verification` 独立复跑，不采信成员自述；② T3 **必须**等 G2.5 PASS 后才派发；③ 外部工具（Confluence / JIRA / Jenkins / Figma / 用例平台）经编排层 skill（`multica-artifact-*` 系列等）与 `multica-platform-*` 壳层可替换接入，公开仓库只保留占位壳；④ 任一产物被修改后，其下游门禁立即失效、必须重新门禁。
 
 ## 5 分钟快速开始
 
@@ -310,7 +310,7 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 | `multica-platform-figma` | [`templates/zh_CN/skills/platform/multica-platform-figma/SKILL.md`](./templates/zh_CN/skills/platform/multica-platform-figma/SKILL.md) | 平台层占位壳（设计平台） |
 | `multica-review-*`（×6） | [`templates/zh_CN/skills/reviewer/multica-review-product/SKILL.md`](./templates/zh_CN/skills/reviewer/multica-review-product/SKILL.md) 等 | 对应 Reviewer |
 
-> 所有 Skill 共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间，分四类（详见 `skills/README.md` 与 `docs/zh_CN/role-skills-architecture.md`）：**内容层**（requirement-analysis / technical-design / backend-impl / frontend-impl / test-t1·t2·t3 / verification）；**编排层**（`multica-artifact-*-sync` 六个 + `multica-test-orchestration`，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 五个，唯一允许出现公司基建地址/凭据**占位**的地方，公开仓库只给占位壳）；**评审层**（multica-review-* 六个）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
+> 所有 Skill 共享放在 `templates/zh_CN/skills/`，统一 `multica-` 前缀命名空间，分四类（详见 `skills/README.md` 与 `docs/zh_CN/role-skills-architecture.md`）：**内容层**（requirement-analysis / technical-design / backend-impl / frontend-impl / test-t1·t2·t3 / verification）；**编排层**（`multica-artifact-architect` / `multica-artifact-backend` / `multica-artifact-frontend` / `multica-artifact-cicd-sync` + `multica-pm-artifact-publish` + `multica-design-ui-impl` + `multica-test-orchestration`，负责把产物落地到团队平台，平台在 skill 内实现、可替换）；**平台层占位壳**（multica-platform-* 五个，唯一允许出现公司基建地址/凭据**占位**的地方，公开仓库只给占位壳）；**评审层**（multica-review-* 六个）。角色提示词只说"用哪个 skill"，不写平台名；换公司只填平台壳。Skill 靠**名称**挂载，谁需要就在自己的 Instructions 里写「用 xxx skill」，与仓库路径无关。
 
 #### Step 3 — 创建 Squad
 
@@ -389,7 +389,7 @@ CI / PR = 什么必须真的通过？
 | [where-to-put-things](docs/zh_CN/where-to-put-things.md) | 指令归属速查表（最值得读） |
 | [FLOW](docs/zh_CN/FLOW.md) | 交付物驱动的完整流程与门禁裁剪（5 张图 + 工作包表 + 三种裁剪） |
 | [role-skills-architecture](docs/zh_CN/role-skills-architecture.md) | Skill 四层模型（内容 / 编排 / 平台 / 评审）与职责清单 |
-| [artifact-conventions](docs/zh_CN/artifact-conventions.md) | 协作产物约定：内容规范 + 对接 skill（平台不写进角色提示词，下沉到 `multica-artifact-*-sync`，换公司只换 skill） |
+| [artifact-conventions](docs/zh_CN/artifact-conventions.md) | 协作产物约定：内容规范 + 对接 skill（平台不写进角色提示词，下沉到编排层 skill（`multica-artifact-*` 系列等），换公司只换 skill） |
 | [platform-collaboration](docs/zh_CN/platform-collaboration.md) | 平台能力只写一份：URL / 凭据 / REST 细节只存在于 `multica-platform-*` |
 | [gates-and-evidence](docs/zh_CN/gates-and-evidence.md) | 门禁 G0–G4（+G2.5 CI/CD）与证据要求 |
 | [cicd-and-test-pipeline](docs/zh_CN/cicd-and-test-pipeline.md) | CI/CD 与测试流水线方法论（G2.5、Tester 三阶段、deploy branch） |
