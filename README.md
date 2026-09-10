@@ -59,7 +59,7 @@ templates/  ⭐ 从这里开始：可直接复制的全部配置
 │   ├── skills/           共享 Skill（29 个，按角色分组：architect / backend / designer / devops / frontend / leader / platform / product-manager / reviewer / shared / tester；四层模型详见 skills/README.md）
 │   └── squad/            小队 Starter
 │       ├── software-development/ 常规开发（squad / issue / README 含工作流）
-│       ├── software-development-reviewed/ 加强版：每角色专属 Reviewer + 两层门禁
+│       ├── software-development-reviewed/ 推荐主流程：每角色专属 Reviewer + 两层门禁
 │       └── bug-fix/             最小修复组合（只换编排）
 └── en_US/              英文模板（与 zh_CN/ 结构一致）
 docs/          ⭐ 先读这一页：指令放哪 / 门禁证据 / 常见错误 / 裁剪扩展
@@ -256,12 +256,12 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 
 ### 方式 B — 手工（复制粘贴）
 
-👉 **[`templates/zh_CN/squad/software-development`](./templates/zh_CN/squad/software-development)**
+👉 **[`templates/zh_CN/squad/software-development-reviewed`](./templates/zh_CN/squad/software-development-reviewed)**（轻量无专业评审版见 [`software-development`](./templates/zh_CN/squad/software-development)）
 
 你将得到：
 
 - 1 个 Squad Leader（编排 + 门禁）
-- 9 个 Agent：Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps（`software-development-reviewed` 另用 6 个专属 `*-reviewer`）
+- 15 个 Agent：主流程 `software-development-reviewed` 含 6 个专属 `*-reviewer`（ArchReviewer / DesignReviewer / ProductReviewer / FrontendReviewer / BackendReviewer / TestReviewer）；轻量版 `software-development` 为 9 个（单 `Reviewer`）
 - 29 个 Skill（按需复制；其中 multica-verification 是必备门禁 Skill，推荐起步集见下表）
 - 1 个 Issue 模板（含「涉及端」范围声明；来源支持「链接型 / 全量自包含」二选一）
 - 1 个软件开发工作流（任意角色可缺失的条件路由，含 G2.5 CI/CD）
@@ -375,8 +375,8 @@ CI / PR = 什么必须真的通过？
 
 | 模式 | 门禁层数 | 评审触发 | 适用 |
 | --- | --- | --- | --- |
-| 默认（software-development / bug-fix） | 1 层：Leader 通用门禁（multica-verification skill） | 仅 G1 单点业务评审 | 通用协作、起步期、无强把关要求 |
-| 加强（software-development-reviewed） | 2 层：通用门禁 + 每角色专属 Reviewer 专业评审 | Leader 在通用门禁 PASS 后派专属 Reviewer | 高专业把关要求、产物须经得起推敲 |
+| 轻量替代（software-development / bug-fix） | 1 层：Leader 通用门禁（multica-verification skill） | 仅 G1 单点业务评审 | 通用协作、起步期、无强把关要求 |
+| 推荐主流程（software-development-reviewed） | 2 层：通用门禁 + 每角色专属 Reviewer 专业评审 | Leader 在通用门禁 PASS 后派专属 Reviewer | 高专业把关要求、产物须经得起推敲 |
 
 **两层门禁怎么走**（加强模式）：产出角色完成产物 → Leader 用 multica-verification 复跑验收/流程（管「对不对」）→ PASS 后派专属 Reviewer 用 multica-review-* 做专业分析（管「专不专业」）→ 评审 PASS 才放行；FAIL 则专属 Reviewer 汇报 Leader、指派作者修改、再复审，最多 3 轮，仍不通过升级人类。两层任一 FAIL 均退回，轮次独立计数但共用「3 次上限」。
 

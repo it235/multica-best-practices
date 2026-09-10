@@ -59,7 +59,7 @@ You create: Agents (roles) + Squad (orchestration) + Skills (practices) + Issue 
    │   ├── skills/           Shared Skills (29, grouped by role: architect / backend / designer / devops / frontend / leader / platform / product-manager / reviewer / shared / tester; see skills/README.md for the four-layer model)
    │   └── squad/            Squad starters
    │       ├── software-development/  Regular development (squad / issue / README incl. workflow)
-   │       ├── software-development-reviewed/  Strengthened: dedicated Reviewer per role + two-layer gate
+   │       ├── software-development-reviewed/  Recommended main flow: dedicated Reviewer per role + two-layer gate
    │       └── bug-fix/              Minimal fix combination (only the orchestration changes)
    └── en_US/              English templates (mirrors zh_CN/)
    docs/          ⭐ Read this first: where instructions go / gates & evidence / common mistakes / adapt & scale
@@ -257,15 +257,15 @@ python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
 
 ### Mode B — Manual (copy-paste)
 
-👉 **[`templates/en_US/squad/software-development/README.md`](./templates/en_US/squad/software-development/README.md)**
+👉 **[`templates/en_US/squad/software-development-reviewed/README.md`](./templates/en_US/squad/software-development-reviewed/README.md)** (lightweight no-professional-review variant: [`software-development`](./templates/en_US/squad/software-development/README.md))
 
 You get:
 
 - 1 Squad Leader (orchestration + gatekeeping)
-- 9 Agents: Leader / ProductManager / Architect / Designer / FrontendDev / BackendDev / Tester / Reviewer / DevOps (the `software-development-reviewed` Starter additionally uses 6 dedicated `*-reviewer` agents)
+- 15 Agents: the main-flow `software-development-reviewed` includes 6 dedicated `*-reviewer` agents (ArchReviewer / DesignReviewer / ProductReviewer / FrontendReviewer / BackendReviewer / TestReviewer); the lightweight `software-development` is 9 Agents (single `Reviewer`)
 - 29 Skills (copy as needed; `multica-verification` is the mandatory gatekeeping Skill, minimum set in the table below)
 - 1 Issue template (with the "affected ends" scope declaration; source supports "linked / fully self-contained" — pick one)
-- 1 software-development workflow (conditional routing where any role can be missing, incl. G2.5 CI/CD)
+- 1 squad workflow (the `software-development-reviewed` reviewed flow with per-role dedicated reviewers; `software-development` is the lightweight variant where any role can be missing, incl. G2.5 CI/CD)
 
 #### Step 1 — Create Agents
 
@@ -370,8 +370,8 @@ Every Squad workflow in this repo uses the "stage gate + evidence" framework, bu
 
 | Mode | Gate layers | Review trigger | Use |
 | --- | --- | --- | --- |
-| Default (software-development / bug-fix) | 1: Leader generic gate (multica-verification skill) | G1 single-point business review only | general collaboration, early phase, no strong assurance need |
-| Strengthened (software-development-reviewed) | 2: generic gate + per-role dedicated Reviewer professional review | Leader dispatches dedicated Reviewer after generic-gate PASS | high professional bar, artifacts must be defensible |
+| Lightweight alternative (software-development / bug-fix) | 1: Leader generic gate (multica-verification skill) | G1 single-point business review only | general collaboration, early phase, no strong assurance need |
+| Recommended main flow (software-development-reviewed) | 2: generic gate + per-role dedicated Reviewer professional review | Leader dispatches dedicated Reviewer after generic-gate PASS | high professional bar, artifacts must be defensible |
 
 **How the two layers run** (strengthened mode): producing role finishes → Leader reruns multica-verification on acceptance/process ("correct?") → after PASS, dispatch the dedicated Reviewer with multica-review-* for professional analysis ("professional?") → release only on review PASS; on FAIL the dedicated Reviewer reports to Leader, who dispatches the author to fix, then re-reviews — max 3 rounds, still FAIL → escalate to human. Either layer FAIL returns; rounds counted independently but share the "3-strike cap".
 
