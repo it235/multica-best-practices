@@ -237,8 +237,8 @@ cd scripts/multica-sync
 $env:MULTICA_API_TOKEN = "mul_xxx"                           # your API token
 $env:MULTICA_API_URL   = "https://your-multica.example.com"  # your Multica URL
 
-python bootstrap_squad.py --workspace 100 --dry-run   # preview first (optional)
-python bootstrap_squad.py --workspace 100             # one command builds everything
+python bootstrap_squad.py --workspace <workspace-slug> --dry-run   # preview first (optional)
+python bootstrap_squad.py --workspace <workspace-slug>             # one command builds everything
 ```
 
 That's it — it uses the bundled `squad-bootstrap.example.json` (15 roles with their skills) by default.
@@ -246,7 +246,7 @@ To customise roles or mounts, copy it first:
 
 ```powershell
 cp squad-bootstrap.example.json squad-bootstrap.json
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json
 ```
 
 > Reading English templates? Add `$env:MULTICA_TEMPLATE_LANG = "en_US"` (default is `zh_CN`, which is the most complete tree).

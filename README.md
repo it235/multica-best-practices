@@ -237,8 +237,8 @@ cd scripts/multica-sync
 $env:MULTICA_API_TOKEN = "mul_xxx"                           # 你的 API Token
 $env:MULTICA_API_URL   = "https://your-multica.example.com"  # 你的 Multica 地址
 
-python bootstrap_squad.py --workspace 100 --dry-run   # 先预览（可选）
-python bootstrap_squad.py --workspace 100             # 一条命令建好整套
+python bootstrap_squad.py --workspace <workspace-slug> --dry-run   # 先预览（可选）
+python bootstrap_squad.py --workspace <workspace-slug>             # 一条命令建好整套
 ```
 
 就这两条命令：默认用内置的 `squad-bootstrap.example.json`（15 个角色 + 各自挂载的 skills）。
@@ -246,7 +246,7 @@ python bootstrap_squad.py --workspace 100             # 一条命令建好整套
 
 ```powershell
 cp squad-bootstrap.example.json squad-bootstrap.json
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json
 ```
 
 > 只想同步部分角色 / 精确覆盖绑定 / 指定 runtime：见 [`scripts/multica-sync/README.md`](./scripts/multica-sync/README.md)。

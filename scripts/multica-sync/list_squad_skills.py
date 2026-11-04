@@ -11,8 +11,8 @@ Flow:
 Auth (env): same as sync_agents.py
 
 Examples:
-  python list_squad_skills.py --workspace 100 --squad <squad-uuid>
-  python list_squad_skills.py --workspace 100 --squad <squad-uuid> --json
+  python list_squad_skills.py --workspace <workspace-slug> --squad <squad-uuid>
+  python list_squad_skills.py --workspace <workspace-slug> --squad <squad-uuid> --json
 """
 
 from __future__ import annotations

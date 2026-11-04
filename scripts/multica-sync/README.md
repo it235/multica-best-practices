@@ -26,24 +26,24 @@ cd scripts/multica-sync
 $env:MULTICA_API_TOKEN = "mul_xxx"                           # 推荐；Cookie 方式见下
 $env:MULTICA_API_URL   = "https://your-multica.example.com"  # 或写进 config.local.json
 
-python bootstrap_squad.py --workspace 100 --dry-run   # 先预览
-python bootstrap_squad.py --workspace 100             # 再执行
+python bootstrap_squad.py --workspace <workspace-slug> --dry-run   # 先预览
+python bootstrap_squad.py --workspace <workspace-slug>             # 再执行
 ```
 
 想改角色或挂载时，复制一份配置再改：
 
 ```powershell
 cp squad-bootstrap.example.json squad-bootstrap.json
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json
 ```
 
 常用变体 / variants：
 
 ```powershell
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json --sync-skills all
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json --bind-mode replace
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json --only tester
-python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json --write-mapping agent-mapping.json
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json --sync-skills all
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json --bind-mode replace
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json --only tester
+python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json --write-mapping agent-mapping.json
 ```
 
 | 常用参数 | 说明 |

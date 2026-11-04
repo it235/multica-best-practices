@@ -13,9 +13,9 @@ text files as `files[]` (SKILL.md is never duplicated in files).
 Auth (env): same as sync_agents.py
 
 Examples:
-  python sync_skills.py --workspace 100
-  python sync_skills.py --workspace 100 --dry-run
-  python sync_skills.py --workspace 100 --only multica-verification
+  python sync_skills.py --workspace <workspace-slug>
+  python sync_skills.py --workspace <workspace-slug> --dry-run
+  python sync_skills.py --workspace <workspace-slug> --only multica-verification
 """
 
 from __future__ import annotations

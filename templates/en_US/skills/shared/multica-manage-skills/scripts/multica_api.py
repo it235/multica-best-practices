@@ -23,11 +23,11 @@ API 地址解析，从高到低:
 用法示例:
   python multica_api.py me
   python multica_api.py workspaces
-  python multica_api.py agents --workspace 1
-  python multica_api.py run-counts --workspace 1 --json
-  python multica_api.py activity --workspace 1
+  python multica_api.py agents --workspace <workspace-slug>
+  python multica_api.py run-counts --workspace <workspace-slug> --json
+  python multica_api.py activity --workspace <workspace-slug>
   python multica_api.py report                        # 所有 workspace 汇总
-  python multica_api.py report --workspace 1          # 单个 workspace 的 agent 明细
+  python multica_api.py report --workspace <workspace-slug>          # 单个 workspace 的 agent 明细
 """
 
 import argparse

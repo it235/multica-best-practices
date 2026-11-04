@@ -26,11 +26,11 @@ Base URL:
   --url | MULTICA_API_URL | config.local.json  (see multica_client.resolve_base_url)
 
 Examples:
-  python bootstrap_squad.py --workspace 100                 # uses squad-bootstrap.json, else the shipped example
-  python bootstrap_squad.py --workspace 100 --dry-run
-  python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json
-  python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json --bind-mode replace
-  python bootstrap_squad.py --workspace 100 --config squad-bootstrap.json --write-mapping agent-mapping.json
+  python bootstrap_squad.py --workspace <workspace-slug>                 # uses squad-bootstrap.json, else the shipped example
+  python bootstrap_squad.py --workspace <workspace-slug> --dry-run
+  python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json
+  python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json --bind-mode replace
+  python bootstrap_squad.py --workspace <workspace-slug> --config squad-bootstrap.json --write-mapping agent-mapping.json
 """
 
 from __future__ import annotations
@@ -200,7 +200,8 @@ def ensure_skills(
                 print(f"[UPDATE] skill {name} ({skill_id}, {file_count} files)")
             else:
                 created = client.create_skill(workspace, payload) or {}
-                skill_id = created.get("id") or ""
+                created_dict = created if isinstance(created, dict) else created[0]
+                skill_id = created_dict.get("id") or ""
                 print(f"[CREATE] skill {name} ({skill_id or '?'} , {file_count} files)")
             if skill_id:
                 resolved[name] = skill_id

@@ -17,10 +17,10 @@ Auth (env):
   MULTICA_API_URL            Base URL; or config.local.json (no host is built in)
 
 Examples:
-  python sync_agents.py --workspace 100 --squad <squad-uuid>
-  python sync_agents.py --workspace 100 --squad <squad-uuid> --dry-run
-  python sync_agents.py --workspace 100 --squad ... --print-mapping
-  python sync_agents.py --workspace 100 --mapping agent-mapping.json --only architect
+  python sync_agents.py --workspace <workspace-slug> --squad <squad-uuid>
+  python sync_agents.py --workspace <workspace-slug> --squad <squad-uuid> --dry-run
+  python sync_agents.py --workspace <workspace-slug> --squad ... --print-mapping
+  python sync_agents.py --workspace <workspace-slug> --mapping agent-mapping.json --only architect
 """
 
 from __future__ import annotations
